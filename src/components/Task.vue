@@ -4,8 +4,8 @@
   >
 
     <h2 class="text-xl font-bolds truncate">{{ title }}</h2>
-    <div class="font-light">{{ context }}</div>
-    <div class="">{{ project }}</div>
+    <div class="font-light truncate">{{ context }}</div>
+    <div class="truncate">{{ project }}</div>
   </div>
 </template>
 

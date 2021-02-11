@@ -3,8 +3,8 @@
     class="flex flex-col h-screen bg-gradient-to-br from-gray-200 to-gray-300"
   >
     <Navbar class="shadow-2xl" />
-    <div class="grid content-center justify-center overflow-y-auto gap-2">
-      <div v-for="x in 100">
+    <div class="grid content-center justify-center gap-2 pt-6">
+      <div v-for="x in 4">
         <Task
           title="Description de la tâche"
           context="Context1"
