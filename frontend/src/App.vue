@@ -5,7 +5,8 @@
     <Navbar class="shadow-2xl" />
     <div class="relative h-screen">
         <Menu class="" />
-        <div class="absolute inset-0 grid content-center justify-center gap-2 pt-6">
+        <div class="absolute inset-0 grid content-center justify-center gap-2 pt-6 ">
+            <Register />
             <NewButton @click="createTask" class="mb-2" />
             <div v-for="task in tasks" v-bind:key="task">
                 <Task :title="task.title"
@@ -19,6 +20,7 @@
 </template>
 
 <script setup>
+import Register from "./components/Register.vue";
 import Task from "./components/Task.vue";
 import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";

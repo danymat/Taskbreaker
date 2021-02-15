@@ -9,7 +9,7 @@
 
         <div class="text-md font-light flex mr-2">
             <button class="p-2">Login</button>
-            <button class="p-2">Sign up</button>
+            <button class="p-2" onclick="showRegister()">Sign up</button>
         </div>
     </div>
 </template>

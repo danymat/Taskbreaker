@@ -1,4 +1,5 @@
-function loadMenuevent() {
+
+function loadWindowEvents() {
     var logged_in = false
     var menu_icone = document.getElementById("menu_ico")
     var menu = document.getElementById("menu")
@@ -19,3 +20,13 @@ function loadMenuevent() {
         }
     });
 }
+
+function showRegister() {
+    var registervue = document.getElementById("register")
+
+    if (registervue.className == "hidden bg-blue-300") {
+        registervue.className = "block bg-blue-300";
+    } else {
+        registervue.className = "hidden bg-blue-300";
+    }
+}  
