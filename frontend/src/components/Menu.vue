@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-purple-800 p-4 w-40 hidden" id="menu">
+    <div class="bg-purple-800 p-4 w-40 z-10 hidden" id="menu">
         <div class="hidden">
             <div>
                 Accounts
