@@ -26,13 +26,12 @@ import NewButton from "./components/NewButton.vue";
 import { ref } from "vue";
 var tasks = ref([]);
 
-const hasNotification = false; // Display notification on top of task
 const createTask = () => {
   tasks.value.push({
     title: "hey",
     context: "hey2",
     project: "project",
-    hasNotification: "true",
+    hasNotification: false,
   });
 };
 
