@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var { connectToMongoAtlas, getDB, closeDB } = require('./connection/MongoConnection')
+var { connectToMongoAtlas } = require('./connection/MongoConnection')
 var app = express();
 
 app.use(logger('dev'));
@@ -17,29 +17,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { User, AUTHORITIES } = require('./model/User');
 const { Task } = require('./model/Task');
 
-connectToMongoAtlas()
+exports.promise = connectToMongoAtlas()
     .then(() => console.log('Connected to Atlas Cluster'))
-    .then(()=> {
-        return require('./service/tasksService')
-    })
-    .then(async (tasksService) => {
-        const task = new Task({
-            description: 'Manger des pâtes',
-            userEmail: 'd.danymat@test.com'
+    .then(() => {
+        // Setting Endpoints
+        const UsersEndpoint = require('./endpoints/UsersEndpoint')
+        app.use('/api/users', UsersEndpoint)
+
+        // Default error Catcher
+        app.use((error, req, res, next) => {
+            res.status(error.status || 500)
+            res.json({
+            status: error.status || 500,
+            message: error.message,
+            stack: error.stack
+            })
         })
-        task.createDueDate(new Date())
-        // await tasksService.createTask(task)
-        const user = new User({
-            username: "Hey",
-            email: 'd.danymat@test.com',
-            password: 'hash',
-            authorities: AUTHORITIES.USER
-        })
-        // const userTasks = await tasksService.findAllUserTasks(user)
-        // console.log(userTasks)
     })
-    .then(() => { closeDB(); console.log('Closed Atlas Cluster') })
+    .then(() => { return app })
     .catch((e) => { console.log(e); closeDB() })
 
-module.exports = app;
+
 
