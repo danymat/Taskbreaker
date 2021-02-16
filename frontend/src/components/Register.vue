@@ -1,10 +1,10 @@
 <template>
-    <div class="hidden bg-blue-300" id="register">
+    <div class="bg-blue-300" id="register">
         <h1 class="p-8 text-3xl">Sign Up</h1>
         <form action="/register" method="post" class="flex flex-col space-y-4">
             <div>
-                <label for="name">Enter your name: </label>
-                <input type="text" placeholder="Name" name="name" id="name" required />
+                <label for="username">Enter your username: </label>
+                <input type="text" placeholder="Username" name="username" id="username" required />
             </div>
             <div>
                 <label for="pass">Enter your password: </label>

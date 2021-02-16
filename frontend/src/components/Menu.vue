@@ -1,22 +1,25 @@
 <template>
-    <div class="bg-purple-800 p-4 w-40 z-10 hidden" id="menu">
-        <div class="hidden">
-            <div>
+    <div class="relative flex flex-col bg-purple-800 p-4 w-40 z-10">
+        <div class="flex flex-col" :class="{ hidden: !isLoggedIn } ">
+            <button class="p-2">
                 Accounts
-            </div>
-            <div>
+            </button>
+            <button class="p-2">
                 Settings
-            </div>
+            </button>
         </div>
-        <div class="hidden">
-            <div>
+        <div class="flex flex-col">
+            <button class="p-2" @click="emit('current-page', 'home')">
                 Home
-            </div>
-            <div>
+            </button>
+            <button class="p-2" @click="emit('current-page', 'about')">
                 About
-            </div>
+            </button>
         </div>
     </div>
 </template>
 <script setup>
+    import { ref, defineEmit } from "vue";
+    const isLoggedIn = ref(false)
+    const emit = defineEmit(['current-page'])
 </script>
