@@ -22,7 +22,9 @@ exports.promise = connectToMongoAtlas()
     .then(() => {
         // Setting Endpoints
         const UsersEndpoint = require('./endpoints/UsersEndpoint')
+        const AdminEndpoint = require('./endpoints/AdminEndpoint')
         app.use('/api/users', UsersEndpoint)
+        app.use('/api/admin', AdminEndpoint)
 
         // Default error Catcher
         app.use((error, req, res, next) => {
