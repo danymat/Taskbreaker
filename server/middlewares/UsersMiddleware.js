@@ -1,7 +1,11 @@
+const { User } = require('../model/User')
+const usersService = require('../service/usersService')
 
 
-
-exports.testMiddleware = function (req, res, next)  {
-    console.log('I tested the middleware')
-    next()
+exports.testMiddleware = async function (req, res, next) {
+    try {
+        next()
+    } catch (error) {
+        next(error)
+    }
 }

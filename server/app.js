@@ -26,16 +26,19 @@ exports.promise = connectToMongoAtlas()
 
         // Default error Catcher
         app.use((error, req, res, next) => {
+            if (res.headersSent) {
+                return next(error);
+            }
             res.status(error.status || 500)
             res.json({
-            status: error.status || 500,
-            message: error.message,
-            stack: error.stack
+                status: error.status || 500,
+                message: error.message,
+                stack: error.stack
             })
         })
     })
     .then(() => { return app })
-    .catch((e) => { console.log(e); closeDB() })
+    .catch((e) => { console.log(e); closeDB(); })
 
 
 

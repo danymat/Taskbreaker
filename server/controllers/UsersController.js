@@ -1,3 +1,10 @@
 
 
-// exports.testController = (req, res) => { res.send('Successfuly Try') }
+exports.testController = (req, res, next) => {
+    try {
+        res.send('Successfuly Try')
+    } catch (error) {
+        next(error)
+    }
+
+}

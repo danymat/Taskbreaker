@@ -1,5 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://admin:jTlMqF2WzheOlnFz@cluster0.rk83u.mongodb.net/test_taskbreaker_db?retryWrites=true&w=majority";
+const uri = process.env.LOCAL == 'True' ? "mongodb://127.0.0.1:27017" :
+"mongodb+srv://admin:jTlMqF2WzheOlnFz@cluster0.rk83u.mongodb.net/test_taskbreaker_db?retryWrites=true&w=majority"
+
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 let _db;
