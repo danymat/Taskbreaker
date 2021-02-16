@@ -16,6 +16,9 @@ exports.addUser = async (user) => {
     }
 }
 
+/**
+ * @returns {import('../model/User').User[]}
+ */
 exports.findAllUsers = async () => {
     try {
         return await users.find({}).toArray()
@@ -25,12 +28,27 @@ exports.findAllUsers = async () => {
 }
 
 /**
+ * @param {String} email
+ * @returns {import('../model/User').User|null}
+ */
+exports.findUser = async (email) => {
+    try {
+        let query = { email : email }
+        return await users.findOne(query)
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+/**
  *
  * @param {import('../model/User').User} user
  */
 exports.isUserAlreadyTaken = async (user) => {
     try {
-        let query = { username : user.username, email: user.email }
+        let query = { email: user.email }
         let userQuery = await users.findOne(query)
         let isTaken = userQuery != null
         if (isTaken) {
