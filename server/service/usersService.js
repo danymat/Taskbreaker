@@ -24,3 +24,19 @@ exports.findAllUsers = async () => {
     }
 }
 
+/**
+ *
+ * @param {import('../model/User').User} user
+ */
+exports.isUserAlreadyTaken = async (user) => {
+    try {
+        let query = { username : user.username, email: user.email }
+        let userQuery = await users.findOne(query)
+        let isTaken = userQuery != null
+        if (isTaken) {
+            throw Error('User already taken')
+        }
+    } catch (error) {
+        throw error
+    }
+}

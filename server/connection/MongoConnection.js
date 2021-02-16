@@ -4,6 +4,9 @@ const uri = process.env.LOCAL == 'True' ? "mongodb://127.0.0.1:27017" :
 
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
+/**
+ * @type {import('mongodb').Db}
+ */
 let _db;
 
 exports.connectToMongoAtlas = async () => {

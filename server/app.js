@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var { connectToMongoAtlas } = require('./connection/MongoConnection')
+var { connectToMongoAtlas, closeDB } = require('./connection/MongoConnection')
 var app = express();
 
 app.use(logger('dev'));
