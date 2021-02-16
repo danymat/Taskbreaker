@@ -4,6 +4,6 @@ const UsersController = require('../controllers/UsersController')
 
 router.get('/users', UsersController.getAllUsers)
 
-router.get('/tasks', (req, res) => res.send('TODO'))
+router.get('/tasks', (req, res) => res.json({message: 'TODO'}))
 
 module.exports = router
