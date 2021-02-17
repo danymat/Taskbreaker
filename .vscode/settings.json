@@ -1,4 +1,5 @@
 {
-    "jest.pathToJest": "npm test --prefix server  --"
+    "jest.rootPath": "server",
+    "jest.showCoverageOnLoad": true
 }
 
