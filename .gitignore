@@ -1,5 +1,14 @@
+# MacOs Related
 .DS_Store
 
+# Node modules
 node_modules/
+
+# Build folder
 dist/
+
+# Vs folder
 /.vs
+
+# Jest related
+server/globalConfig.json
