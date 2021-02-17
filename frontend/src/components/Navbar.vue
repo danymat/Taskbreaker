@@ -11,7 +11,7 @@
       <button class="p-2" @click="emit('current-page', 'register')">
         Sign up
       </button>
-      <button class="p-2" :class="{ hidden: !isLoggedIn }" @click="">
+      <button class="p-2" :class="{ hidden: !isLoggedIn }">
         Log out
       </button>
     </div>

@@ -1,6 +1,6 @@
 <template>
-  <div class="space-y-20 text-gray-700 justify-center h-screen bg-white">
-    <div class="px-8">
+  <div class="flex flex-col space-y-20 text-gray-700 justify-center bg-white">
+    <div class="px-9">
       <Navbar
         class="border-b border-gray-300"
         @is-menu-hidden="(value) => (isHidden = value)"
@@ -12,10 +12,8 @@
         @current-page="(value) => changePageState(value)"
       />
 
-      <div
-        class="absolute inset-0 grid content-center justify-center gap-2 pt-6"
-      >
-        <Home v-if="current_page == 'home'" />
+      <div class="grid justify-center gap-2 pt-6">
+        <Home v-if="current_page == 'home'" class="pt-14" />
         <Register v-else-if="current_page == 'register'" />
         <Login v-else-if="current_page == 'login'" />
         <div v-else>
