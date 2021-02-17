@@ -27,7 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         
     - name: Backend -> Install packages 
-    - run: npm ci --prefix server
+      run: npm ci --prefix server
     
     - name: Backend -> tests
-    - run: npm test --prefix server
+      run: npm test --prefix server
