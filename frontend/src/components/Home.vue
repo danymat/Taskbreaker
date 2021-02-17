@@ -1,20 +1,11 @@
 <template>
-  <div class="text-center flex flex-row">
-    <div>
-      <img
-        :src="'/sprites/knight/idle (' + img_number + ').png'"
-        width="130"
-        height="157"
-      />
-    </div>
-    <div class="grid place-content-center">
-      <h2 class="text-xl">Gamify your tasks with</h2>
-      <h1 class="text-6xl font-bold">Taskbreaker</h1>
-    </div>
+  <div class="text-center flex flex-col">
+    <Headline />
   </div>
 </template>
 <script setup>
 import { ref } from "vue";
+import Headline from "./Headline.vue";
 const img_number = ref(1);
 setInterval(change_img, 100);
 
