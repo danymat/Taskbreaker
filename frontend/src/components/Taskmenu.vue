@@ -2,7 +2,21 @@
     <div class="border-2" :class="bdcolor">
         <form class="flex flex-row space-y-4" onsubmit="event.preventDefault()">
             <div class="m-0">
-                <input type="text" placeholder="Taskname *Required*" v-model="task.title" />
+                <select name="priority" v-model="task.priority">
+                    <option value="">--Priority Optional--</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                </select>
+                <button @click="changeSelectDate" class="font-bold">Date</button>
+                <div v-if="selectDate">
+                    <input type="date" v-model="task.completion_date" />
+                    <input type="date" v-model="task.creation_date" />
+                </div>
+                <input type="text" placeholder="Taskname *Required*" v-model="task.description" />
                 <input type="text" placeholder="Context" v-model="task.context" />
                 <input type="text" placeholder="Project" v-model="task.project" />
                 <div class="flex flex-row">
@@ -16,6 +30,21 @@
 <script setup>
     import { ref, defineEmit } from "vue";
     import NewButton from "./NewButton.vue";
+
+    var selectDate = ref(false);
+
+    function changeSelectDate() {
+        if (selectDate.value == true) {
+            task.value.completion_date = null;
+            task.value.creation_date = null;
+            selectDate.value = false;
+        } else {
+            task.value.completion_date = new Date().toISOString().slice(0, 10);
+            task.value.creation_date = new Date().toISOString().slice(0, 10);
+            selectDate.value = true;
+        }
+    } 
+
     const img_number = ref(1);
     setInterval(change_img, 100);
     function change_img() {
@@ -24,19 +53,22 @@
 
     var bdcolor = ref("")
     var task = ref({
-        title: "",
+        priority: "",
+        completion_date: null,
+        creation_date: null,
+        description: "",
         context: "",
         project: "",
-        hasNotification: false
+        special: {}
     });
 
     const emit = defineEmit(["task"]);
 
     const createTask = () => {
-        if (task.value.title.length == 0) {
-            bdcolor.value = "border-red-600";
+        if (task.value.description.length != 0) {
+            emit("task", task);
         } else {
-            emit("task", task)
+            bdcolor.value = "border-red-600";
         }
     }
 </script>

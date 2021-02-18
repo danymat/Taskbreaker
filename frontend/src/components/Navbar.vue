@@ -20,13 +20,11 @@
 <script setup>
 import { ref, defineEmit } from "vue";
 
-const isHidden = ref(true);
 const current_page = ref("main");
 const isLoggedIn = ref(false);
-const emit = defineEmit(["is-menu-hidden", "current-page"]);
+const emit = defineEmit(["change-menu-state", "current-page"]);
 
 function changeMenuState() {
-  isHidden.value = !isHidden.value;
-  emit("is-menu-hidden", isHidden.value);
+    emit("change-menu-state", true);
 }
 </script>

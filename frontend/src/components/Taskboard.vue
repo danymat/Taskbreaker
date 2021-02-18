@@ -7,10 +7,13 @@
 
         <div class="space-y-2">
             <div v-for="task in tasks" v-bind:key="task">
-                <Task :title="task.title"
+                <Task :priority="task.priority"
+                      :completion_date="task.completion_date"
+                      :creation_date="task.creation_date"
+                      :description="task.description"
                       :context="task.context"
                       :project="task.project"
-                      :notification="task.hasNotification" />
+                      :special="task.special" />
             </div>
         </div>
     </div>
@@ -26,10 +29,13 @@
 
     const createTask = (task) => {
         tasks.value.push({
-            title: task.value.title,
+            priority: task.value.priority,
+            completion_date: task.value.completion_date,
+            creation_date: task.value.creation_date,
+            description: task.value.description,
             context: task.value.context,
             project: task.value.project,
-            hasNotification: false,
+            special: task.value.special
         });
         isNewTaskClicked.value = false;
     };
