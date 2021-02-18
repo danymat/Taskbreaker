@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var { connectToMongoAtlas, closeDB } = require('./connection/MongoConnection')
+var { connectToMongoAtlas, closeDB, defaultUri } = require('./connection/MongoConnection')
 var app = express();
 
 app.use(logger('dev'));
@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { User, AUTHORITIES } = require('./model/User');
 const { Task } = require('./model/Task');
 
-exports.promise = connectToMongoAtlas()
+exports.promise = connectToMongoAtlas(defaultUri)
     .then(() => console.log('Connected to Atlas Cluster'))
     .then(() => {
         // Setting Endpoints

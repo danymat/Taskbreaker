@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex relative flex-row p-2 gap-4 max-w-sm bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-tr-lg rounded-bl-lg text-gray-50 shadow-lg"
+    class="flex relative flex-row p-2 gap-4 max-w-xl bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-2xl text-gray-50 shadow-lg"
   >
     <div v-if="notification">
       <div
@@ -11,9 +11,20 @@
       ></div>
     </div>
 
-    <h2 class="text-xl font-bolds truncate">{{ title }}</h2>
-    <div class="font-light truncate">{{ context }}</div>
-    <div class="truncate">{{ project }}</div>
+    <div>
+      <div class="absolute font-extralight text-xs">Title</div>
+    <h2 class="text-xl ml-7 font-bolds truncate">{{ title }}</h2>
+    </div>
+
+    <div>
+      <div class="absolute font-extralight text-xs">Context</div>
+    <h2 class="font-light ml-12 truncate">{{ context }}</h2>
+    </div>
+
+    <div>
+      <div class="absolute font-extralight text-xs">Project</div>
+    <h2 class="truncate ml-12 ">{{ project }}</h2>
+    </div>
   </div>
 </template>
 

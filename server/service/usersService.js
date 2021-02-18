@@ -1,5 +1,5 @@
 const { getDB } = require('../connection/MongoConnection')
-
+const {createError} = require('../constants/Error')
 const _db = getDB()
 const users = _db.collection('users')
 
@@ -52,7 +52,7 @@ exports.isUserAlreadyTaken = async (user) => {
         let userQuery = await users.findOne(query)
         let isTaken = userQuery != null
         if (isTaken) {
-            throw Error('User already taken')
+            throw new createError(403, 'User already taken')
         }
     } catch (error) {
         throw error
