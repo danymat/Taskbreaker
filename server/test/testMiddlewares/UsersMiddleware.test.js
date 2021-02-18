@@ -1,5 +1,6 @@
 
 const mongoConnection = require('../../connection/MongoConnection')
+const { mockSingleUser } = require('../mocks')
 let UsersMiddleware;
 
 describe('Users Middleware', () => {
@@ -13,6 +14,9 @@ describe('Users Middleware', () => {
     beforeAll(async () => {
         await mongoConnection.connectToMongoAtlas(process.env.MONGO_URL)
         UsersMiddleware = require('../../middlewares/UsersMiddleware')
+        let db = await mongoConnection.getDB();
+        const users = db.collection('users');
+        await users.insertOne(mockSingleUser);
     });
 
     afterAll(async () => {
@@ -36,6 +40,20 @@ describe('Users Middleware', () => {
             await UsersMiddleware.createUser(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
             expect(mockResponse.status).toBeCalledWith(401)
+        })
+
+        test('User already taken', async () => {
+            mockRequest.body = {
+                "username": "testUsername",
+                "email": "testUsername@test.com",
+                "password": "testPassword"
+            }
+            const expectedResponse = {
+                "message": "User already taken"
+            }
+            await UsersMiddleware.createUser(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(403)
         })
     })
 
