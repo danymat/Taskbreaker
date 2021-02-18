@@ -43,6 +43,7 @@
             project: task.value.project,
             special: task.value.special
         });
+        update_sort();
         isNewTaskClicked.value = false;
     };
 
