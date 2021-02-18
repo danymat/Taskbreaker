@@ -40,7 +40,6 @@ exports.createUser = async (req, res, next) => {
  * @property {String} password
  *
  * @param {import('express').Request<{}, {}, userBody, {}>} req
- * @param {import('express').Request} req
  * @param {import('express').Response} res
  * @param {import('express').NextFunction} next
  */
