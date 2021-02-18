@@ -13,6 +13,7 @@
 
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <Home v-if="current_page == 'home'" class="pt-14" />
+              <Taskboard v-else-if="current_page == 'taskboard'" class="pt-14" />
               <Register v-else-if="current_page == 'register'" />
               <Login v-else-if="current_page == 'login'" />
           </div>
@@ -22,7 +23,8 @@
 </template>
 
 <script setup>
-import Home from "./components/Home.vue";
+    import Home from "./components/Home.vue";
+    import Taskboard from "./components/Taskboard.vue";
 import Register from "./components/Register.vue";
 import Login from "./components/Login.vue";
 import Navbar from "./components/Navbar.vue";

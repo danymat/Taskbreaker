@@ -12,6 +12,9 @@
             <button class="p-2" @click="emit('current-page', 'home')">
                 Home
             </button>
+            <button class="p-2" @click="emit('current-page', 'taskboard')">
+                Taskboard
+            </button>
             <button class="p-2" @click="emit('current-page', 'about')">
                 About
             </button>
