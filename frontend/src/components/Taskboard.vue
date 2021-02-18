@@ -4,7 +4,12 @@
             <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
             <Taskmenu v-if="isNewTaskClicked" @task="(value) => createTask(value)" />
         </div>
-
+        <select name="sort" v-model="sortval" @change="update_sort">
+            <option value="">Sort By</option>
+            <option value="priority">Priority</option>
+            <option value="creation_date">Creation Date</option>
+            <option value="completion_date">Completion Date</option>
+        </select>
         <div class="space-y-2">
             <div v-for="task in tasks" v-bind:key="task">
                 <Task :priority="task.priority"
@@ -25,6 +30,7 @@
     import Taskmenu from "./Taskmenu.vue";
 
     var tasks = ref([]);
+    var sortval = ref("")
     var isNewTaskClicked = ref(false)
 
     const createTask = (task) => {
@@ -42,5 +48,42 @@
 
     const openTaskMenu = () => {
         isNewTaskClicked.value = true;
+    };
+
+    const update_sort = () => {
+        if (sortval.value == "priority")
+            tasks.value.sort(task_sorter_priority);
+        else
+            if (sortval.value == "completion_date") 
+                tasks.value.sort(task_sorter_completion);
+            else
+                tasks.value.sort(task_sorter_creation);
+    };
+
+    const task_sorter_priority = (a, b) => {
+        if (a.priority < b.priority)
+            return -1;
+        if (a.priority > b.priority)
+            return 1;
+
+        return 0;
+    };
+
+    const task_sorter_completion = (a, b) => {
+        if (a.completion_date < b.completion_date)
+            return -1;
+        if (a.completion_date > b.completion_date)
+            return 1;
+
+        return 0;
+    };
+
+    const task_sorter_creation = (a, b) => {
+        if (a.creation_date < b.creation_date)
+            return -1;
+        if (a.creation_date > b.creation_date)
+            return 1;
+
+        return 0;
     };
 </script>
