@@ -74,6 +74,49 @@ describe('Users Middleware', () => {
             expect(nextFunction).toBeCalledTimes(1);
             let allUsers = await users.find({}).toArray()
             expect(allUsers.length).toBe(2)
+
+        })
+    })
+
+    describe('Verify Login', () => {
+        test('Missing body parameters', async () => {
+            mockRequest.body = {}
+            const expectedResponse = {
+                "message": "Missing arguments"
+            }
+            await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+
+        test('Unexistent user', async () => {
+            mockRequest.body = { email: "unexistentEmail", password: "unexistentPassword"}
+            const expectedResponse = {
+                "message": "Wrong username or password"
+            }
+            await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(403)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+
+        test('Wrong password', async () => {
+            mockRequest.body = { email: "testUsername2@test.com", password: "wrongPassword"}
+            const expectedResponse = {
+                "message": "Wrong username or password"
+            }
+
+            await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(403)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+
+        test('Correct login', async () => {
+            mockRequest.body = { email: "testUsername2@test.com", password: "testPassword"}
+            await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
+            expect(nextFunction).toBeCalledTimes(1);
         })
     })
 

@@ -49,19 +49,21 @@ exports.verifyLogin = async (req, res, next) => {
     try {
         const neededKeys = ['password', 'email'];
         if (! neededKeys.every(key => Object.keys(req.body).includes(key)) ) {
-            throw Error('Missing arguments')
+            throw new createError(401, "Missing arguments")
         }
         let user = await usersService.findUser(req.body.email)
         if (!user) {
-            throw Error('This user does not exist')
+            throw new createError(403, "Wrong username or password")
         }
         console.log(user)
         let verified = await verifyPassword(req.body.password, user.password)
         if (!verified) {
-            throw Error('Wrong Password')
+            throw new createError(403, "Wrong username or password")
         }
         next()
     } catch (error) {
-        next(error)
+        res.status(error.status).json({
+            message: error.message
+        })
     }
 }
