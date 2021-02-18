@@ -7,7 +7,7 @@
         @current-page="(value) => changePageState(value)"
       />
 
-      <div class="relative h-screen">
+      <div class="relative">
           <Menu v-if="!isHidden"
                 @current-page="(value) => changePageState(value)" />
 
