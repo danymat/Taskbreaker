@@ -13,9 +13,12 @@
         </h1>
       </div>
     </div>
-    <div class="text-2xl font-light max-w-xl">
-      Taskbreaker is the all new GTD app made with an objective in mind: gamify
-      your tasks
-    </div>
-  </div>
 </template>
+<script setup>
+    import { ref } from "vue";
+    const img_number = ref(1);
+    setInterval(change_img, 100);
+    function change_img() {
+        img_number.value = (img_number.value) % 10 + 1
+    }
+</script>
