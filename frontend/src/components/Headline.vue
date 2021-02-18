@@ -7,7 +7,7 @@
       <div class="grid place-content-center">
         <h2 class="text-2xl font-light">The all-new</h2>
         <h1
-          class="text-7xl font-bold text-transparent bg-gradient-to-r bg-clip-text from-blue-500 to-green-500"
+          class="text-7xl font-bold text-transparent bg-gradient-to-r bg-clip-text from-gray-300 to-gray-600"
         >
           Taskbreaker
         </h1>

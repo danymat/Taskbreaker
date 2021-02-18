@@ -1,6 +1,6 @@
-const AuthMiddleware = require('../middlewares/AuthMiddleware')
+const AuthMiddleware = require('../../middlewares/AuthMiddleware')
 const jwt = require('jsonwebtoken')
-const { jwtSecret } = require('../constants/Auth')
+const { jwtSecret } = require('../../constants/Auth')
 
 
 describe('Authorization middleware', () => {
