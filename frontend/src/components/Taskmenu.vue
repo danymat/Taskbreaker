@@ -1,6 +1,6 @@
 <template>
-    <div class="border-2">
-        <form action="" method="post" class="flex flex-row space-y-4">
+    <div class="border-2" :class="bdcolor">
+        <form class="flex flex-row space-y-4" onsubmit="event.preventDefault()">
             <div class="m-0">
                 <input type="text" placeholder="Taskname" v-model="task.title" />
                 <input type="text" placeholder="Context" v-model="task.context" />
@@ -14,6 +14,7 @@
     import { ref, defineEmit } from "vue";
     import NewButton from "./NewButton.vue";
 
+    var bdcolor = ref("")
     var task = ref({
         title: "",
         context: "",
@@ -24,6 +25,10 @@
     const emit = defineEmit(["task"]);
 
     const createTask = () => {
-        emit("task", task)
+        if (task.value.title.length == 0) {
+            bdcolor.value = "border-red-600";
+        } else {
+            emit("task", task)
+        }
     }
 </script>
