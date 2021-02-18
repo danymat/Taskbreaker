@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex flex-col bg-purple-800 p-4 w-40 z-10">
+    <div class="relative flex flex-col bg-purple-800 p-4 w-40 rounded text-black z-10">
         <div class="flex flex-col" :class="{ hidden: !isLoggedIn } ">
             <button class="p-2">
                 Accounts

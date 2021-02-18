@@ -7,15 +7,15 @@
         @current-page="(value) => changePageState(value)"
       />
 
-      <Menu
-        v-if="!isHidden"
-        @current-page="(value) => changePageState(value)"
-      />
+      <div class="relative h-screen">
+          <Menu v-if="!isHidden"
+                @current-page="(value) => changePageState(value)" />
 
-      <div class="grid justify-center gap-2 pt-6">
-        <Home v-if="current_page == 'home'" class="pt-14" />
-        <Register v-else-if="current_page == 'register'" />
-        <Login v-else-if="current_page == 'login'" />
+          <div class="absolute inset-0 grid justify-center gap-2 pt-6">
+              <Home v-if="current_page == 'home'" class="pt-14" />
+              <Register v-else-if="current_page == 'register'" />
+              <Login v-else-if="current_page == 'login'" />
+          </div>
       </div>
     </div>
   </div>
