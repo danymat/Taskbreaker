@@ -3,7 +3,7 @@
     <div class="px-9">
       <Navbar
         class="border-b border-gray-300"
-        @is-menu-hidden="(value) => (isHidden = value)"
+        @change-menu-state="(value) => isHidden = !isHidden"
         @current-page="(value) => changePageState(value)"
       />
 
@@ -42,7 +42,8 @@ function changePageState(page_select) {
     else current_page.value = "home";
   } else {
     current_page.value = page_select;
-  }
+    }
+    isHidden.value = true;
 }
 
 
