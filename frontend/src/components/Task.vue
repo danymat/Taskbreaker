@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex relative flex-row p-2 gap-4 max-w-sm bg-gradient-to-r items-center justify-evenly content-center from-gray-700 to-gray-800 rounded-tr-lg rounded-bl-lg text-gray-100 shadow-lg"
+    class="flex relative flex-row p-2 gap-4 max-w-sm bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-tr-lg rounded-bl-lg text-gray-50 shadow-lg"
   >
     <div v-if="notification">
       <div
@@ -26,6 +26,4 @@ defineProps({
   project: String,
   notification: Boolean,
 });
-
-
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <button class="flex items-center">
+  <button class="group flex items-center transition duration-500 transform hover:scale-110 hover:text-gray-900">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

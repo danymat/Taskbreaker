@@ -16,17 +16,6 @@
         <Home v-if="current_page == 'home'" class="pt-14" />
         <Register v-else-if="current_page == 'register'" />
         <Login v-else-if="current_page == 'login'" />
-        <div v-else>
-          <NewButton @click="createTask" class="mb-2" />
-          <div v-for="task in tasks" v-bind:key="task">
-            <Task∆
-              :title="task.title"
-              :context="task.context"
-              :project="task.project"
-              :notification="task.hasNotification"
-            />
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -36,20 +25,14 @@
 import Home from "./components/Home.vue";
 import Register from "./components/Register.vue";
 import Login from "./components/Login.vue";
-import Task from "./components/Task.vue";
 import Navbar from "./components/Navbar.vue";
 import Menu from "./components/Menu.vue";
-import NewButton from "./components/NewButton.vue";
 
 import { ref } from "vue";
-var tasks = ref([]);
+
 const isHidden = ref(true);
 const current_page = ref("home");
 const isLoggedIn = ref(false);
-
-const test = (value) => {
-  console.log("hey:", value);
-};
 
 function changePageState(page_select) {
   if (current_page.value == page_select) {
@@ -60,14 +43,6 @@ function changePageState(page_select) {
   }
 }
 
-const createTask = () => {
-  tasks.value.push({
-    title: "hey",
-    context: "hey2",
-    project: "project",
-    hasNotification: false,
-  });
-};
 
 // This starter template is using Vue 3 experimental <script setup> SFCs
 // Check out https://github.com/vuejs/rfcs/blob/script-setup-2/active-rfcs/0000-script-setup.md
