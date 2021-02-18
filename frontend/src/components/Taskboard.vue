@@ -55,18 +55,23 @@
         if (sortval.value == "priority")
             tasks.value.sort(task_sorter_priority);
         else
-            if (sortval.value == "completion_date") 
+            if (sortval.value == "completion_date")
                 tasks.value.sort(task_sorter_completion);
             else
                 tasks.value.sort(task_sorter_creation);
     };
 
     const task_sorter_priority = (a, b) => {
-        if (a.priority < b.priority)
-            return -1;
-        if (a.priority > b.priority)
-            return 1;
-
+        console.log(a, b)
+        if (a.priority != "" && b.priority != "") {
+            if (a.priority < b.priority)
+                return -1;
+            if (a.priority > b.priority)
+                return 1;
+        }
+        if (a.priority != "" && b.priority == "") return -1
+        if (b.priority != "" && a.priority == "") return 1
+        if (b.priority == "" && a.priority == "") return 1
         return 0;
     };
 
