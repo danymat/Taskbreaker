@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
-var { connectToMongoAtlas, closeDB, defaultUri } = require('./connection/MongoConnection')
+var { connectToMongoAtlas, closeDB, defaultUri } = require('./connection/MongoConnection');
 var app = express();
 
 app.use(logger('dev'));
@@ -14,8 +14,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-const { User, AUTHORITIES } = require('./model/User');
-const { Task } = require('./model/Task');
 
 exports.promise = connectToMongoAtlas(defaultUri)
     .then(() => console.log('Connected to Atlas Cluster'))
@@ -32,11 +30,11 @@ exports.promise = connectToMongoAtlas(defaultUri)
                 return next(error);
             }
             res.status(error.status || 500)
-            res.json({
-                status: error.status || 500,
-                message: error.message,
-                stack: error.stack
-            })
+            var returnedJson = { message: error.message }
+            if (process.env.STACK_TRACE == "True") {
+                returnedJson.stack = error.stack
+            }
+            res.json(returnedJson)
         })
     })
     .then(() => { return app })

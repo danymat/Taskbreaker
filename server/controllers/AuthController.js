@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const Auth = require('../constants/Auth')
+const Auth = require('../constants/Auth');
+const { createError } = require('../constants/Error');
 
 
 
@@ -20,7 +21,7 @@ exports.createToken = (req, res, next) => {
             token: jwtToken
         })
     } catch (error) {
-        next(error)
+        next(new createError(401, error.message))
     }
 
 }
