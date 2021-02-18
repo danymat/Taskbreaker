@@ -11,10 +11,10 @@
                     <option value="E">E</option>
                     <option value="F">F</option>
                 </select>
-                <button @click="changeSelectDate" class="font-bold">Date</button>
+                <button @click="changeSelectDate" class="mx-2 font-light text-white py-1 px-2 bg-gray-500 rounded-2xl shadow-sm transition transform duration-500 hover:scale-105">Completion Date</button>
                 <div v-if="selectDate">
                     <input type="date" v-model="task.completion_date" />
-                    <input type="date" v-model="task.creation_date" />
+                    <!-- <input type="date" v-model="task.creation_date" /> -->
                 </div>
                 <input type="text" placeholder="Taskname *Required*" v-model="task.description" />
                 <input type="text" placeholder="Context" v-model="task.context" />
@@ -36,14 +36,12 @@
     function changeSelectDate() {
         if (selectDate.value == true) {
             task.value.completion_date = null;
-            task.value.creation_date = null;
             selectDate.value = false;
         } else {
             task.value.completion_date = new Date().toISOString().slice(0, 10);
-            task.value.creation_date = new Date().toISOString().slice(0, 10);
             selectDate.value = true;
         }
-    } 
+    }
 
     const img_number = ref(1);
     setInterval(change_img, 100);
@@ -66,6 +64,7 @@
 
     const createTask = () => {
         if (task.value.description.length != 0) {
+            task.value.creation_date = new Date().toISOString().slice(0, 10);
             emit("task", task);
         } else {
             bdcolor.value = "border-red-600";
