@@ -1,5 +1,3 @@
-
-const { MongoClient } = require('mongodb');
 const mongoConnection = require('../../connection/MongoConnection')
 const { mockSingleUser } = require('../mocks')
 let UsersMiddleware;
@@ -25,6 +23,7 @@ describe('Users Middleware', () => {
     });
 
     afterAll(async () => {
+        await users.deleteMany({});
         await mongoConnection.closeDB()
     });
 

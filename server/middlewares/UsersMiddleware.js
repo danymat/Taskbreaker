@@ -55,7 +55,6 @@ exports.verifyLogin = async (req, res, next) => {
         if (!user) {
             throw new createError(403, "Wrong username or password")
         }
-        console.log(user)
         let verified = await verifyPassword(req.body.password, user.password)
         if (!verified) {
             throw new createError(403, "Wrong username or password")
