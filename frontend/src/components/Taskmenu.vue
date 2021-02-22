@@ -11,6 +11,10 @@
                     <option value="E">E</option>
                     <option value="F">F</option>
                 </select>
+                <select name="listname" v-model="task.listname">
+                    <option value="">--List Name--</option>
+                    <option :value="name" v-for="name in listsnames" v-bind:key="name">{{ name }}</option>
+                </select>
                 <button @click="changeSelectDate" class="mx-2 font-light text-white py-1 px-2 bg-gray-500 rounded-2xl shadow-sm transition transform duration-500 hover:scale-105">Completion Date</button>
                 <div v-if="selectDate">
                     <input type="date" v-model="task.completion_date" />
@@ -28,10 +32,14 @@
     </div>
 </template>
 <script setup>
-    import { ref, defineEmit } from "vue";
+    import { ref, defineEmit, defineProps } from "vue";
     import NewButton from "./NewButton.vue";
 
     var selectDate = ref(false);
+
+    defineProps({
+        listsnames: Array,
+    });
 
     function changeSelectDate() {
         if (selectDate.value == true) {
@@ -51,6 +59,7 @@
 
     var bdcolor = ref("")
     var task = ref({
+        listname: "",
         priority: "",
         completion_date: null,
         creation_date: null,
