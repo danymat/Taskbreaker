@@ -2,23 +2,14 @@
     <div class="text-center flex flex-col space-y-10">
         <div class="flex flex-col space-y-10">
             <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
-            <Taskmenu v-if="isNewTaskClicked" @task="(value) => createTask(value)" />
+            <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" />
+            <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
+            <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
-        <select name="sort" v-model="sortval" @change="update_sort">
-            <option value="">Sort By</option>
-            <option value="priority">Priority</option>
-            <option value="creation_date">Creation Date</option>
-            <option value="completion_date">Completion Date</option>
-        </select>
-        <div class="space-y-2">
-            <div v-for="task in tasks" v-bind:key="task">
-                <Task :priority="task.priority"
-                      :completion_date="task.completion_date"
-                      :creation_date="task.creation_date"
-                      :description="task.description"
-                      :context="task.context"
-                      :project="task.project"
-                      :special="task.special" />
+        <div class="flex flex-row space-x-10">
+            <div v-for="list in taskslists" v-bind:key="list">
+                <Tasklist :title="list.title"
+                          :tasks="list.tasks" />
             </div>
         </div>
     </div>
@@ -28,13 +19,16 @@
     import NewButton from "./NewButton.vue";
     import Task from "./Task.vue";
     import Taskmenu from "./Taskmenu.vue";
+    import Tasklist from "./Tasklist.vue";
+    import Listmenu from "./listmenu.vue";
 
-    var tasks = ref([]);
-    var sortval = ref("")
+    var taskslists = ref({});
+    var tasklistnames = ref([]);
     var isNewTaskClicked = ref(false)
+    var isNewListClicked = ref(false)
 
     const createTask = (task) => {
-        tasks.value.push({
+        taskslists.value[task.value.listname].tasks.push({
             priority: task.value.priority,
             completion_date: task.value.completion_date,
             creation_date: task.value.creation_date,
@@ -43,53 +37,26 @@
             project: task.value.project,
             special: task.value.special
         });
-        update_sort();
         isNewTaskClicked.value = false;
     };
 
+    const createList = (listname) => {
+        if (!tasklistnames.value.includes(listname.value))
+            tasklistnames.value.push(listname.value);
+        taskslists.value[listname.value] = {
+            title: listname.value,
+            tasks: []
+        }
+        isNewListClicked.value = false;
+    };
+
     const openTaskMenu = () => {
+        isNewListClicked.value = false;
         isNewTaskClicked.value = true;
     };
 
-    const update_sort = () => {
-        if (sortval.value == "priority")
-            tasks.value.sort(task_sorter_priority);
-        else
-            if (sortval.value == "completion_date")
-                tasks.value.sort(task_sorter_completion);
-            else
-                tasks.value.sort(task_sorter_creation);
-    };
-
-    const task_sorter_priority = (a, b) => {
-        console.log(a, b)
-        if (a.priority != "" && b.priority != "") {
-            if (a.priority < b.priority)
-                return -1;
-            if (a.priority > b.priority)
-                return 1;
-        }
-        if (a.priority != "" && b.priority == "") return -1
-        if (b.priority != "" && a.priority == "") return 1
-        if (b.priority == "" && a.priority == "") return 1
-        return 0;
-    };
-
-    const task_sorter_completion = (a, b) => {
-        if (a.completion_date < b.completion_date)
-            return -1;
-        if (a.completion_date > b.completion_date)
-            return 1;
-
-        return 0;
-    };
-
-    const task_sorter_creation = (a, b) => {
-        if (a.creation_date < b.creation_date)
-            return -1;
-        if (a.creation_date > b.creation_date)
-            return 1;
-
-        return 0;
+    const openListMenu = () => {
+        isNewTaskClicked.value = false;
+        isNewListClicked.value = true;
     };
 </script>
