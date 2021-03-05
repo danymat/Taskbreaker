@@ -6,23 +6,27 @@
             <option value="priority">Priority</option>
             <option value="creation_date">Creation Date</option>
             <option value="completion_date">Completion Date</option>
+            <option value="manual">Manual</option>
         </select>
         <div class="space-y-2">
-            <div v-for="task in tasks" v-bind:key="task">
-                <Task :priority="task.priority"
-                      :completion_date="task.completion_date"
-                      :creation_date="task.creation_date"
-                      :description="task.description"
-                      :context="task.context"
-                      :project="task.project"
-                      :special="task.special" />
-            </div>
+            <VueDraggableNext group="taskgroup" :list="tasks" @change="handle_sort">
+                <div v-for="task in tasks" v-bind:key="task">
+                    <Task :priority="task.priority"
+                          :completion_date="task.completion_date"
+                          :creation_date="task.creation_date"
+                          :description="task.description"
+                          :context="task.context"
+                          :project="task.project"
+                          :special="task.special" />
+                </div>
+            </VueDraggableNext>
         </div>
     </div>
 </template>
 <script setup>
     import { ref, defineProps } from "vue";
     import Task from "./Task.vue";
+    import { VueDraggableNext } from 'vue-draggable-next';
 
     var sortval = ref("");
 
@@ -31,6 +35,12 @@
         tasks: Array
     });
 
+    const handle_sort = () => {
+        if (sortval.value != "manual") {
+            update_sort();
+        }
+    }
+
     const update_sort = () => {
         if (sortval.value == "priority")
             props.tasks.sort(task_sorter_priority);
@@ -38,7 +48,9 @@
             if (sortval.value == "completion_date")
                 props.tasks.sort(task_sorter_completion);
             else
-                props.tasks.sort(task_sorter_creation);
+                if (sortval.value == "creation_date")
+                    props.tasks.sort(task_sorter_creation);
+
     };
 
     const task_sorter_priority = (a, b) => {
