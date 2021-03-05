@@ -26,19 +26,19 @@
 
     var sortval = ref("");
 
-    defineProps({
+    var props = defineProps({
         title: String,
         tasks: Array
     });
 
     const update_sort = () => {
         if (sortval.value == "priority")
-            tasks.value.sort(task_sorter_priority);
+            props.tasks.sort(task_sorter_priority);
         else
             if (sortval.value == "completion_date")
-                tasks.value.sort(task_sorter_completion);
+                props.tasks.sort(task_sorter_completion);
             else
-                tasks.value.sort(task_sorter_creation);
+                props.tasks.sort(task_sorter_creation);
     };
 
     const task_sorter_priority = (a, b) => {

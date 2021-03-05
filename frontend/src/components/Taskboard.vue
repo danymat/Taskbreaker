@@ -41,7 +41,8 @@
     };
 
     const createList = (listname) => {
-        tasklistnames.value.push(listname.value);
+        if (!tasklistnames.value.includes(listname.value))
+            tasklistnames.value.push(listname.value);
         taskslists.value[listname.value] = {
             title: listname.value,
             tasks: []
