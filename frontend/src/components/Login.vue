@@ -1,7 +1,7 @@
 <template>
     <div class="bg-blue-300" id="register">
         <h1 class="p-8 text-3xl">Sign Up</h1>
-        <form action="/login" method="post" class="flex flex-col space-y-4">
+        <form action="/login" method="post" class="flex flex-col space-y-4" v-on:submit.prevent="login">
             <div>
                 <label for="username">Enter your name: </label>
                 <input type="text" placeholder="Username" name="username" id="username" required />
@@ -15,4 +15,11 @@
     </div>
 </template>
 <script setup>
+    import { defineEmit } from "vue";
+
+    const emit = defineEmit(['login'])
+
+    const login = () => {
+        emit("login", true);
+    }
 </script>

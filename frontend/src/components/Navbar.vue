@@ -7,22 +7,24 @@
       Taskbreaker
     </button>
     <div class="text-md font-light mr-2">
-      <button class="p-2" @click="emit('current-page', 'login')">Login</button>
-      <button class="p-2" @click="emit('current-page', 'register')">
+      <button class="p-2" @click="emit('current-page', 'login')" v-if="!props.isloggedin">Login</button>
+      <button class="p-2" @click="emit('current-page', 'register')" v-if="!props.isloggedin">
         Sign up
       </button>
-      <button class="p-2" :class="{ hidden: !isLoggedIn }">
+      <button class="p-2" @click="emit('logout', false)" v-if="props.isloggedin">
         Log out
       </button>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, defineEmit } from "vue";
+import { ref, defineEmit, defineProps } from "vue";
 
 const current_page = ref("main");
-const isLoggedIn = ref(false);
-const emit = defineEmit(["change-menu-state", "current-page"]);
+    const emit = defineEmit(["change-menu-state", "current-page", "logout"]);
+    const props = defineProps({
+        isloggedin: Boolean
+    });
 
 function changeMenuState() {
     emit("change-menu-state", true);
