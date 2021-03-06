@@ -28,7 +28,7 @@
 
     const createList = () => {
         if (listname.value.length != 0) {
-            emit("list", listname);
+            emit("list", listname.value);
         } else {
             bdcolor.value = "border-red-600";
         }

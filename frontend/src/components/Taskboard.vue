@@ -1,9 +1,11 @@
 <template>
     <div class="text-center flex flex-col space-y-10">
         <div class="flex flex-col space-y-10">
-            <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
+            <div class="flex flex-row space-x-5">
+                <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
+                <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
+            </div>
             <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" />
-            <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
             <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
         <VueDraggableNext group="listgroup" :list="list" class="flex flex-row space-x-10">
@@ -26,8 +28,10 @@
 
     var taskslists = ref({});
     var tasklistnames = ref([]);
+
     var isNewTaskClicked = ref(false);
     var isNewListClicked = ref(false);
+
     var sort_value = ref("");
     sort_value.value = "manual";
 
@@ -46,27 +50,31 @@
     };
 
     const createList = (listname) => {
-        if (tasklistnames.value.includes(listname.value)) {
+        if (tasklistnames.value.includes(listname)) {
             alert("This list already exist");
             return;
         }
             
-        tasklistnames.value.push(listname.value);
-        taskslists.value[listname.value] = {
-            title: listname.value,
+        tasklistnames.value.push(listname);
+        taskslists.value[listname] = {
+            title: listname,
             tasks: []
         }
         isNewListClicked.value = false;
     };
+    createList("Inbox");
+    createList("Projects");
+    createList("Next Actions");
+    createList("Waiting For");
 
     const openTaskMenu = () => {
         isNewListClicked.value = false;
-        isNewTaskClicked.value = true;
+        isNewTaskClicked.value = !isNewTaskClicked.value;
     };
 
     const openListMenu = () => {
         isNewTaskClicked.value = false;
-        isNewListClicked.value = true;
+        isNewListClicked.value = !isNewListClicked.value;
     };
 
     // sorting
