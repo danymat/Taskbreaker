@@ -6,13 +6,13 @@
             <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
             <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
-        <div class="flex flex-row space-x-10">
+        <VueDraggableNext group="listgroup" :list="list" class="flex flex-row space-x-10">
             <div v-for="list in taskslists" v-bind:key="list">
                 <Tasklist :title="list.title"
-                          :tasks="list.tasks" 
+                          :tasks="list.tasks"
                           @sort="(value) => update_sort(value.sort_value, value.tasks)" />
             </div>
-        </div>
+        </VueDraggableNext>
     </div>
 </template>
 <script setup>
@@ -22,6 +22,7 @@
     import Taskmenu from "./Taskmenu.vue";
     import Tasklist from "./Tasklist.vue";
     import Listmenu from "./listmenu.vue";
+    import { VueDraggableNext } from 'vue-draggable-next';
 
     var taskslists = ref({});
     var tasklistnames = ref([]);
