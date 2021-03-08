@@ -17,7 +17,7 @@
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <Home v-if="current_page == 'home'" class="pt-14" />
               <Main v-else-if="current_page == 'main'" class="pt-14" />
-              <Taskboard v-else-if="current_page == 'taskboard'" class="pt-14" />
+              <Taskboard v-else-if="current_page == 'taskboard'" class="" />
               <Account v-else-if="current_page == 'account'" class="pt-14" />
               <Settings v-else-if="current_page == 'settings'" class="pt-14" />
               <Register v-else-if="current_page == 'register'" />

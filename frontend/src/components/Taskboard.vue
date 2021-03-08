@@ -8,8 +8,8 @@
             <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" />
             <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
-        <VueDraggableNext group="listgroup" :list="list" class="flex flex-row space-x-10">
-            <div v-for="list in taskslists" v-bind:key="list">
+        <VueDraggableNext group="listgroup" :list="list" class="flex flex-row flex-wrap">
+            <div v-for="list in taskslists" v-bind:key="list" class="text-center flex flex-col space-y-10 mb-10 mr-10 border-2 border-black">
                 <Tasklist :title="list.title"
                           :tasks="list.tasks"
                           @sort="(value) => update_sort(value.sort_value, value.tasks)" />

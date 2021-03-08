@@ -1,6 +1,6 @@
 <template>
     <div class="text-center flex flex-col space-y-10">
-        <div class="flex flex-row space-x-10">
+        <div class="text-center flex flex-col space-y-10 border-2 border-black">
             <Tasklist :title="nextlist.title"
                       :tasks="nextlist.tasks"
                       @sort="(value) => update_sort(value.sort_value, value.tasks)" />

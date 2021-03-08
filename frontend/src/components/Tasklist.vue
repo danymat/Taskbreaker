@@ -1,5 +1,4 @@
 <template>
-    <div class="text-center flex flex-col space-y-10 border-2 border-black">
         <h1>{{ title }}</h1>
         <select name="sort" v-model="sortval" @change="send_sort">
             <option value="manual">Manual sort</option>
@@ -20,7 +19,6 @@
                 </div>
             </VueDraggableNext>
         </div>
-    </div>
 </template>
 <script setup>
     import { ref, defineProps, defineEmit } from "vue";
