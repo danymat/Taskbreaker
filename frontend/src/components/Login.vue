@@ -21,13 +21,16 @@
     </div>
 </template>
 <script setup>
-import { logUser } from '../api/users'
-import { ref } from 'vue'
+    import { logUser } from '../api/users';
+    import { ref, defineEmit } from 'vue';
+
+    const emit = defineEmit(['login'])
 
 const password = ref('')
 const email = ref('')
 
-function logIn() {
-    logUser({email: email.value, password: password.value })
+    function logIn() {
+        logUser({ email: email.value, password: password.value });
+        emit("login", true);
 }
 </script>
