@@ -9,7 +9,8 @@
 
       <div class="relative">
           <Menu v-if="!isHidden"
-                @current-page="(value) => changePageState(value)" />
+                @current-page="(value) => changePageState(value)"
+          />
 
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <Home v-if="current_page == 'home'" class="pt-14" />
