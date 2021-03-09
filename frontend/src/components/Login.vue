@@ -17,17 +17,26 @@
             >
                 Sign In
             </button>
+            <p id="messagewrong"></p>
         </form>
     </div>
 </template>
 <script setup>
-import { logUser } from '../api/users'
-import { ref } from 'vue'
+    import { logUser } from '../api/users';
+    import { ref, defineEmit } from 'vue';
+
+    const emit = defineEmit(['login'])
 
 const password = ref('')
 const email = ref('')
 
-function logIn() {
-    logUser({email: email.value, password: password.value })
+    async function logIn() {
+        const data = await logUser({ email: email.value, password: password.value })
+        console.log(data)
+       if (data.auth) {
+           emit("login", true);
+       } else {
+           document.getElementById("messagewrong").textContent = data.message;
+       }
 }
 </script>
