@@ -1,18 +1,33 @@
 <template>
-    <div class="bg-blue-300" id="register">
-        <h1 class="p-8 text-3xl">Sign Up</h1>
-        <form action="/login" method="post" class="flex flex-col space-y-4">
+    <div class="bg-white border border-gray-200 rounded-md p-8 space-y-2 shadow-md" id="register">
+        <h1 class="text-3xl mb-8 font-bold">Sign In</h1>
+        <form @submit.prevent="logIn" class="flex flex-col space-y-4 font-semibold text-sm">
+
             <div>
-                <label for="username">Enter your name: </label>
-                <input type="text" placeholder="Username" name="username" id="username" required />
+                <label class="block text-gray-700 text-sm font-bold mb-1" for="email">Email</label>
+                <input class="border rounded-md shadow-sm border-gray-200 px-2" type="text" id="email" v-model="email" required />
             </div>
             <div>
-                <label for="pass">Enter your password: </label>
-                <input type="password" placeholder="Password" name="pass" id="pass" required />
+                <label class="block text-gray-700 text-sm font-bold mb-1" for="email">Password</label>
+                <input class="border rounded-md shadow-sm border-gray-200 px-2" type="password" id="password" v-model="password" required />
             </div>
-            <input type="submit" value="Login !">
+            <button class="rounded-md shadow-sm bg-gray-600 p-1 text-gray-100 font-light
+                transition duration-500 ease-in-out hover:bg-gray-800 transform hover:scale-105 hover:text-white"
+                type="submit"
+            >
+                Sign In
+            </button>
         </form>
     </div>
 </template>
 <script setup>
+import { logUser } from '../api/users'
+import { ref } from 'vue'
+
+const password = ref('')
+const email = ref('')
+
+function logIn() {
+    logUser({email: email.value, password: password.value })
+}
 </script>
