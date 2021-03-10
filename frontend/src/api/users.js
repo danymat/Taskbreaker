@@ -18,3 +18,15 @@ export async function logUser(data) {
         return error.data;
     }
 }
+
+export async function registerUser(data) {
+    try {
+        const test = await execute('POST', 'users/sign-up', { data: data })
+        store.dispatch('register', test.token)
+        console.log(test);
+        return test;
+    } catch (error) {
+        console.log(error);
+        return error.data;
+    }
+}

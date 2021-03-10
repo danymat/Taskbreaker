@@ -31,7 +31,10 @@ export default createStore({
             commit('auth_success', token);
             localStorage.setItem('token', token);
         },
-        register({ commit }, smthg) { },
+        register({ commit }, token) {
+            commit('auth_success', token);
+            localStorage.setItem('token', token);
+        },
         logout({ commit }) {
             commit('logout');
             localStorage.removeItem('token');
