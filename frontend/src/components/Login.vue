@@ -24,7 +24,7 @@
 <script setup>
     import { logUser } from '../api/users';
     import { ref } from 'vue';
-    import router from './../router'
+    import router from './../router';
 
 
 const password = ref('')

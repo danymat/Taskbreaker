@@ -1,14 +1,9 @@
 <template>
   <div class="flex flex-col space-y-20 text-gray-700 justify-center bg-white">
     <div class="px-9">
-      <Navbar
-        class="border-b border-gray-300"
-        @change-menu-state="(value) => isHidden = !isHidden"
-      />
-
+      <Navbar class="border-b border-gray-300" />
       <div class="relative">
-          <Menu v-if="!isHidden" />
-
+          <Menu v-if="!store.getters.isMenuHidden" />
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <router-view />
           </div>
@@ -18,12 +13,10 @@
 </template>
 
 <script setup>
-import Navbar from "./components/Navbar.vue";
+    import Navbar from "./components/Navbar.vue";
     import Menu from "./components/Menu.vue";
+    import store from './store';
 
-import { ref } from "vue";
-
-const isHidden = ref(true);
 
 
 // This starter template is using Vue 3 experimental <script setup> SFCs

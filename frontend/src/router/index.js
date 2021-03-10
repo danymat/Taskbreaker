@@ -7,7 +7,7 @@ import Main from "./../components/Main.vue";
 import About from "./../components/About.vue";
 import Account from "./../components/Account.vue";
 import Settings from "./../components/Settings.vue";
-import store from './../store'
+import store from './../store';
 
 const routes = [
     {
@@ -61,6 +61,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    store.dispatch("changeMenuState", false);
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters.isLoggedIn) {
             next()

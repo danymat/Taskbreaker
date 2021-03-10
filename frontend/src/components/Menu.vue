@@ -1,19 +1,19 @@
 <template>
     <div class="relative flex flex-col bg-purple-800 p-4 w-40 rounded text-black z-10">
         <div class="flex flex-col">
-            <router-link to="/" tag="button" class="p-2" v-if="!isloggedin">
+            <router-link to="/" tag="button" class="p-2" v-if="!store.getters.isLoggedIn">
                 Home
             </router-link>
-            <router-link to="/main" tag="button" class="p-2" v-if="isloggedin">
+            <router-link to="/main" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Main
             </router-link>
-            <router-link to="/taskboard" tag="button" class="p-2" v-if="isloggedin">
+            <router-link to="/taskboard" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Taskboard
             </router-link>
-            <router-link to="/account" tag="button" class="p-2" v-if="isloggedin">
+            <router-link to="/account" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Account
             </router-link>
-            <router-link to="/settings" tag="button" class="p-2" v-if="isloggedin">
+            <router-link to="/settings" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Settings
             </router-link>
             <router-link to="/about" tag="button" class="p-2">
@@ -24,7 +24,6 @@
 </template>
 <script setup>
     import { ref } from "vue";
-    import store from './../store'
-    const isloggedin = ref(false)
-    isloggedin.value = store.getters.isLoggedIn;
+    import store from './../store';
+
 </script>

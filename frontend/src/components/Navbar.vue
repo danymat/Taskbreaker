@@ -7,29 +7,28 @@
       Taskbreaker
     </button>
     <div class="text-md font-light mr-2">
-      <router-link to="/signin" tag="button" class="p-2" v-if="!isloggedin">
+      <router-link to="/signin" tag="button" class="p-2" v-if="!store.getters.isLoggedIn">
           Sign In
       </router-link>
-      <router-link to="/signup" tag="button" class="p-2" v-if="!isloggedin">
+      <router-link to="/signup" tag="button" class="p-2" v-if="!store.getters.isLoggedIn">
           Sign up
       </router-link>
-      <button class="p-2" v-if="isloggedin" v-on:click="logout">
+      <button class="p-2" v-if="store.getters.isLoggedIn" v-on:click="logout">
           Log out
       </button>
     </div>
   </div>
 </template>
 <script setup>
-    import { ref, defineEmit } from "vue";
     import store from './../store'
-    const isloggedin = ref(false)
-    isloggedin.value = store.getters.isLoggedIn;
+    import router from './../router'
+
     function logout() {
-        store.dispatch('logout')
+        store.dispatch('logout');
+        router.push('/');
     }
-    const emit = defineEmit(['change-menu-state']);
 
     function changeMenuState() {
-        emit("change-menu-state", true);
+        store.dispatch("changeMenuState");
     }
 </script>
