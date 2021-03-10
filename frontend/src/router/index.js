@@ -7,6 +7,7 @@ import Main from "./../components/Main.vue";
 import About from "./../components/About.vue";
 import Account from "./../components/Account.vue";
 import Settings from "./../components/Settings.vue";
+import store from './../store'
 
 const routes = [
     {
@@ -23,6 +24,9 @@ const routes = [
         path: "/taskboard",
         name: "Taskboard",
         component: Taskboard,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: "/settings",
@@ -55,5 +59,17 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters.isLoggedIn) {
+            next()
+            return
+        }
+        next('/signin')
+    } else {
+        next()
+    }
+})
 
 export default router;

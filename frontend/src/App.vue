@@ -4,15 +4,10 @@
       <Navbar
         class="border-b border-gray-300"
         @change-menu-state="(value) => isHidden = !isHidden"
-        @current-page="(value) => changePageState(value)"
-        @logout="(value) => login(value)"
-        :isloggedin="isLoggedIn"
       />
 
       <div class="relative">
-          <Menu v-if="!isHidden"
-                @current-page="(value) => changePageState(value)"
-                :isloggedin="isLoggedIn" />
+          <Menu v-if="!isHidden" />
 
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <router-view />
@@ -29,23 +24,6 @@ import Navbar from "./components/Navbar.vue";
 import { ref } from "vue";
 
 const isHidden = ref(true);
-const current_page = ref("home");
-const isLoggedIn = ref(false);
-
-function changePageState(page_select) {
-  if (current_page.value == page_select) {
-      if (isLoggedIn.value) current_page.value = "main";
-      else current_page.value = "home";
-  } else {
-        current_page.value = page_select;
-  }
-        isHidden.value = true;
-}
-
-    const login = (value) => {
-        isLoggedIn.value = value;
-        changePageState('main');
-    }
 
 
 // This starter template is using Vue 3 experimental <script setup> SFCs

@@ -23,9 +23,9 @@
 </template>
 <script setup>
     import { logUser } from '../api/users';
-    import { ref, defineEmit } from 'vue';
+    import { ref } from 'vue';
+    import router from './../router'
 
-    const emit = defineEmit(['login'])
 
 const password = ref('')
 const email = ref('')
@@ -35,8 +35,7 @@ const email = ref('')
         if (typeof (data.token) == "undefined") {
             document.getElementById("messagewrong").textContent = data.message;
        } else {
-            emit("login", true);
-            window.router.push('taskboard');
+            router.push('taskboard');
        }
 }
 </script>

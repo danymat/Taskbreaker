@@ -1,4 +1,5 @@
 import { execute } from './_config.js'
+import store from './../store'
 
 /**
  *
@@ -8,8 +9,10 @@ import { execute } from './_config.js'
  */
 export async function logUser(data) {
     try {
-        let test = await execute('POST', 'users/login', { data: data });
-        return test;
+        const test = await execute('POST', 'users/login', { data: data })
+        store.dispatch('login', test.token)
+        console.log(test)
+        return test/data
     } catch (error) {
         console.log(error);
         return error.data;
