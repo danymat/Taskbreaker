@@ -8,6 +8,7 @@ import About from "./../components/About.vue";
 import Account from "./../components/Account.vue";
 import Settings from "./../components/Settings.vue";
 import store from './../store';
+import PageNotFound from "./../components/PageNotFound.vue";
 
 const routes = [
     {
@@ -19,6 +20,9 @@ const routes = [
         path: "/main",
         name: "Main",
         component: Main,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: "/taskboard",
@@ -32,11 +36,17 @@ const routes = [
         path: "/settings",
         name: "Settings",
         component: Settings,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: "/account",
         name: "Account",
         component: Account,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: "/about",
@@ -53,6 +63,11 @@ const routes = [
         name: "SignUp",
         component: Register,
     },
+    {
+        path: "/:pathMatch(.*)*",
+        name: "404",
+        component: PageNotFound,
+    }
 ];
 
 const router = createRouter({
