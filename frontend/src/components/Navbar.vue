@@ -7,14 +7,14 @@
       Taskbreaker
     </button>
     <div class="text-md font-light mr-2">
-      <button class="p-2" @click="emit('current-page', 'login')" v-if="!props.isloggedin">
-        Sign In
-      </button>
-      <button class="p-2" @click="emit('current-page', 'register')" v-if="!props.isloggedin">
-        Sign up
-      </button>
+      <router-link to="/signin" tag="button" class="p-2" @click="emit('current-page', 'login')" v-if="!props.isloggedin">
+          Sign In
+      </router-link>
+      <router-link to="/signup" tag="button" class="p-2" @click="emit('current-page', 'register')" v-if="!props.isloggedin">
+          Sign up
+      </router-link>
       <button class="p-2" @click="emit('logout', false)" v-if="props.isloggedin">
-        Log out
+          Log out
       </button>
     </div>
   </div>

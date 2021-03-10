@@ -1,24 +1,24 @@
 <template>
     <div class="relative flex flex-col bg-purple-800 p-4 w-40 rounded text-black z-10">
         <div class="flex flex-col">
-            <button class="p-2" @click="emit('current-page', 'home')" v-if="!props.isloggedin">
+            <router-link to="/" tag="button" class="p-2" @click="emit('current-page', 'home')" v-if="!props.isloggedin">
                 Home
-            </button>
-            <button class="p-2" @click="emit('current-page', 'main')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/main" tag="button" class="p-2" @click="emit('current-page', 'main')" v-if="props.isloggedin">
                 Main
-            </button>
-            <button class="p-2" @click="emit('current-page', 'taskboard')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/taskboard" tag="button" class="p-2" @click="emit('current-page', 'taskboard')" v-if="props.isloggedin">
                 Taskboard
-            </button>
-            <button class="p-2" @click="emit('current-page', 'account')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/account" tag="button" class="p-2" @click="emit('current-page', 'account')" v-if="props.isloggedin">
                 Account
-            </button>
-            <button class="p-2" @click="emit('current-page', 'settings')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/settings" tag="button" class="p-2" @click="emit('current-page', 'settings')" v-if="props.isloggedin">
                 Settings
-            </button>
-            <button class="p-2" @click="emit('current-page', 'about')">
+            </router-link>
+            <router-link to="/about" tag="button" class="p-2" @click="emit('current-page', 'about')">
                 About
-            </button>
+            </router-link>
         </div>
     </div>
 </template>

@@ -92,7 +92,7 @@ describe('Users Middleware', () => {
         test('Unexistent user', async () => {
             mockRequest.body = { email: "unexistentEmail", password: "unexistentPassword"}
             const expectedResponse = {
-                "message": "Wrong username or password"
+                "message": "Wrong email or password"
             }
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
@@ -103,7 +103,7 @@ describe('Users Middleware', () => {
         test('Wrong password', async () => {
             mockRequest.body = { email: "testUsername2@test.com", password: "wrongPassword"}
             const expectedResponse = {
-                "message": "Wrong username or password"
+                "message": "Wrong email or password"
             }
 
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
