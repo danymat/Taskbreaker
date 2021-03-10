@@ -7,7 +7,9 @@
       Taskbreaker
     </button>
     <div class="text-md font-light mr-2">
-      <button class="p-2" @click="emit('current-page', 'login')" v-if="!props.isloggedin">Login</button>
+      <button class="p-2" @click="emit('current-page', 'login')" v-if="!props.isloggedin">
+        Sign In
+      </button>
       <button class="p-2" @click="emit('current-page', 'register')" v-if="!props.isloggedin">
         Sign up
       </button>

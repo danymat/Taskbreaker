@@ -17,7 +17,7 @@
             >
                 Sign In
             </button>
-            <p id="messagewrong"></p>
+            <p id="messagewrong" class="text-red-500"></p>
         </form>
     </div>
 </template>
@@ -32,11 +32,10 @@ const email = ref('')
 
     async function logIn() {
         const data = await logUser({ email: email.value, password: password.value })
-        console.log(data)
-       if (data.auth) {
-           emit("login", true);
+        if (typeof (data.token) == "undefined") {
+            document.getElementById("messagewrong").textContent = data.message;
        } else {
-           document.getElementById("messagewrong").textContent = data.message;
+            emit("login", true);
        }
 }
 </script>
