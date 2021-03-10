@@ -36,6 +36,7 @@ const email = ref('')
             document.getElementById("messagewrong").textContent = data.message;
        } else {
             emit("login", true);
+            window.router.push('taskboard');
        }
 }
 </script>

@@ -23,17 +23,6 @@
 </template>
 
 <script setup>
-    import Home from "./components/Home.vue";
-    import Taskboard from "./components/Taskboard.vue";
-import Register from "./components/Register.vue";
-import Login from "./components/Login.vue";
-import Navbar from "./components/Navbar.vue";
-    import Menu from "./components/Menu.vue";
-    import Main from "./components/Main.vue";
-    import About from "./components/About.vue";
-    import Account from "./components/Account.vue";
-    import Settings from "./components/Settings.vue";
-
 import { ref } from "vue";
 
 const isHidden = ref(true);
