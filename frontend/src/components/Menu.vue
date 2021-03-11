@@ -4,9 +4,6 @@
             <router-link to="/" tag="button" class="p-2" v-if="!store.getters.isLoggedIn">
                 Home
             </router-link>
-            <router-link to="/main" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
-                Main
-            </router-link>
             <router-link to="/taskboard" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Taskboard
             </router-link>

@@ -3,7 +3,6 @@ import Home from "./../components/Home.vue";
 import Taskboard from "./../components/Taskboard.vue";
 import Register from "./../components/Register.vue";
 import Login from "./../components/Login.vue";
-import Main from "./../components/Main.vue";
 import About from "./../components/About.vue";
 import Account from "./../components/Account.vue";
 import Settings from "./../components/Settings.vue";
@@ -15,14 +14,6 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home,
-    },
-    {
-        path: "/main",
-        name: "Main",
-        component: Main,
-        meta: {
-            requiresAuth: true
-        }
     },
     {
         path: "/taskboard",
