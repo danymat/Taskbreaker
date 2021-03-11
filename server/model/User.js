@@ -11,12 +11,13 @@ exports.User = class {
      * @param {String} data.email
      * @param {String} data.password
      * @param {AUTHORITIES} data.authorities
+     * @param {Number} [data.created]
      */
     constructor(data) {
         this.username = data.username || '';
         this.email = data.email || '';
         this.password = data.password;
-        this.created = Date.now();
+        this.created = data.created || Date.now();
         this.authorities = data.authorities
     }
 }

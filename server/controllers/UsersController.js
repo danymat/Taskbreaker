@@ -20,5 +20,5 @@ exports.getAllUsers = async (req, res) => {
     } catch (error) {
         next(error)
     }
-
 }
+

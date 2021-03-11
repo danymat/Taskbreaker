@@ -19,6 +19,11 @@ describe('Authorization Controller', () => {
         mockResponse.locals = {}
     })
 
+    afterAll(async () => {
+        await users.deleteMany({});
+        await mongoConnection.closeDB()
+    })
+
     describe('Create Token', () => {
         test('Correct token creation', () => {
             let login = { email: 'testemail@test.com', password: 'testPassword'}

@@ -1,3 +1,5 @@
+const { createError } = require("../constants/Error")
+
 const CONTEXT = module.exports.CONTEXT = {
     HOME: 'home',
     WORK: 'work'
@@ -11,23 +13,24 @@ exports.Task = class {
      * @param {Number} data.userEmail
      * @param {String} [data.project]
      * @param {CONTEXT[]} [data.contexts]
-     * @param {Number} [data.completionDate]
      * @param {Number} [data.priority]
+     * @param {Number} [data.createdDate]
      */
     constructor(data) {
-        let range = [...Array(3).keys(), undefined]
+        data.priority = data.priority || null
+        let range = [...Array(3).keys(), null]
         if (!range.includes(data.priority)) {
-            throw Error(`Priority must be in (${range})`)
+
+            throw new createError(401, `Priority must be in (${range})`)
         }
         this.description = data.description
         this.userEmail = data.userEmail
         this.priority = data.priority || null
         this.project = data.project || null
-        this.contexts = data.contexts
-        this.createdDate = Date.now()
+        this.contexts = data.contexts || []
+        this.createdDate = data.createdDate || Date.now()
         this.completionDate = null
-        this.optionals = { }
-
+        this.optionals = {}
     }
 
     get completed() {

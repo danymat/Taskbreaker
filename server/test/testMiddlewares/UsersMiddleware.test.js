@@ -22,11 +22,6 @@ describe('Users Middleware', () => {
         await users.insertOne(mockSingleUser);
     });
 
-    afterAll(async () => {
-        await users.deleteMany({});
-        await mongoConnection.closeDB()
-    });
-
     beforeEach(async () => {
         mockRequest = {}
         mockResponse = {}
@@ -35,6 +30,11 @@ describe('Users Middleware', () => {
         mockResponse.locals = {}
         // await users.deleteMany({});
     })
+
+    afterAll(async () => {
+        await users.deleteMany({});
+        await mongoConnection.closeDB()
+    });
 
     describe('Create User', () => {
         test('Missing body parameters', async () => {
