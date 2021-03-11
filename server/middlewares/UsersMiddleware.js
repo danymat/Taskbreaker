@@ -7,7 +7,8 @@ const { createError } = require('../constants/Error')
  * @property {String} username
  * @property {String} email
  * @property {String} password
- *
+ * @property {String} passwordconf
+ * 
  * @param {import('express').Request<{}, {}, userBody, {}>} req
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -15,9 +16,12 @@ const { createError } = require('../constants/Error')
  */
 exports.createUser = async (req, res, next) => {
     try {
-        const neededKeys = ['username', 'email', 'password'];
+        const neededKeys = ['username', 'email', 'password', 'passwordconf'];
         if (! neededKeys.every(key => Object.keys(req.body).includes(key)) ) {
             throw new createError(401, "Missing arguments")
+        }
+        if (req.body.password != req.body.passwordconf) {
+            throw new createError(401, "Password confirmation does not match password")
         }
         let user = new User({
             username: req.body.username,
