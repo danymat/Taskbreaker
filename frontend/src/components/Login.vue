@@ -17,26 +17,28 @@
             >
                 Sign In
             </button>
-            <p id="messagewrong"></p>
+            <p id="messagewrong" class="text-red-500" :class="{hidden: !error}">{{errorMessage}}</p>
         </form>
     </div>
 </template>
 <script setup>
     import { logUser } from '../api/users';
-    import { ref, defineEmit } from 'vue';
+    import { ref } from 'vue';
+    import router from './../router';
 
-    const emit = defineEmit(['login'])
 
 const password = ref('')
 const email = ref('')
+const error = ref(false)
+const errorMessage = ref('')
 
     async function logIn() {
         const data = await logUser({ email: email.value, password: password.value })
-        console.log(data)
-       if (data.auth) {
-           emit("login", true);
+        if (typeof (data.token) == "undefined") {
+            error.value = true
+            errorMessage.value = data.message
        } else {
-           document.getElementById("messagewrong").textContent = data.message;
+            router.push('taskboard');
        }
 }
 </script>

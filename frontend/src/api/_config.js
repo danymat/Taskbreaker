@@ -1,7 +1,8 @@
 import axios from 'axios'
+import store from './../store'
 
 function getUserToken() {
-    return ''
+    return store.state.token;
 }
 
 /**

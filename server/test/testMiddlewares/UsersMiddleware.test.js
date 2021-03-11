@@ -52,7 +52,8 @@ describe('Users Middleware', () => {
             mockRequest.body = {
                 "username": "testUsername",
                 "email": "testUsername@test.com",
-                "password": "testPassword"
+                "password": "testPassword",
+                "passwordconf": "testPassword"
             }
             const expectedResponse = {
                 "message": "User already taken"
@@ -67,7 +68,8 @@ describe('Users Middleware', () => {
             mockRequest.body = {
                 "username": "testUsername2",
                 "email": "testUsername2@test.com",
-                "password": "testPassword"
+                "password": "testPassword",
+                "passwordconf": "testPassword"
             }
             await UsersMiddleware.createUser(mockRequest, mockResponse, nextFunction)
             expect(nextFunction).toBeCalledTimes(1);
@@ -92,7 +94,7 @@ describe('Users Middleware', () => {
         test('Unexistent user', async () => {
             mockRequest.body = { email: "unexistentEmail", password: "unexistentPassword"}
             const expectedResponse = {
-                "message": "Wrong username or password"
+                "message": "Wrong email or password"
             }
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
@@ -103,7 +105,7 @@ describe('Users Middleware', () => {
         test('Wrong password', async () => {
             mockRequest.body = { email: "testUsername2@test.com", password: "wrongPassword"}
             const expectedResponse = {
-                "message": "Wrong username or password"
+                "message": "Wrong email or password"
             }
 
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)

@@ -1,31 +1,29 @@
 <template>
     <div class="relative flex flex-col bg-purple-800 p-4 w-40 rounded text-black z-10">
         <div class="flex flex-col">
-            <button class="p-2" @click="emit('current-page', 'home')" v-if="!props.isloggedin">
+            <router-link to="/" tag="button" class="p-2" v-if="!store.getters.isLoggedIn">
                 Home
-            </button>
-            <button class="p-2" @click="emit('current-page', 'main')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/main" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Main
-            </button>
-            <button class="p-2" @click="emit('current-page', 'taskboard')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/taskboard" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Taskboard
-            </button>
-            <button class="p-2" @click="emit('current-page', 'account')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/account" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Account
-            </button>
-            <button class="p-2" @click="emit('current-page', 'settings')" v-if="props.isloggedin">
+            </router-link>
+            <router-link to="/settings" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Settings
-            </button>
-            <button class="p-2" @click="emit('current-page', 'about')">
+            </router-link>
+            <router-link to="/about" tag="button" class="p-2">
                 About
-            </button>
+            </router-link>
         </div>
     </div>
 </template>
 <script setup>
-    import { ref, defineEmit, defineProps } from "vue";
-    const emit = defineEmit(['current-page']);
-    const props = defineProps({
-        isloggedin: Boolean
-    });
+    import { ref } from "vue";
+    import store from './../store';
+
 </script>
