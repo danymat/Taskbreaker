@@ -1,20 +1,35 @@
 <template>
-    <div class="text-center flex flex-col space-y-10">
+    <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-9/12 h-full">
         <div class="flex flex-col space-y-10">
             <div class="flex flex-row space-x-5">
                 <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
                 <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
+                <NewButton buttonName="Today Tasks" @click="" class="mb-2 flex" />
+                <NewButton buttonName="Clean Board" @click="cleanBoard" class="mb-2 flex" />
             </div>
             <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" />
             <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
-        <VueDraggableNext group="listgroup" :list="list" class="flex flex-row flex-wrap">
-            <div v-for="list in taskslists" v-bind:key="list" class="text-center flex flex-col space-y-10 mb-10 mr-10 border-2 border-black">
-                <Tasklist :title="list.title"
+        <div class="w-full min-h-3/4 bg-blue-200">
+            <VueDraggableNext v-model="taskslists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
+                <Tasklist v-for="list in taskslists" v-bind:key="list"
+                          :title="list.title"
                           :tasks="list.tasks"
+                          :hideme="false"
                           @sort="(value) => update_sort(value.sort_value, value.tasks)" />
-            </div>
-        </VueDraggableNext>
+            </VueDraggableNext>
+        </div>
+    </div>
+    <div class="absolute top-5 right-5 flex flex-col w-2/12 h-full">
+        <div class="w-full h-full bg-gray-200">
+            <VueDraggableNext v-model="storedlist" group="listgroup" class="flex flex-col flex-wrap min-h-full">
+                <Tasklist v-for="list in storedlist" v-bind:key="list"
+                          :title="list.title"
+                          :tasks="list.tasks"
+                          :hideme="true"
+                          @sort="(value) => update_sort(value.sort_value, value.tasks)" />
+            </VueDraggableNext>
+        </div>
     </div>
 </template>
 <script setup>
@@ -26,7 +41,8 @@
     import Listmenu from "./listmenu.vue";
     import { VueDraggableNext } from 'vue-draggable-next';
 
-    var taskslists = ref({});
+    var storedlist = ref([]);
+    var taskslists = ref([]);
     var tasklistnames = ref([]);
 
     var isNewTaskClicked = ref(false);
@@ -35,18 +51,33 @@
     var sort_value = ref("");
     sort_value.value = "manual";
 
+    const cleanBoard = () => {
+        for (var elt in taskslists.value) {
+            storedlist.value.push({
+                title: taskslists.value[elt].title,
+                tasks: taskslists.value[elt].tasks
+            })
+        }
+        taskslists.value = []
+    }
+
     const createTask = (task) => {
-        taskslists.value[task.value.listname].tasks.push({
-            priority: task.value.priority,
-            completion_date: task.value.completion_date,
-            creation_date: task.value.creation_date,
-            description: task.value.description,
-            context: task.value.context,
-            project: task.value.project,
-            special: task.value.special
-        });
-        isNewTaskClicked.value = false;
-        update_sort(sort_value.value, taskslists.value[task.value.listname].tasks);
+        var elt = {}
+        for (elt in taskslists.value) {
+            if (taskslists.value[elt].title == task.value.listname) {
+                taskslists.value[elt].tasks.push({
+                    priority: task.value.priority,
+                    completion_date: task.value.completion_date,
+                    creation_date: task.value.creation_date,
+                    description: task.value.description,
+                    context: task.value.context,
+                    project: task.value.project,
+                    special: task.value.special
+                });
+                isNewTaskClicked.value = false;
+                update_sort(sort_value.value, taskslists.value[elt].tasks);
+            }
+        }
     };
 
     const createList = (listname) => {
@@ -56,10 +87,10 @@
         }
             
         tasklistnames.value.push(listname);
-        taskslists.value[listname] = {
+        taskslists.value.push({
             title: listname,
             tasks: []
-        }
+        })
         isNewListClicked.value = false;
     };
     createList("Inbox");
