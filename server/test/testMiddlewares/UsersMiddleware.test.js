@@ -52,7 +52,8 @@ describe('Users Middleware', () => {
             mockRequest.body = {
                 "username": "testUsername",
                 "email": "testUsername@test.com",
-                "password": "testPassword"
+                "password": "testPassword",
+                "passwordconf": "testPassword"
             }
             const expectedResponse = {
                 "message": "User already taken"
@@ -67,7 +68,8 @@ describe('Users Middleware', () => {
             mockRequest.body = {
                 "username": "testUsername2",
                 "email": "testUsername2@test.com",
-                "password": "testPassword"
+                "password": "testPassword",
+                "passwordconf": "testPassword"
             }
             await UsersMiddleware.createUser(mockRequest, mockResponse, nextFunction)
             expect(nextFunction).toBeCalledTimes(1);
