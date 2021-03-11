@@ -88,9 +88,12 @@ exports.verifyLogin = async (req, res, next) => {
  exports.getUserFromDecoded = async (req, res, next) => {
     try {
         let user = await usersService.findUser(res.locals.decoded.email)
+        if (user == null) { throw new createError(400, "User not existent")}
         res.locals.user = user
         next()
     } catch (error) {
-        next(error)
+        res.status(error.status).json({
+            message: error.message
+        })
     }
 }
