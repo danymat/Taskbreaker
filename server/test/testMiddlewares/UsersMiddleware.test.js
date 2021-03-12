@@ -22,11 +22,6 @@ describe('Users Middleware', () => {
         await users.insertOne(mockSingleUser);
     });
 
-    afterAll(async () => {
-        await users.deleteMany({});
-        await mongoConnection.closeDB()
-    });
-
     beforeEach(async () => {
         mockRequest = {}
         mockResponse = {}
@@ -35,6 +30,11 @@ describe('Users Middleware', () => {
         mockResponse.locals = {}
         // await users.deleteMany({});
     })
+
+    afterAll(async () => {
+        await users.deleteMany({});
+        await mongoConnection.closeDB()
+    });
 
     describe('Create User', () => {
         test('Missing body parameters', async () => {
@@ -92,7 +92,7 @@ describe('Users Middleware', () => {
         })
 
         test('Unexistent user', async () => {
-            mockRequest.body = { email: "unexistentEmail", password: "unexistentPassword"}
+            mockRequest.body = { email: "unexistentEmail", password: "unexistentPassword" }
             const expectedResponse = {
                 "message": "Wrong email or password"
             }
@@ -103,7 +103,7 @@ describe('Users Middleware', () => {
         })
 
         test('Wrong password', async () => {
-            mockRequest.body = { email: "testUsername2@test.com", password: "wrongPassword"}
+            mockRequest.body = { email: "testUsername2@test.com", password: "wrongPassword" }
             const expectedResponse = {
                 "message": "Wrong email or password"
             }
@@ -115,10 +115,34 @@ describe('Users Middleware', () => {
         })
 
         test('Correct login', async () => {
-            mockRequest.body = { email: "testUsername2@test.com", password: "testPassword"}
+            mockRequest.body = { email: "testUsername2@test.com", password: "testPassword" }
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
             expect(nextFunction).toBeCalledTimes(1);
         })
+    })
+
+    describe('Get user from decoded', () => {
+        test('User non existent in decoded', async () => {
+            mockResponse.locals = {
+                decoded: { email: "notAnUsername@test.com" }
+            }
+            const expectedResponse = {
+                "message": "User not existent"
+            }
+
+            await UsersMiddleware.getUserFromDecoded(mockRequest, mockResponse, nextFunction)
+            expect(nextFunction).toBeCalledTimes(0)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(400)
+        })
+        test('User existent in decoded', async () => {
+            mockResponse.locals = {
+                decoded: { email: "testUsername@test.com" }
+            }
+            await UsersMiddleware.getUserFromDecoded(mockRequest, mockResponse, nextFunction)
+            expect(nextFunction).toBeCalledTimes(1)
+        })
+
     })
 
 })

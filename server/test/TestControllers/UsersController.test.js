@@ -2,7 +2,6 @@ const mongoConnection = require('../../connection/MongoConnection');
 const { mockSingleUser } = require('../mocks')
 let UsersController;
 
-
 describe('Users Controller', () => {
 
     /** @type {import('express').Request} */
@@ -22,6 +21,7 @@ describe('Users Controller', () => {
 
         db = await mongoConnection.getDB();
         users = db.collection('users');
+
         await users.insertOne(mockSingleUser);
     });
 
@@ -40,6 +40,7 @@ describe('Users Controller', () => {
 
     describe('Get all users', () => {
         test('Retrieving users', async () => {
+            delete mockSingleUser._id
             const expectedResponse = {
                 message: "All DB Users",
                 users: [mockSingleUser]

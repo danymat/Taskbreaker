@@ -8,7 +8,7 @@ const { createError } = require('../constants/Error')
  * @property {String} email
  * @property {String} password
  * @property {String} passwordconf
- * 
+ *
  * @param {import('express').Request<{}, {}, userBody, {}>} req
  * @param {import('express').Request} req
  * @param {import('express').Response} res
@@ -63,6 +63,33 @@ exports.verifyLogin = async (req, res, next) => {
         if (!verified) {
             throw new createError(403, "Wrong email or password")
         }
+        next()
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary Get current user from jwtToken decoded.
+ *
+ * Must be called after verifyJwt
+ * @typedef {Object} decodedLocals
+ * @property {Object} decoded
+ * @property {String} decoded.email
+ * @property {String} decoded.password
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, decodedLocals>} res
+ * @param {import('express').NextFunction} next
+ */
+ exports.getUserFromDecoded = async (req, res, next) => {
+    try {
+        let user = await usersService.findUser(res.locals.decoded.email)
+        if (user == null) { throw new createError(400, "User not existent")}
+        res.locals.user = user
         next()
     } catch (error) {
         res.status(error.status).json({

@@ -1,3 +1,4 @@
+const { createError } = require('../constants/Error')
 const { findAllUsers } = require('../service/usersService')
 
 
@@ -20,5 +21,5 @@ exports.getAllUsers = async (req, res) => {
     } catch (error) {
         next(error)
     }
-
 }
+
