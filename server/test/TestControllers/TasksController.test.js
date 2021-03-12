@@ -1,4 +1,5 @@
 const mongoConnection = require('../../connection/MongoConnection');
+const { Task } = require('../../model/Task');
 const { User } = require('../../model/User');
 const { mockSingleUser, mockSingleTask } = require('../mocks')
 let TasksController;
@@ -62,6 +63,59 @@ describe('Tasks Controller', () => {
                 tasks: [mockSingleTask]
             }
             await TasksController.getAllUserTasks(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(200)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+    })
+
+    describe('Create Task', () => {
+        test('No arguments in body', async () => {
+            mockRequest.body = {}
+            const expectedResponse = {
+                "message": "Missing arguments"
+            }
+            await TasksController.createTask(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+
+        test('Incomplete arguments in body', async () => {
+            mockRequest.body = {
+                contexts: "home"
+            }
+            const expectedResponse = {
+                "message": "Missing arguments"
+            }
+            await TasksController.createTask(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+            expect(nextFunction).toBeCalledTimes(0);
+        })
+
+        test('Test created', async () => {
+            mockRequest.body = {
+                description: "Manger des pâtes",
+                project: "Healthy lifestyle",
+                contexts: ["home"]
+            }
+
+
+            const expectedResponse = {
+                message: "Task created",
+                task: new Task({
+                    description: mockRequest.body.description,
+                    userEmail: mockResponse.locals.user.email,
+                    project: mockRequest.body.project,
+                    contexts: mockRequest.body.contexts,
+                    priority: mockRequest.body.priority
+                })
+                ._id = expect.anything()
+                .created = expect.anything()
+            }
+
+            await TasksController.createTask(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
             expect(mockResponse.status).toBeCalledWith(200)
             expect(nextFunction).toBeCalledTimes(0);

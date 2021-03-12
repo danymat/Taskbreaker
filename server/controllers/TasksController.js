@@ -46,6 +46,7 @@ exports.createTask = async (req, res) => {
         if (! neededKeys.every(key => Object.keys(req.body).includes(key)) ) {
             throw new createError(401, "Missing arguments")
         }
+        //TODO verify contexts, project priority, description
         let task = new Task({
             description: req.body.description,
             userEmail: res.locals.user.email,
