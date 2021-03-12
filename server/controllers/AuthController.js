@@ -23,7 +23,6 @@ exports.createToken = (req, res, next) => {
     } catch (error) {
         next(new createError(401, error.message))
     }
-
 }
 
 
