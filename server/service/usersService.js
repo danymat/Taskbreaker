@@ -1,5 +1,6 @@
 const { getDB } = require('../connection/MongoConnection')
 const {createError} = require('../constants/Error')
+const { User } = require('../model/User')
 const _db = getDB()
 const users = _db.collection('users')
 
@@ -21,7 +22,22 @@ exports.addUser = async (user) => {
  */
 exports.findAllUsers = async () => {
     try {
-        return await users.find({}).toArray()
+        let userList = await users.find({}, { _id: 0 }).toArray()
+        if (userList == null) { return null }
+        var returnedUsers = []
+        userList.forEach((u) => {
+            returnedUsers.push(
+                new User({
+                    username: u.username,
+                    email: u.email,
+                    password: u.password,
+                    created: u.created,
+                    authorities: u.authorities
+                })
+            )
+        })
+        console.log(returnedUsers)
+        return returnedUsers
     } catch (error) {
         throw error
     }
@@ -34,7 +50,14 @@ exports.findAllUsers = async () => {
 exports.findUser = async (email) => {
     try {
         let query = { email : email }
-        return await users.findOne(query)
+        let user = await users.findOne(query)
+        if (user == null) { return null }
+        return new User({
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            authorities: user.authorities
+        })
     } catch (error) {
         throw error
     }
