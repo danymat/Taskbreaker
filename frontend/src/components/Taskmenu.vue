@@ -1,5 +1,5 @@
 <template>
-    <div class="border-2" :class="bdcolor">
+    <div class="absolute bg-green-200 border-2 w-full z-10" :class="bdcolor">
         <form class="flex flex-row space-y-4" onsubmit="event.preventDefault()">
             <div class="m-0">
                 <select name="priority" v-model="task.priority">
@@ -29,6 +29,7 @@
                 </div>
             </div>
         </form>
+        <button class="absolute right-3 top-3 bg-red-600 w-5 h-5" v-on:click="emit('close', true)" />
     </div>
 </template>
 <script setup>
@@ -69,7 +70,7 @@
         special: {}
     });
 
-    const emit = defineEmit(["task"]);
+    const emit = defineEmit(["task", "close"]);
 
     const createTask = () => {
         if (task.value.description.length != 0) {

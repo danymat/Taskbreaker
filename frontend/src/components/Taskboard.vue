@@ -1,16 +1,16 @@
 <template>
     <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-9/12 h-full">
-        <div class="flex flex-col space-y-10">
-            <div class="flex flex-row space-x-5">
+        <div class="flex flex-row space-x-5">
                 <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
                 <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
                 <NewButton buttonName="Today Tasks" @click="" class="mb-2 flex" />
                 <NewButton buttonName="Clean Board" @click="cleanBoard" class="mb-2 flex" />
-            </div>
-            <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" />
-            <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" />
         </div>
-        <div class="w-full min-h-3/4 bg-blue-200">
+        <div class="relative w-9/12 mx-auto">
+            <Taskmenu v-if="isNewTaskClicked" :listsnames="tasklistnames" @task="(value) => createTask(value)" @close="isNewTaskClicked=false" />
+            <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" @close="isNewListClicked=false" />
+        </div>
+        <div class="absolute w-full min-h-3/4 bg-blue-200 z-0">
             <VueDraggableNext v-model="taskslists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
                 <Tasklist v-for="list in taskslists" v-bind:key="list"
                           :title="list.title"
