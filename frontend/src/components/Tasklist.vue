@@ -5,18 +5,16 @@
             <option value="manual">Manual sort</option>
             <option value="priority">Priority sort</option>
             <option value="creation_date">Creation Date sort</option>
-            <option value="completion_date">Completion Date sort</option>
         </select>
         <div class="space-y-2" :class="{hidden: hideme}">
             <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
                 <div v-for="task in tasks" v-bind:key="task">
                     <Task :priority="task.priority"
-                          :completion_date="task.completion_date"
-                          :creation_date="task.creation_date"
+                          :createdDate="task.createdDate"
                           :description="task.description"
-                          :context="task.context"
+                          :contexts="task.contexts"
                           :project="task.project"
-                          :special="task.special" />
+                          />
                 </div>
             </VueDraggableNext>
         </div>

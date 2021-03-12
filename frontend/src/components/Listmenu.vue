@@ -13,7 +13,7 @@
     </div>
 </template>
 <script setup>
-    import { ref, defineEmit, defineProps } from "vue";
+    import { ref, defineEmit } from "vue";
     import NewButton from "./NewButton.vue";
 
     const img_number = ref(1);

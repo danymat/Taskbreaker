@@ -4,12 +4,14 @@ export default createStore({
     state: {
         status: '',
         token: localStorage.getItem('token') || '',
+        email: '',
         menu: false
     },
     mutations: {
-        auth_success(state, token) {
+        auth_success(state, data) {
             state.status = 'success'
-            state.token = token
+            state.email = data.email
+            state.token = data.token
         },
         auth_error(state) {
             state.status = 'error'
@@ -17,6 +19,7 @@ export default createStore({
         logout(state) {
             state.status = ''
             state.token = ''
+            state.email = ''
         },
         change_menu_state(state, value=null) {
             if (value == null) {
@@ -27,13 +30,13 @@ export default createStore({
         }
     },
     actions: {
-        login({ commit }, token) {
-            commit('auth_success', token);
-            localStorage.setItem('token', token);
+        login({ commit }, data) {
+            commit('auth_success', data);
+            localStorage.setItem('token', data.token);
         },
-        register({ commit }, token) {
-            commit('auth_success', token);
-            localStorage.setItem('token', token);
+        register({ commit }, data) {
+            commit('auth_success', data);
+            localStorage.setItem('token', data.token);
         },
         logout({ commit }) {
             commit('logout');
@@ -46,6 +49,7 @@ export default createStore({
     getters: {
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,
-        isMenuHidden: state => !state.menu
+        isMenuHidden: state => !state.menu,
+        email: state => state.email
     }
 })

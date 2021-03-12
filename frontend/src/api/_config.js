@@ -43,37 +43,3 @@ export async function execute(method, resource, options) {
       .then(req => { return req.data })
       .catch(error => { throw error.response })
 }
-
-client.interceptors.response.use(
-    response => {
-        if (response.status === 200 || response.status === 201) {
-            return Promise.resolve(response);
-        } else {
-            return Promise.reject(response);
-        }
-    },
-    error => {
-        if (error.response.status) {
-            switch (error.response.status) {
-                case 400:
-
-                    alert('erreur 400');
-                    break;
-
-                case 401:
-                    alert("session expired");
-                    router.push('signin');
-                    break;
-                case 403:
-                    router.push('signin');
-                    break;
-                case 404:
-                    router.push('PageNotFound');
-                    break;
-                case 502:
-                    router.push('signin');
-            }
-            return Promise.reject(error.response);
-        }
-    }
-);
