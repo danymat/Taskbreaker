@@ -43,3 +43,27 @@ export async function execute(method, resource, options) {
       .then(req => { return req.data })
       .catch(error => { throw error.response })
 }
+
+client.interceptors.response.use(
+    response => {
+        if (response.status === 200 || response.status === 201) {
+            return Promise.resolve(response);
+        } else {
+            return Promise.reject(response);
+        }
+    },
+    error => {
+        if (error.response.status) {
+            switch (error.response.status) {
+                case 403:
+                    store.dispatch('logout');
+                    router.push('signin');
+                    break;
+                case 404:
+                    router.push('PageNotFound');
+                    break;
+            }
+            return Promise.reject(error.response);
+        }
+    }
+); 

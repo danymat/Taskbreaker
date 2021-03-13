@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center flex flex-col space-y-10 mb-10 mr-10 border-2 border-black">
+    <div class="text-center flex flex-col space-y-10 mb-10 mr-10 border-2 border-black h-3/6">
         <h1>{{ title }}</h1>
         <select name="sort" v-model="sortval" @change="send_sort" :class="{hidden: hideme}">
             <option value="manual">Manual sort</option>
@@ -8,14 +8,13 @@
         </select>
         <div class="space-y-2" :class="{hidden: hideme}">
             <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
-                <div v-for="task in tasks" v-bind:key="task">
-                    <Task :priority="task.priority"
-                          :createdDate="task.createdDate"
-                          :description="task.description"
-                          :contexts="task.contexts"
-                          :project="task.project"
-                          />
-                </div>
+                <Task v-for="task in tasks" v-bind:key="task"
+                      :priority="task.priority"
+                      :createdDate="task.createdDate"
+                      :description="task.description"
+                      :contexts="task.contexts"
+                      :project="task.project"
+                      />
             </VueDraggableNext>
         </div>
     </div>

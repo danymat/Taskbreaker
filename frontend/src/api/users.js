@@ -43,6 +43,7 @@ export async function getUserTasks(data) {
 
 export async function createUserTask(data) {
     try {
+        console.log(data)
         const test = await execute('POST', 'users/task', { data: data })
         return test
     } catch (error) {

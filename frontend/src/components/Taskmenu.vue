@@ -2,15 +2,7 @@
     <div class="absolute bg-green-200 border-2 w-full z-10" :class="bdcolor">
         <form class="flex flex-row space-y-4" onsubmit="event.preventDefault()">
             <div class="m-0">
-                <select name="priority" v-model="task.priority">
-                    <option value="">--Priority Optional--</option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                </select>
+                <input type="number" placeholder="priority" v-model="task.priority" />
                 <select name="listname" v-model="listname">
                     <option value="">--List Name--</option>
                     <option :value="name" v-for="name in listsnames" v-bind:key="name">{{ name }}</option>
