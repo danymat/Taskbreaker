@@ -5,6 +5,10 @@
                 <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
                 <NewButton buttonName="Today Tasks" @click="todayTasks" class="mb-2 flex" />
                 <NewButton buttonName="Clean Board" @click="cleanBoard" class="mb-2 flex" />
+                <select name="context_select" v-model="context_select" @change="getContextTasks(context_select)">
+                    <option value="">Any Context</option>
+                    <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
+                </select>
         </div>
         <div class="relative w-9/12 mx-auto">
             <Taskmenu v-if="isNewTaskClicked" :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" @close="isNewTaskClicked=false" />
@@ -47,6 +51,8 @@
     var boardlists = ref([]);  //array of tasks on main board
     var all_lists = ref({}); //array of lists {listname: arrayoftasks, }
     var listnames = ref([]);
+    var context_select = ref("");
+    var listcontexts = ref([]);
 
     var isNewTaskClicked = ref(false);
     var isNewListClicked = ref(false);
@@ -57,6 +63,13 @@
         if (data.tasks.length != 0) {
             for (var taski in data.tasks) {
                 all_lists.value['Inbox'].push(data.tasks[taski]) //adding task to inbox list
+
+                // filling listcontext
+                for (var context in data.tasks[taski].contexts) {
+                    if (!listcontexts.value.includes(data.tasks[taski].contexts[context]) && (data.tasks[taski].contexts[context]!='')) {
+                        listcontexts.value.push(data.tasks[taski].contexts[context])
+                    }
+                }
             } 
         } else {
             alert('no tasks :'+data.message)
@@ -70,6 +83,13 @@
                 return;
             }
             all_lists.value[listname.value].push(data.task)
+
+            // filling listcontext
+            for (var context in data.task.contexts) {
+                if (!listcontexts.value.includes(data.task.contexts[context])) {
+                    listcontexts.value.push(data.task.contexts[context])
+                }
+            }
             isNewTaskClicked.value = false;
         }
     };
@@ -85,7 +105,7 @@
         isNewListClicked.value = false;
         boardlists.value.push({ title: listname, tasks: all_lists.value[listname] })
         listnames.value.push(listname)
-    };
+    }
 
     const openTaskMenu = () => {
         isNewListClicked.value = false;
@@ -128,6 +148,48 @@
                     all_lists.value['today'].push(all_lists.value[tasks][task])
                     valtosplice.push(task)
                 } 
+            }
+            valtosplice = valtosplice.sort().reverse()
+            for (var index in valtosplice) {
+                all_lists.value[tasks].splice(valtosplice[index], 1)
+            }
+        }
+    }
+
+    const getContextTasks = (context) => {
+        console.log(listcontexts)
+        if (context == '') {
+            return;
+        }
+
+        if (!listnames.value.includes('context_select')) {
+            createList('context_select')
+        }
+
+        cleanBoard()
+        for (var list in sidedlists.value) {
+            if (sidedlists.value[list].title == 'context_select') {
+                boardlists.value.push(sidedlists.value[list])
+                sidedlists.value.splice(parseInt(list), 1)
+                var valtosplice = []
+                for (var task in all_lists.value['context_select'].reverse()) {
+                    all_lists.value['Inbox'].push(all_lists.value['context_select'][task])
+                    valtosplice.push(task)
+                }
+                valtosplice = valtosplice.sort().reverse()
+                for (var index in valtosplice) {
+                    all_lists.value['context_select'].splice(valtosplice[index], 1)
+                }
+            }
+        }
+
+        for (var tasks in all_lists.value) {
+            var valtosplice = []
+            for (var task in all_lists.value[tasks].reverse()) {
+                if ((all_lists.value[tasks][task].contexts.includes(context)) && (tasks != 'context_select')) {
+                    all_lists.value['context_select'].push(all_lists.value[tasks][task])
+                    valtosplice.push(task)
+                }
             }
             valtosplice = valtosplice.sort().reverse()
             for (var index in valtosplice) {
