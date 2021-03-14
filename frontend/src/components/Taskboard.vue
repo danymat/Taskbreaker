@@ -2,9 +2,9 @@
     <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-full h-full">
         <div class="flex flex-row space-x-5">
                 <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
-                <NewButton buttonName="New list" @click="openListMenu" class="mb-2 flex" />
+                
                 <NewButton buttonName="Today Tasks" @click="todayTasks" class="mb-2 flex" />
-                <NewButton buttonName="Clean Board" @click="cleanBoard" class="mb-2 flex" />
+                <NewButton buttonName="Clean Board" @click="() => cleanBoard()" class="mb-2 flex" />
                 <select name="context_select" v-model="context_select" @change="getContextTasks(context_select)">
                     <option value="">Any Context</option>
                     <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
@@ -12,7 +12,6 @@
         </div>
         <div class="relative w-9/12 mx-auto">
             <Taskmenu v-if="isNewTaskClicked" :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" @close="isNewTaskClicked=false" />
-            <Listmenu v-if="isNewListClicked" @list="(value) => createList(value)" @close="isNewListClicked=false" />
         </div>
         <div class="absolute w-11/12 h-5/6 bg-blue-200 overflow-y-auto">
             <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
@@ -36,6 +35,9 @@
         </div>
     </div>
 </template>
+<style>
+    @import './../assets/styles/scrollbar.css';
+</style>
 <script setup>
     import { ref } from "vue";
     import NewButton from "./NewButton.vue";
@@ -117,84 +119,66 @@
         isNewListClicked.value = !isNewListClicked.value;
     }
 
-    // store all list on the side
-    const cleanBoard = () => {
-        for (var elt in boardlists.value) {
-            sidedlists.value.push(boardlists.value[elt])
+    // store all list on the side and leave name list
+    const cleanBoard = (name = '') => {
+        for (var elt = boardlists.value.length - 1; elt>=0; elt--) {
+            if (boardlists.value[elt].title != name) {
+                sidedlists.value.push(boardlists.value[elt])
+                boardlists.value.splice(elt, 1)
+            }
         }
-        boardlists.value = []
+
+        if (boardlists.value.length == 0) {
+            for (var elt = 0; elt < sidedlists.value.length; elt++) {
+                if (sidedlists.value[elt].title == name) {
+                    boardlists.value.push(sidedlists.value[elt])
+                    sidedlists.value.splice(elt, 1)
+                }
+            }
+        }
     }
 
     //store all today tasks in a list today
     const todayTasks = () => {
-        if (!listnames.value.includes('today')) {
-            createList('today')
-        }
 
-        cleanBoard()
-        for (var list in sidedlists.value) {
-            if (sidedlists.value[list].title == 'today') {
-                boardlists.value.push(sidedlists.value[list])
-                sidedlists.value.splice(parseInt(list), 1)
-            }
-        }
+        cleanBoard('Next Actions')
+        clearList('Next Actions')
 
         for (var tasks in all_lists.value) { 
-            var valtosplice = []
-            for (var task in all_lists.value[tasks].reverse()) {
+            for (var task = all_lists.value[tasks].length - 1; task >= 0; task--) {
                 var taskDay = new Date(all_lists.value[tasks][task].createdDate)
                 var today = new Date()
-                if ((taskDay.getMonth() == today.getMonth()) && (taskDay.getDate() == today.getDate()) && (taskDay.getFullYear() == today.getFullYear()) && (tasks != 'today')) {
-                    all_lists.value['today'].push(all_lists.value[tasks][task])
-                    valtosplice.push(task)
+                if ((taskDay.getMonth() == today.getMonth()) && (taskDay.getDate() == today.getDate()) && (taskDay.getFullYear() == today.getFullYear()) && (tasks != 'Next Actions')) {
+                    all_lists.value['Next Actions'].push(all_lists.value[tasks][task])
+                    all_lists.value[tasks].splice(task, 1)
                 } 
-            }
-            valtosplice = valtosplice.sort().reverse()
-            for (var index in valtosplice) {
-                all_lists.value[tasks].splice(valtosplice[index], 1)
             }
         }
     }
 
     const getContextTasks = (context) => {
-        console.log(listcontexts)
         if (context == '') {
             return;
         }
 
-        if (!listnames.value.includes('context_select')) {
-            createList('context_select')
-        }
-
-        cleanBoard()
-        for (var list in sidedlists.value) {
-            if (sidedlists.value[list].title == 'context_select') {
-                boardlists.value.push(sidedlists.value[list])
-                sidedlists.value.splice(parseInt(list), 1)
-                var valtosplice = []
-                for (var task in all_lists.value['context_select'].reverse()) {
-                    all_lists.value['Inbox'].push(all_lists.value['context_select'][task])
-                    valtosplice.push(task)
-                }
-                valtosplice = valtosplice.sort().reverse()
-                for (var index in valtosplice) {
-                    all_lists.value['context_select'].splice(valtosplice[index], 1)
-                }
-            }
-        }
+        cleanBoard('Next Actions')
+        clearList('Next Actions')
 
         for (var tasks in all_lists.value) {
-            var valtosplice = []
-            for (var task in all_lists.value[tasks].reverse()) {
-                if ((all_lists.value[tasks][task].contexts.includes(context)) && (tasks != 'context_select')) {
-                    all_lists.value['context_select'].push(all_lists.value[tasks][task])
-                    valtosplice.push(task)
+            for (var task = all_lists.value[tasks].length - 1; task >= 0; task--) {
+                if ((all_lists.value[tasks][task].contexts.includes(context)) && (tasks != 'Next Actions')) {
+                    all_lists.value['Next Actions'].push(all_lists.value[tasks][task])
+                    all_lists.value[tasks].splice(task, 1)
                 }
             }
-            valtosplice = valtosplice.sort().reverse()
-            for (var index in valtosplice) {
-                all_lists.value[tasks].splice(valtosplice[index], 1)
-            }
+        }
+    }
+
+    // take tasks from name list and put them into inbox
+    const clearList = (name) => {
+        for (var task = all_lists.value[name].length-1; task >= 0; task--) {
+            all_lists.value['Inbox'].push(all_lists.value[name][task])
+            all_lists.value[name].pop()
         }
     }
 
@@ -239,5 +223,6 @@
     createList("Projects");
     createList("Next Actions");
     createList("Waiting For");
-    getAllTasks()
+    createList("Maybe");
+    getAllTasks();
 </script>
