@@ -1,5 +1,5 @@
 <template>
-    <div class="border-2" :class="bdcolor">
+    <div class="absolute bg-green-200 border-2 w-full z-10" :class="bdcolor">
         <form class="flex flex-row space-y-4" onsubmit="event.preventDefault()">
             <div class="m-0">
                 <input type="text" placeholder="Name" v-model="listname" />
@@ -9,10 +9,11 @@
                 </div>
             </div>
         </form>
+        <button class="absolute right-3 top-3 bg-red-600 w-5 h-5" v-on:click="emit('close', true)" />
     </div>
 </template>
 <script setup>
-    import { ref, defineEmit, defineProps } from "vue";
+    import { ref, defineEmit } from "vue";
     import NewButton from "./NewButton.vue";
 
     const img_number = ref(1);
@@ -24,7 +25,7 @@
     var bdcolor = ref("")
     var listname = ref("");
 
-    const emit = defineEmit(["list"]);
+    const emit = defineEmit(["list", 'close']);
 
     const createList = () => {
         if (listname.value.length != 0) {

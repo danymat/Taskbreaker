@@ -32,7 +32,8 @@ describe('Authorization Controller', () => {
             let jwtToken = jwt.sign(login, jwtSecret, { expiresIn: jwtExpiration });
             let expectedResponse = {
                 message: `New token, expiration: ${jwtExpiration / 60} minutes`,
-                token: jwtToken
+                token: jwtToken,
+                email: 'testemail@test.com'
             }
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
             expect(mockResponse.status).toBeCalledWith(200)

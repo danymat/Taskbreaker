@@ -10,23 +10,44 @@ import store from './../store'
 export async function logUser(data) {
     try {
         const test = await execute('POST', 'users/login', { data: data })
-        store.dispatch('login', test.token)
-        console.log(test);
-        return test;
+        store.dispatch('login', { token: test.token, email: test.email })
+        console.log(test)
+        return test
     } catch (error) {
-        console.log(error);
-        return error.data;
+        console.log(error)
+        return error.data
     }
 }
 
 export async function registerUser(data) {
     try {
         const test = await execute('POST', 'users/sign-up', { data: data })
-        store.dispatch('register', test.token)
-        console.log(test);
-        return test;
+        store.dispatch('register', { token: test.token, email: test.email })
+        console.log(test)
+        return test
     } catch (error) {
-        console.log(error);
-        return error.data;
+        console.log(error)
+        return error.data
+    }
+}
+
+export async function getUserTasks(data) {
+    try {
+        const test = await execute('GET', 'users/tasks', { data: data })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
+
+export async function createUserTask(data) {
+    try {
+        console.log(data)
+        const test = await execute('POST', 'users/task', { data: data })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error
     }
 }

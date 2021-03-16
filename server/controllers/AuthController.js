@@ -18,7 +18,8 @@ exports.createToken = (req, res, next) => {
         let jwtToken = jwt.sign(login, Auth.jwtSecret, { expiresIn: Auth.jwtExpiration });
         res.status(200).json({
             message: `New token, expiration: ${Auth.jwtExpiration / 60} minutes`,
-            token: jwtToken
+            token: jwtToken,
+            email: req.body.email
         })
     } catch (error) {
         next(new createError(401, error.message))
