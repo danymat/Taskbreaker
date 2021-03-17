@@ -14,6 +14,7 @@
                       :description="task.description"
                       :contexts="task.contexts"
                       :project="task.project"
+                      :show="showme(task)"
                       />
             </VueDraggableNext>
         </div>
@@ -31,8 +32,52 @@
     var props = defineProps({
         title: String,
         tasks: Array,
-        hideme: Boolean
+        hideme: Boolean,
+        selector: {}
     });
+
+    const showme = (task) => {
+        return (passContextSelect(task) && passDateSelect(task) && passProjectSelect(task))
+    }
+
+    // return true if the task is in the context selected or any
+    function passContextSelect(task) {
+        if (props.selector.contexts.length != 0) {
+            for (var cont of props.selector.contexts) {
+                if (task.contexts.includes(cont))
+                    return true
+            }
+        } else {
+            return true
+        }
+        return false
+    }
+
+    // return true if the task is at the date selected or any
+    function passDateSelect(task) {
+        if (props.selector.dates.length != 0) {
+            for (var date of props.selector.dates) {
+                const taskdate = new Date(task.createdDate)
+                const selectdate = new Date(date)
+                if ((taskdate.getMonth() == selectdate.getMonth()) && (taskdate.getDate() == selectdate.getDate()) && (taskdate.getFullYear() == selectdate.getFullYear()))
+                    return true
+            }
+        } else {
+            return true
+        }
+        return false
+    }
+
+    // return true if the task is in the project selected or any
+    function passProjectSelect(task) {
+        if (props.selector.projects.length != 0) {
+            if (props.selector.projects.includes(task.project))
+                return true
+        } else {
+            return true
+        }
+        return false
+    }
 
     const emit = defineEmit(["sort"]);
 

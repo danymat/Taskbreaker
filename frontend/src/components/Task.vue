@@ -1,5 +1,5 @@
 <template>
-    <div class="flex relative flex-row p-2 gap-2 bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-2xl text-gray-50 shadow-lg">
+    <div v-if="show" class="flex relative flex-row p-2 gap-2 bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-2xl text-gray-50 shadow-lg">
         <div v-if="priority">
             <div class="absolute font-extralight text-tiny">priority</div>
             <h2 class="ml-2 mt-2 font-bolds text-xs">{{ priority }}</h2>
@@ -30,7 +30,8 @@
         createdDate: Number,
         description: "",
         contexts: Array,
-        project: ""
+        project: "",
+        show: Boolean
     });
 
     const getDateDay = () => {
