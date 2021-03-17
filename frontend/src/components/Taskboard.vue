@@ -1,7 +1,6 @@
 <template>
-    <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-full h-full">
+    <div class="absolute left-0 top-5 text-center flex flex-col space-y-2 w-full h-full">
         <div class="flex flex-row space-x-5">
-            <NewButton buttonName="New Task" @click="openTaskMenu" />
             <CleanButton buttonName="Clean Board" @click="() => cleanBoard()" />
             <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
             <ClickedButton buttonName="Today Tasks" @isclicked="(isclicked) => selectDate(isclicked)" :defaultClicked="false" />
@@ -14,10 +13,8 @@
                 <option v-for="name in listprojects" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
         </div>
-        <div class="relative w-full mx-auto">
-            <Taskmenu v-if="isNewTaskClicked" :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" @close="isNewTaskClicked=false" />
-        </div>
-        <div class="absolute flex flex-row w-11/12 h-5/6">
+        <Taskmenu :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" />
+        <div class="flex flex-row w-11/12 h-5/6">
             <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
                 <p class="text-lg font-bold font-cursive mt-2">Projects</p>
                 <div class="">
@@ -38,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="absolute top-5 right-0 flex flex-col w-1/12 h-full z-30 hover:w-2/12">
+    <div class="absolute right-0 flex flex-col w-1/12 h-full z-30 hover:w-2/12">
         <div class="w-full h-full bg-gray-200 overflow-y-auto">
             <VueDraggableNext v-model="sidedlists" group="listgroup" class="flex flex-col flex-wrap min-h-full">
                 <Tasklist v-for="list in sidedlists" v-bind:key="list"
@@ -83,8 +80,6 @@
         dates: [],
         projects: []
     }
-    var isNewTaskClicked = ref(false);
-    var isNewListClicked = ref(false);
     var hideprojects = ref(false)
 
     //get all tasks from the server for this user
@@ -134,9 +129,8 @@
                 listprojects.value.push(data.task.project)
                 listtasksofprojects.value[data.task.project] = []
             }
-            (data.task.project != '') && (data.task.project != null)
+            if ((data.task.project != '') && (data.task.project != null))
                 listtasksofprojects.value[data.task.project].push(data.task)
-            isNewTaskClicked.value = false;
         }
     };
 
@@ -148,19 +142,8 @@
         }
             
         all_lists.value[listname] = []
-        isNewListClicked.value = false;
         boardlists.value.push({ title: listname, tasks: all_lists.value[listname] })
         listnames.value.push(listname)
-    }
-
-    const openTaskMenu = () => {
-        isNewListClicked.value = false;
-        isNewTaskClicked.value = !isNewTaskClicked.value;
-    }
-
-    const openListMenu = () => {
-        isNewTaskClicked.value = false;
-        isNewListClicked.value = !isNewListClicked.value;
     }
 
     const showProject = (isclicked) => {
