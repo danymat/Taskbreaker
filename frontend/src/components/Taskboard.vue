@@ -2,9 +2,11 @@
     <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-full h-full">
         <div class="flex flex-row space-x-5">
             <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
+            <NewButton buttonName="Clean Board" @click="() => cleanBoard()" class="mb-2 flex" />
+            <input type="checkbox" id="showProjects" name="showProjectsSelect" value="project" @change="(event) => showProject(event)">
+            <label for="showProjectsSelect">Hide Projects</label>
             <input type="checkbox" id="todayTaskSelect" name="todayTaskSelect" value="today" @change="(event) => selectDate(event)">
             <label for="todayTaskSelect">Today Tasks</label>
-            <NewButton buttonName="Clean Board" @click="() => cleanBoard()" class="mb-2 flex" />
             <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)">
                 <option value="">Any Context</option>
                 <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
@@ -14,18 +16,28 @@
                 <option v-for="name in listprojects" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
         </div>
-        <div class="relative w-9/12 mx-auto">
+        <div class="relative w-full mx-auto">
             <Taskmenu v-if="isNewTaskClicked" :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" @close="isNewTaskClicked=false" />
         </div>
-        <div class="absolute w-11/12 h-5/6 bg-blue-200 overflow-y-auto">
-            <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
-                <Tasklist v-for="list in boardlists" v-bind:key="list"
-                          :title="list.title"
-                          :tasks="list.tasks"
-                          :hideme="false"
-                          :selector="selectors"
-                          @sort="(value) => update_sort(value.sort_value, value.tasks)" />
-            </VueDraggableNext>
+        <div class="absolute flex flex-row w-11/12 h-5/6">
+            <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
+                <p>Projects</p>
+                <div class="">
+                    <Project v-for="proj in listprojects" v-bind:key="proj"
+                             :title="proj"
+                             :tasks="listtasksofprojects[proj]" />
+                </div>
+            </div>
+            <div class="w-full bg-blue-200 overflow-y-auto">
+                <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
+                    <Tasklist v-for="list in boardlists" v-bind:key="list"
+                              :title="list.title"
+                              :tasks="list.tasks"
+                              :hideme="false"
+                              :selector="selectors"
+                              @sort="(value) => update_sort(value.sort_value, value.tasks)" />
+                </VueDraggableNext>
+            </div>
         </div>
     </div>
     <div class="absolute top-5 right-0 flex flex-col w-1/12 h-full z-30 hover:w-2/12">
@@ -54,6 +66,7 @@
     import { VueDraggableNext } from 'vue-draggable-next';
     import { getUserTasks, createUserTask } from '../api/users';
     import store from './../store';
+    import Project from './Project.vue';
 
     var sidedlists = ref([]);  //array of list on side board
     var boardlists = ref([]);  //array of tasks on main board
@@ -63,6 +76,7 @@
     var listcontexts = ref([]);
     var project_select = ref("");
     var listprojects = ref([]);
+    var listtasksofprojects = ref({}); // used to pass tasks of a project to the project component
     var selectors = ref({}); //selectors to hide tasks
     selectors.value = {
         contexts: [],
@@ -71,6 +85,7 @@
     }
     var isNewTaskClicked = ref(false);
     var isNewListClicked = ref(false);
+    var hideprojects = ref(false)
 
     //get all tasks from the server for this user
     async function getAllTasks() {
@@ -89,7 +104,10 @@
                 // filling listproject
                 if (!listprojects.value.includes(data.tasks[taski].project) && (data.tasks[taski].project != '') && (data.tasks[taski].project != null)) {
                     listprojects.value.push(data.tasks[taski].project)
+                    listtasksofprojects.value[data.tasks[taski].project] = []
                 }
+                if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
+                    listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
             } 
         } else {
             alert('no tasks :'+data.message)
@@ -112,9 +130,12 @@
             }
 
             // filling listprojects
-            if (!listprojects.value.includes(data.task.project) && (data.tasks[taski].project != '') && (data.tasks[taski].project != null)) {
+            if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
                 listprojects.value.push(data.task.project)
+                listtasksofprojects.value[data.task.project] = []
             }
+            (data.task.project != '') && (data.task.project != null)
+                listtasksofprojects.value[data.task.project].push(data.task)
             isNewTaskClicked.value = false;
         }
     };
@@ -140,6 +161,14 @@
     const openListMenu = () => {
         isNewTaskClicked.value = false;
         isNewListClicked.value = !isNewListClicked.value;
+    }
+
+    const showProject = (event) => {
+        if (event.target.checked) {
+            hideprojects.value = true
+        } else {
+            hideprojects.value = false
+        }
     }
 
     // store all list on the side and leave name list
@@ -240,7 +269,6 @@
 
 
     createList("Inbox");
-    createList("Projects");
     createList("Next Actions");
     createList("Waiting For");
     createList("Maybe");
