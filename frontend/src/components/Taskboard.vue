@@ -3,10 +3,8 @@
         <div class="flex flex-row space-x-5">
             <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
             <NewButton buttonName="Clean Board" @click="() => cleanBoard()" class="mb-2 flex" />
-            <input type="checkbox" id="showProjects" name="showProjectsSelect" value="project" @change="(event) => showProject(event)">
-            <label for="showProjectsSelect">Hide Projects</label>
-            <input type="checkbox" id="todayTaskSelect" name="todayTaskSelect" value="today" @change="(event) => selectDate(event)">
-            <label for="todayTaskSelect">Today Tasks</label>
+            <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
+            <ClickedButton buttonName="Today Tasks" @isclicked="(isclicked) => selectDate(isclicked)" :defaultClicked="false" />
             <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)">
                 <option value="">Any Context</option>
                 <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
@@ -21,7 +19,7 @@
         </div>
         <div class="absolute flex flex-row w-11/12 h-5/6">
             <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
-                <p>Projects</p>
+                <p class="text-lg font-bold font-cursive">Projects</p>
                 <div class="">
                     <Project v-for="proj in listprojects" v-bind:key="proj"
                              :title="proj"
@@ -63,6 +61,7 @@
     import Taskmenu from "./Taskmenu.vue";
     import Tasklist from "./Tasklist.vue";
     import Listmenu from "./listmenu.vue";
+    import ClickedButton from "./ClickedButton.vue";
     import { VueDraggableNext } from 'vue-draggable-next';
     import { getUserTasks, createUserTask } from '../api/users';
     import store from './../store';
@@ -163,11 +162,11 @@
         isNewListClicked.value = !isNewListClicked.value;
     }
 
-    const showProject = (event) => {
-        if (event.target.checked) {
-            hideprojects.value = true
-        } else {
+    const showProject = (isclicked) => {
+        if (isclicked) {
             hideprojects.value = false
+        } else {
+            hideprojects.value = true
         }
     }
 
@@ -191,11 +190,11 @@
     }
 
     // change selector value for the date, only works with today atm
-    const selectDate = (event) => {
+    const selectDate = (isclicked) => {
         //only today for now but date should be selected from calendar and be a Date()
         const today = new Date()
         selectors.value.dates = []
-        if (event.target.checked) {
+        if (isclicked) {
             selectors.value.dates.push(today)
         }
     }
