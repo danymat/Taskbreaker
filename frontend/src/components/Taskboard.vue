@@ -1,8 +1,8 @@
 <template>
     <div class="absolute left-0 top-5 text-center flex flex-col space-y-10 w-full h-full">
         <div class="flex flex-row space-x-5">
-            <NewButton buttonName="New Task" @click="openTaskMenu" class="mb-2 flex" />
-            <NewButton buttonName="Clean Board" @click="() => cleanBoard()" class="mb-2 flex" />
+            <NewButton buttonName="New Task" @click="openTaskMenu" />
+            <CleanButton buttonName="Clean Board" @click="() => cleanBoard()" />
             <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
             <ClickedButton buttonName="Today Tasks" @isclicked="(isclicked) => selectDate(isclicked)" :defaultClicked="false" />
             <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)">
@@ -19,7 +19,7 @@
         </div>
         <div class="absolute flex flex-row w-11/12 h-5/6">
             <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
-                <p class="text-lg font-bold font-cursive">Projects</p>
+                <p class="text-lg font-bold font-cursive mt-2">Projects</p>
                 <div class="">
                     <Project v-for="proj in listprojects" v-bind:key="proj"
                              :title="proj"
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="w-full bg-blue-200 overflow-y-auto">
-                <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
+                <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap space-x-10 min-h-full">
                     <Tasklist v-for="list in boardlists" v-bind:key="list"
                               :title="list.title"
                               :tasks="list.tasks"
@@ -57,6 +57,7 @@
 <script setup>
     import { ref } from "vue";
     import NewButton from "./NewButton.vue";
+    import CleanButton from './CleanButton.vue';
     import Task from "./Task.vue";
     import Taskmenu from "./Taskmenu.vue";
     import Tasklist from "./Tasklist.vue";

@@ -4,7 +4,7 @@
             :class="{'bg-gradient-to-r from-green-500 to-green-200': isClicked, 'bg-gradient-to-r from-red-200 to-red-500': !isClicked}" 
             v-on:click="clickme"
             >
-        <span class="ml-2 text-black-600 font-bold text-xs">{{ buttonName }}</span>
+        <span class="ml-2 text-black-600 text-base">{{ buttonName }}</span>
     </button>
 </template>
 <script setup>

@@ -1,6 +1,6 @@
 <template>
-    <div class="text-center flex flex-col space-y-4 mb-10 mr-10 border-2 border-black h-3/6 bg-red-200" v-on:click="handleClick">
-        <h1 class="text-base font-serif italic font-bold text-purple-900">{{ title }}  {{ tasks.length }} task{{ isThereOnlyOneTask() }}</h1>
+    <div class="text-center flex flex-col space-y-4 m-4 rounded-md m-4 h-3/6 bg-red-200" v-on:click="handleClick">
+        <h1 class="text-base font-serif italic font-bold text-purple-900">{{ title }} -- {{ tasks.length }} task{{ isThereOnlyOneTask() }}</h1>
         <div class="flex flex-col" :class="{hidden: hideme}">
             <Task v-for="task in tasks" v-bind:key="task"
                   :priority="task.priority"
