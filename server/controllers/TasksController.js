@@ -50,7 +50,7 @@ exports.createTask = async (req, res) => {
         let task = new Task({
             description: req.body.description,
             userUuid: res.locals.user.uuid,
-            createdDate: new Date(),
+            createdDate: Date.now(),
             project: req.body.project,
             contexts: req.body.contexts,
             priority: req.body.priority
@@ -81,15 +81,44 @@ exports.createTask = async (req, res) => {
  */
 exports.deleteTask = async (req, res) => {
     try {
-        const neededKeys = ['description', 'project', 'contexts', 'priority'];
+        const neededKeys = ['uuid'];
 
         if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
             throw new createError(401, "Missing arguments")
         }
-        let count_delete = await tasksService.deleteTask(req.body, res.locals.user.email)
+        let count_delete = await tasksService.deleteTask(req.body.uuid, res.locals.user.uuid)
         res.status(200).json({
             message: "Task deleted",
             count: count_delete
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary complete a task
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+exports.completeTask = async (req, res) => {
+    try {
+        const neededKeys = ['uuid'];
+
+        if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
+            throw new createError(401, "Missing arguments")
+        }
+        await tasksService.completeTask(req.body.uuid, res.locals.user.uuid)
+        res.status(200).json({
+            message: "Task completed"
         })
     } catch (error) {
         res.status(error.status).json({
