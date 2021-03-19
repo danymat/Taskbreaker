@@ -7,6 +7,7 @@ exports.mockSingleUser = {
 }
 
 exports.mockSingleTask = {
+    uuid: "taskUuid",
     description: "Manger des oeufs",
     priority: null,
     project: "Healthy lifestyle",

@@ -88,7 +88,7 @@ exports.getInfo = async (user_uuid) => {
 /**
  * @param {uuid} user_uuid
  * @param {String} new_password encrypted password
- * @returns {import('../model/User').User|null}
+ * 
  */
 exports.changePasswordDb = async (user_uuid, new_password) => {
     try {

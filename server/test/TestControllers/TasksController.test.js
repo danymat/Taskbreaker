@@ -178,4 +178,59 @@ describe('Tasks Controller', () => {
         })
 
     })
+
+    describe('Delete Tasks', () => {
+        test('Body malformed', async () => {
+            mockRequest.body = {}
+            const expectedResponse = {
+                message: "Missing arguments",
+            }
+
+            await TasksController.deleteTask(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+        })
+
+        test('Task Deleted', async () => {
+            mockRequest.body = {
+                uuid: "taskUuid"
+            }
+            const expectedResponse = {
+                message: "Task deleted",
+                count: 1
+            }
+
+            await TasksController.deleteTask(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(200)
+        })
+
+    })
+
+    describe('Complete Tasks', () => {
+        test('Body malformed', async () => {
+            mockRequest.body = {}
+            const expectedResponse = {
+                message: "Missing arguments",
+            }
+
+            await TasksController.completeTask(mockRequest, mockResponse, nextFunction)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+        })
+
+        test('Task Deleted', async () => {
+            mockRequest.body = {
+                uuid: "testUuid"
+            }
+            const expectedResponse = {
+                message: "Task completed"
+            }
+
+            await TasksController.completeTask(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(200)
+        })
+
+    })
 })
