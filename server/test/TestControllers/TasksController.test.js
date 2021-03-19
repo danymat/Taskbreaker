@@ -58,6 +58,7 @@ describe('Tasks Controller', () => {
     describe('Get all user tasks', () => {
         test('Retrieving tasks', async () => {
             delete mockSingleTask._id
+            mockSingleTask.uuid = expect.anything()
             const expectedResponse = {
                 message: "All user tasks",
                 tasks: [mockSingleTask]
@@ -113,6 +114,7 @@ describe('Tasks Controller', () => {
                 })
                 ._id = expect.anything()
                 .created = expect.anything()
+                .uuid = expect.anything()
             }
 
             await TasksController.createTask(mockRequest, mockResponse, nextFunction)

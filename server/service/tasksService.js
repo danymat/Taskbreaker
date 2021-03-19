@@ -28,6 +28,7 @@ exports.findAllUserTasks = async (user) => {
         for (let index = 0; index < userTasks.length; index++) {
             const t = userTasks[index];
             let task = new Task({
+                uuid: t.uuid,
                 description: t.description,
                 userEmail: t.userEmail,
                 createdDate: t.createdDate,
