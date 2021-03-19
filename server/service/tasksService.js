@@ -22,15 +22,15 @@ exports.createTask = async (task) => {
  */
 exports.findAllUserTasks = async (user) => {
     try {
-        const query = { userEmail: user.email }
+        const query = { userUuid: user.uuid }
         let userTasks = await tasks.find(query, { _id: 0 }).toArray()
         var returnedTasks = []
         for (let index = 0; index < userTasks.length; index++) {
             const t = userTasks[index];
             let task = new Task({
                 uuid: t.uuid,
+                userUuid: t.userUuid,
                 description: t.description,
-                userEmail: t.userEmail,
                 createdDate: t.createdDate,
                 project: t.project,
                 contexts: t.contexts,

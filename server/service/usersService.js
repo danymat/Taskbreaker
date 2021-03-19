@@ -28,6 +28,7 @@ exports.findAllUsers = async () => {
         userList.forEach((u) => {
             returnedUsers.push(
                 new User({
+                    uuid: u.uuid,
                     username: u.username,
                     email: u.email,
                     password: u.password,
@@ -36,7 +37,6 @@ exports.findAllUsers = async () => {
                 })
             )
         })
-        console.log(returnedUsers)
         return returnedUsers
     } catch (error) {
         throw error
@@ -53,13 +53,14 @@ exports.findUser = async (email) => {
         let user = await users.findOne(query)
         if (user == null) { return null }
         return new User({
+            uuid: user.uuid,
             username: user.username,
             email: user.email,
             password: user.password,
             authorities: user.authorities
         })
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 

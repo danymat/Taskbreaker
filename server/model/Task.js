@@ -7,12 +7,13 @@ exports.Task = class {
         /**
          *
          * @param {Object} data
+         * @param {String} data.userUuid
          * @param {String} data.description
-         * @param {Number} data.userEmail
          * @param {String} [data.project]
          * @param {CONTEXT[]} [data.contexts]
          * @param {Number} [data.priority]
          * @param {Number} [data.createdDate]
+         * @param {Number} [data.uuid]
          */
         constructor(data) {
             data.priority = data.priority || null
@@ -22,7 +23,7 @@ exports.Task = class {
             }
             this.uuid = data.uuid || uuidv4();
             this.description = data.description
-            this.userEmail = data.userEmail
+            this.userUuid = data.userUuid
             this.priority = data.priority || null
             this.project = data.project || null
             this.contexts = data.contexts || []
