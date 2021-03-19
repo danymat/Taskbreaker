@@ -9,6 +9,10 @@ router.post('/sign-up',  UsersMiddleware.createUser, createToken)
 
 router.post('/login', UsersMiddleware.verifyLogin, createToken)
 
+router.get('/contexts', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.getContexts)
+
+router.post('/contexts', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.createContext)
+
 router.get('/tasks', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.getAllUserTasks)
 
 router.post('/task', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.createTask)
