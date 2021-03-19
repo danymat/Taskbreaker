@@ -67,3 +67,33 @@ exports.createTask = async (req, res) => {
         })
     }
 }
+
+/**
+ * @summary delete a task
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+exports.deleteTask = async (req, res) => {
+    try {
+        const neededKeys = ['description', 'project', 'contexts', 'priority'];
+
+        if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
+            throw new createError(401, "Missing arguments")
+        }
+        let count_delete = await tasksService.deleteTask(req.body, res.locals.user.email)
+        res.status(200).json({
+            message: "Task deleted",
+            count: count_delete
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}

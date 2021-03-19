@@ -43,3 +43,20 @@ exports.findAllUserTasks = async (user) => {
     }
 }
 
+exports.deleteTask = async (task, email) => {
+    try {
+        const query = {
+            description: task.description,
+            project: task.project,
+            contexts: task.contexts,
+            priority: task.priority,
+            userEmail: email
+        }
+        var result = await tasks.deleteOne(query)
+        var count = result['deletedCount']
+        return count
+    } catch (error) {
+        throw error
+    }
+}
+
