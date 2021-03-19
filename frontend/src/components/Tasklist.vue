@@ -14,6 +14,7 @@
                       :description="task.description"
                       :contexts="task.contexts"
                       :project="task.project"
+                      :completionDate="task.completionDate"
                       :show="showme(task)"
                       />
             </VueDraggableNext>

@@ -34,6 +34,7 @@ export async function registerUser(data) {
 export async function getUserTasks(data) {
     try {
         const test = await execute('GET', 'users/tasks', { data: data })
+        console.log(test)
         return test
     } catch (error) {
         console.log(error)
@@ -51,9 +52,19 @@ export async function createUserTask(data) {
     }
 }
 
-export async function deleteUserTask(task) {
+export async function deleteUserTask(uuid) {
     try {
-        const test = await execute('POST', 'users/deletetask', { data: task })
+        const test = await execute('POST', 'users/deletetask', { data: { uuid: uuid } })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
+
+export async function completeUserTask(uuid) {
+    try {
+        const test = await execute('POST', 'users/completetask', { data: { uuid: uuid } })
         return test
     } catch (error) {
         console.log(error)

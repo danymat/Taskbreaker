@@ -19,31 +19,30 @@
             <div class="absolute font-extralight text-tiny">Project</div>
             <h2 class="ml-2 mt-2 text-xs">{{ project }}</h2>
         </div>
+        <div v-if="true">
+            {{ completionDate }}
+        </div>
     </div>
 </template>
-
 <script setup>
     import { defineProps } from "vue";
-
     var props = defineProps({
         priority: Number,
         createdDate: String,
+        completionDate: Number,
         description: "",
         contexts: Array,
         project: "",
         show: Boolean
     });
-
     const getDateDay = () => {
         var date = new Date(props.createdDate)
         return date.getDate()
     }
-
     const getDateMonth = () => {
         var date = new Date(props.createdDate)
         return date.getMonth()+1
     }
-
     const getDateYear = () => {
         var date = new Date(props.createdDate)
         return date.getFullYear()
