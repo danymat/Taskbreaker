@@ -34,7 +34,9 @@ exports.getUserInfo = async (req, res) => {
             account: account
         })
     } catch (error) {
-        next(error)
+        res.status(error.status).json({
+            message: error.message
+        })
     }
 }
 
