@@ -13,4 +13,6 @@ router.get('/tasks', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecode
 
 router.post('/task', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.createTask)
 
+router.post('/deletetask', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.deleteTask)
+
 module.exports = router
