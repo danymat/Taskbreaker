@@ -55,13 +55,23 @@ exports.verifyLogin = async (req, res, next) => {
         if (! neededKeys.every(key => Object.keys(req.body).includes(key)) ) {
             throw new createError(401, "Missing arguments")
         }
-        let user = await usersService.findUser(req.body.email)
-        if (!user) {
-            throw new createError(403, "Wrong email or password")
+
+        var user = {}
+        try {
+            user = await usersService.findUser(req.body.email)
+            if (!user) {
+                throw new createError(403, "Wrong email or password")
+            }
+        } catch (error) {
+            throw new createError(403, "User not found")
         }
-        let verified = await verifyPassword(req.body.password, user.password)
-        if (!verified) {
-            throw new createError(403, "Wrong email or password")
+        try {
+            let verified = await verifyPassword(req.body.password, user.password)
+            if (!verified) {
+                throw new createError(403, "Wrong password")
+            }
+        } catch (error) {
+            throw new createError(403, "Wrong password")
         }
         next()
     } catch (error) {

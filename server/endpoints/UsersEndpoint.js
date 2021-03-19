@@ -2,12 +2,17 @@ const { Router } = require('express')
 const router = Router()
 const UsersMiddleware = require('../middlewares/UsersMiddleware')
 const TasksController = require('../controllers/TasksController')
+const UsersController = require('../controllers/UsersController')
 const AuthMiddleware = require('../middlewares/AuthMiddleware')
 const { createToken } = require('../controllers/AuthController')
 
 router.post('/sign-up',  UsersMiddleware.createUser, createToken)
 
 router.post('/login', UsersMiddleware.verifyLogin, createToken)
+
+router.post('/changepassword', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, UsersController.changePassword)
+
+router.get('/account', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, UsersController.getUserInfo)
 
 router.get('/tasks', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.getAllUserTasks)
 

@@ -5,7 +5,6 @@ import Register from "./../components/Register.vue";
 import Login from "./../components/Login.vue";
 import About from "./../components/About.vue";
 import Account from "./../components/Account.vue";
-import Settings from "./../components/Settings.vue";
 import store from './../store';
 import PageNotFound from "./../components/PageNotFound.vue";
 
@@ -19,14 +18,6 @@ const routes = [
         path: "/taskboard",
         name: "Taskboard",
         component: Taskboard,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: "/settings",
-        name: "Settings",
-        component: Settings,
         meta: {
             requiresAuth: true
         }

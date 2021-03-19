@@ -29,6 +29,26 @@ export async function registerUser(data) {
     }
 }
 
+export async function postChangePassword(data) {
+    try {
+        const test = await execute('POST', 'users/changepassword', { data: data })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error.data
+    }
+}
+
+export async function getUserData() {
+    try {
+        const test = await execute('GET', 'users/account')
+        return test
+    } catch (error) {
+        console.log(error)
+        return error.data
+    }
+}
+
 export async function getUserTasks(data) {
     try {
         const test = await execute('GET', 'users/tasks', { data: data })

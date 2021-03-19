@@ -10,9 +10,6 @@
             <router-link to="/account" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
                 Account
             </router-link>
-            <router-link to="/settings" tag="button" class="p-2" v-if="store.getters.isLoggedIn">
-                Settings
-            </router-link>
             <router-link to="/about" tag="button" class="p-2">
                 About
             </router-link>
