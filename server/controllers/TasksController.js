@@ -50,7 +50,7 @@ exports.createTask = async (req, res) => {
         let task = new Task({
             description: req.body.description,
             userUuid: res.locals.user.uuid,
-            createdDate: new Date(),
+            createdDate: Date.now(),
             project: req.body.project,
             contexts: req.body.contexts,
             priority: req.body.priority
