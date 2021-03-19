@@ -26,7 +26,7 @@ describe('Tasks Controller', () => {
         db = await mongoConnection.getDB();
         users = db.collection('users');
         tasks = db.collection('tasks');
-
+        mockSingleTask.userUuid = 'testUuid'
         await users.insertOne(mockSingleUser);
         await tasks.insertOne(mockSingleTask);
     });
@@ -37,6 +37,7 @@ describe('Tasks Controller', () => {
         mockResponse.json = jest.fn().mockReturnValue(mockResponse)
         mockResponse.status = jest.fn().mockReturnValue(mockResponse)
         let user = new User({
+            uuid: 'testUuid',
             username: mockSingleUser.username,
             email: mockSingleUser.email,
             password: mockSingleUser.password,
@@ -58,6 +59,8 @@ describe('Tasks Controller', () => {
     describe('Get all user tasks', () => {
         test('Retrieving tasks', async () => {
             delete mockSingleTask._id
+            mockSingleTask.uuid = expect.anything()
+
             const expectedResponse = {
                 message: "All user tasks",
                 tasks: [mockSingleTask]
@@ -113,6 +116,7 @@ describe('Tasks Controller', () => {
                 })
                 ._id = expect.anything()
                 .created = expect.anything()
+                .uuid = expect.anything()
             }
 
             await TasksController.createTask(mockRequest, mockResponse, nextFunction)
