@@ -1,4 +1,5 @@
 const { getDB } = require('../connection/MongoConnection')
+const { createError } = require('../constants/Error')
 const { Task } = require('../model/Task')
 
 const _db = getDB()
@@ -12,7 +13,7 @@ exports.createTask = async (task) => {
     try {
         await tasks.insertOne(task)
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 
@@ -40,7 +41,7 @@ exports.findAllUserTasks = async (user) => {
         }
         return returnedTasks
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 

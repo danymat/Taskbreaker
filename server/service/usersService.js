@@ -10,10 +10,10 @@ const users = _db.collection('users')
  */
 exports.addUser = async (user) => {
     try {
-        if (user == undefined) { throw Error('No User Created') }
+        if (user == undefined) { throw new createError('No user created') }
         await users.insertOne(user)
     } catch (error) {
-        throw error
+        throw new createError(error.status, error.message)
     }
 }
 
@@ -39,7 +39,7 @@ exports.findAllUsers = async () => {
         })
         return returnedUsers
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 
@@ -79,6 +79,6 @@ exports.isUserAlreadyTaken = async (user) => {
             throw new createError(403, 'User already taken')
         }
     } catch (error) {
-        throw error
+        throw new createError(error.status, error.message)
     }
 }
