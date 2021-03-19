@@ -19,8 +19,8 @@
             <div class="absolute font-extralight text-tiny">Project</div>
             <h2 class="ml-2 mt-2 text-xs">{{ project }}</h2>
         </div>
-        <div v-if="true">
-            {{ completionDate }}
+        <div v-if="completionDate">
+            COMPLETED
         </div>
     </div>
 </template>
@@ -28,7 +28,7 @@
     import { defineProps } from "vue";
     var props = defineProps({
         priority: Number,
-        createdDate: String,
+        createdDate: Number,
         completionDate: Number,
         description: "",
         contexts: Array,

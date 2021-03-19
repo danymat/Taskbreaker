@@ -67,8 +67,6 @@ exports.completeTask = async (task_uuid, user_uuid) => {
             userUuid: user_uuid
         }
         await tasks.updateOne(query, { $set: { completionDate: Date.now() } })
-        let userTasks = await tasks.find(query).toArray()
-        console.log(userTasks)
         return 1
     } catch (error) {
         throw error

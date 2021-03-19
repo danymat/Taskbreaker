@@ -28,7 +28,7 @@ exports.Task = class {
             this.project = data.project || null
             this.contexts = data.contexts || []
             this.createdDate = data.createdDate || Date.now()
-            this.completionDate = null
+            this.completionDate = data.completionDate || null
             this.optionals = {}
         }
 
