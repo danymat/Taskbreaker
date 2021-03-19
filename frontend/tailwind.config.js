@@ -2,6 +2,9 @@ module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
     theme: {
+        fontFamily: {
+            'cursive': ['cursive']
+        },
         minHeight: {
             '0': '0',
             '1/4': '25%',
@@ -10,9 +13,9 @@ module.exports = {
             'full': '100%',
         },
         fontSize: {
-            'xs': '.60rem',
-            'sm': '.70rem',
-            'tiny': '.50rem',
+            'xs': '.70rem',
+            'sm': '.80rem',
+            'tiny': '.60rem',
             'base': '1rem',
             'lg': '1.125rem',
             'xl': '1.25rem',

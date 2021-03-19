@@ -14,7 +14,7 @@
         d="M12 6v6m0 0v6m0-6h6m-6 0H6"
       />
     </svg>
-    <span class="ml-2 text-white-600 text-sm">{{ buttonName }}</span>
+    <span class="ml-2 text-white-600 text-base">{{ buttonName }}</span>
   </button>
 </template>
 <script setup>

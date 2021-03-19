@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col space-y-20 text-gray-700 justify-center bg-white h-screen">
-    <div class="px-9 h-full">
-      <Navbar class="border-b border-gray-300" />
-      <div class="relative h-5/6">
+    <div class="h-screen">
+      <Navbar />
+      <div class="relative ml-9 h-5/6">
           <Menu v-if="!store.getters.isMenuHidden" />
           <div class="absolute inset-0 grid justify-center gap-2 pt-6">
               <router-view />

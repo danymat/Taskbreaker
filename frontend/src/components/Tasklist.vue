@@ -1,6 +1,6 @@
 <template>
-    <div class="text-center flex flex-col space-y-10 mb-10 mr-10 border-2 border-black h-3/6 bg-yellow-200">
-        <h1>{{ title }}</h1>
+    <div class="text-center flex flex-col space-y-5 rounded-md m-4 h-3/6 bg-yellow-200">
+        <h1 class="text-lg font-bold font-cursive">{{ title }}</h1>
         <select name="sort" v-model="sortval" @change="send_sort" :class="{hidden: hideme}">
             <option value="manual">Manual sort</option>
             <option value="priority">Priority sort</option>
