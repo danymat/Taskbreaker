@@ -33,6 +33,7 @@ exports.findAllUserTasks = async (user) => {
                 userUuid: t.userUuid,
                 description: t.description,
                 createdDate: t.createdDate,
+                completionDate: t.completionDate,
                 project: t.project,
                 contexts: t.contexts,
                 priority: t.priority
@@ -45,18 +46,28 @@ exports.findAllUserTasks = async (user) => {
     }
 }
 
-exports.deleteTask = async (task, email) => {
+exports.deleteTask = async (task_uuid, user_uuid) => {
     try {
         const query = {
-            description: task.description,
-            project: task.project,
-            contexts: task.contexts,
-            priority: task.priority,
-            userEmail: email
+            uuid: task_uuid,
+            userUuid: user_uuid
         }
         var result = await tasks.deleteOne(query)
         var count = result['deletedCount']
         return count
+    } catch (error) {
+        throw error
+    }
+}
+
+exports.completeTask = async (task_uuid, user_uuid) => {
+    try {
+        const query = {
+            uuid: task_uuid,
+            userUuid: user_uuid
+        }
+        await tasks.updateOne(query, { $set: { completionDate: Date.now() } })
+        return 1
     } catch (error) {
         throw error
     }

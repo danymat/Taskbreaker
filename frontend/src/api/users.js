@@ -11,7 +11,6 @@ export async function logUser(data) {
     try {
         const test = await execute('POST', 'users/login', { data: data })
         store.dispatch('login', { token: test.token, email: test.email })
-        console.log(test)
         return test
     } catch (error) {
         console.log(error)
@@ -23,7 +22,6 @@ export async function registerUser(data) {
     try {
         const test = await execute('POST', 'users/sign-up', { data: data })
         store.dispatch('register', { token: test.token, email: test.email })
-        console.log(test)
         return test
     } catch (error) {
         console.log(error)
@@ -51,9 +49,19 @@ export async function createUserTask(data) {
     }
 }
 
-export async function deleteUserTask(task) {
+export async function deleteUserTask(uuid) {
     try {
-        const test = await execute('POST', 'users/deletetask', { data: task })
+        const test = await execute('POST', 'users/deletetask', { data: { uuid: uuid } })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
+
+export async function completeUserTask(uuid) {
+    try {
+        const test = await execute('POST', 'users/completetask', { data: { uuid: uuid } })
         return test
     } catch (error) {
         console.log(error)
