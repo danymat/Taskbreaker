@@ -1,7 +1,7 @@
 const mongoConnection = require('../../connection/MongoConnection');
 const { Task } = require('../../model/Task');
 const { User } = require('../../model/User');
-const { mockSingleUser, mockSingleTask } = require('../mocks')
+const { mockSingleUser, mockSingleTask, mockSingleContext } = require('../mocks')
 let TasksController;
 
 describe('Tasks Controller', () => {
@@ -18,6 +18,8 @@ describe('Tasks Controller', () => {
     let users;
     /** @type {import('mongodb').Collection} */
     let tasks;
+    /** @type {import('mongodb').Collection} */
+    let contexts;
 
     beforeAll(async () => {
         await mongoConnection.connectToMongoAtlas(process.env.MONGO_URL)
@@ -26,9 +28,12 @@ describe('Tasks Controller', () => {
         db = await mongoConnection.getDB();
         users = db.collection('users');
         tasks = db.collection('tasks');
+        contexts = db.collection('contexts');
         mockSingleTask.userUuid = 'testUuid'
+        mockSingleContext.userUuid = 'testUuid'
         await users.insertOne(mockSingleUser);
         await tasks.insertOne(mockSingleTask);
+        await contexts.insertOne(mockSingleContext);
     });
 
     beforeEach(async () => {
@@ -53,6 +58,7 @@ describe('Tasks Controller', () => {
     afterAll(async () => {
         await users.deleteMany({});
         await tasks.deleteMany({});
+        await contexts.deleteMany({});
         await mongoConnection.closeDB()
     })
 
@@ -119,10 +125,57 @@ describe('Tasks Controller', () => {
                 .uuid = expect.anything()
             }
 
-            await TasksController.createTask(mockRequest, mockResponse, nextFunction)
+            await TasksController.createTask(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(200)
+        })
+    })
+
+    describe('User Contexts', () => {
+        test('Body malformed', async () => {
+            mockRequest.body = {}
+            const expectedResponse = {
+                message: "Missing arguments",
+            }
+
+            await TasksController.createContext(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(401)
+        })
+
+        test('Contexts retrieved', async () => {
+            delete mockSingleContext._id
+            const expectedResponse = {
+                message: "User contexts",
+                contexts: [mockSingleContext]
+            }
+
+            await TasksController.getContexts(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
             expect(mockResponse.status).toBeCalledWith(200)
             expect(nextFunction).toBeCalledTimes(0);
         })
+
+        test('Context created', async () => {
+            mockRequest.body = {
+                context: 'home'
+            }
+            var context = {
+                title: 'home',
+                userUuid: 'testUuid'
+            }
+            .uuid = expect.anything()
+            ._id = expect.anything()
+
+            const expectedResponse = {
+                message: "Context created",
+                context: context
+            }
+
+            await TasksController.createContext(mockRequest, mockResponse)
+            expect(mockResponse.json).toBeCalledWith(expectedResponse)
+            expect(mockResponse.status).toBeCalledWith(200)
+        })
+
     })
 })

@@ -1,6 +1,8 @@
 const { createError } = require('../constants/Error')
 const { Task } = require('../model/Task')
 const tasksService = require('../service/tasksService')
+const contextsService = require('../service/contextsService')
+const { Context } = require('../model/Context')
 
 
 /**
@@ -99,7 +101,65 @@ exports.deleteTask = async (req, res) => {
 }
 
 /**
- * @summary complete a task
+ * @summary Get all user contexts
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+exports.getContexts = async (req, res) => {
+    try {
+        let contexts = await contextsService.findAllUserContexts(res.locals.user)
+        res.status(200).json({
+            message: "User contexts",
+            contexts: contexts
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary Create a new context
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+ exports.createContext = async (req, res) => {
+    try {
+        const neededKeys = ['context'];
+        if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
+            throw new createError(401, "Missing arguments")
+        }
+        let context = new Context({
+            userUuid: res.locals.user.uuid,
+            title: req.body.context
+        })
+        await contextsService.createContext(context)
+        res.status(200).json({
+            message: "Context created",
+            context: context 
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary Complete a task
  *
  * Must be called after getUserFromDecoded
  * @typedef {Object} userLocals
@@ -112,7 +172,7 @@ exports.deleteTask = async (req, res) => {
 exports.completeTask = async (req, res) => {
     try {
         const neededKeys = ['uuid'];
-
+      
         if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
             throw new createError(401, "Missing arguments")
         }

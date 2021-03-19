@@ -10,9 +10,14 @@ router.post('/sign-up',  UsersMiddleware.createUser, createToken)
 
 router.post('/login', UsersMiddleware.verifyLogin, createToken)
 
+
 router.post('/changepassword', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, UsersController.changePassword)
 
 router.get('/account', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, UsersController.getUserInfo)
+
+router.get('/contexts', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.getContexts)
+
+router.post('/contexts', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.createContext)
 
 router.get('/tasks', AuthMiddleware.verifyJwt, UsersMiddleware.getUserFromDecoded, TasksController.getAllUserTasks)
 
