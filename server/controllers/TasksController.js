@@ -138,6 +138,10 @@ exports.getContexts = async (req, res) => {
  */
  exports.createContext = async (req, res) => {
     try {
+        const neededKeys = ['context'];
+        if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
+            throw new createError(401, "Missing arguments")
+        }
         let context = new Context({
             userUuid: res.locals.user.uuid,
             title: req.body.context
@@ -145,7 +149,7 @@ exports.getContexts = async (req, res) => {
         await contextsService.createContext(context)
         res.status(200).json({
             message: "Context created",
-            contexts: context
+            context: context
         })
     } catch (error) {
         res.status(error.status).json({

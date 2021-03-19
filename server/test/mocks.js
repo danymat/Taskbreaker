@@ -17,3 +17,8 @@ exports.mockSingleTask = {
     completionDate: null,
     optionals: {}
 }
+
+exports.mockSingleContext = {
+    title: "Home",
+    uuid: 'uuid'
+}
