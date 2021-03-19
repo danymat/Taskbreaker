@@ -10,10 +10,10 @@ const users = _db.collection('users')
  */
 exports.addUser = async (user) => {
     try {
-        if (user == undefined) { throw Error('No User Created') }
+        if (user == undefined) { throw new createError('No user created') }
         await users.insertOne(user)
     } catch (error) {
-        throw error
+        throw new createError(error.status, error.message)
     }
 }
 
@@ -28,6 +28,7 @@ exports.findAllUsers = async () => {
         userList.forEach((u) => {
             returnedUsers.push(
                 new User({
+                    uuid: u.uuid,
                     username: u.username,
                     email: u.email,
                     password: u.password,
@@ -36,10 +37,9 @@ exports.findAllUsers = async () => {
                 })
             )
         })
-        console.log(returnedUsers)
         return returnedUsers
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 
@@ -53,13 +53,14 @@ exports.findUser = async (email) => {
         let user = await users.findOne(query)
         if (user == null) { return null }
         return new User({
+            uuid: user.uuid,
             username: user.username,
             email: user.email,
             password: user.password,
             authorities: user.authorities
         })
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 
@@ -78,6 +79,6 @@ exports.isUserAlreadyTaken = async (user) => {
             throw new createError(403, 'User already taken')
         }
     } catch (error) {
-        throw error
+        throw new createError(error.status, error.message)
     }
 }

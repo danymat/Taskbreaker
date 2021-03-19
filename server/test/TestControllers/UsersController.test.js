@@ -41,6 +41,7 @@ describe('Users Controller', () => {
     describe('Get all users', () => {
         test('Retrieving users', async () => {
             delete mockSingleUser._id
+            mockSingleUser.uuid = expect.anything()
             const expectedResponse = {
                 message: "All DB Users",
                 users: [mockSingleUser]

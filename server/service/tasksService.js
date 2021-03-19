@@ -1,4 +1,5 @@
 const { getDB } = require('../connection/MongoConnection')
+const { createError } = require('../constants/Error')
 const { Task } = require('../model/Task')
 
 const _db = getDB()
@@ -12,7 +13,7 @@ exports.createTask = async (task) => {
     try {
         await tasks.insertOne(task)
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 
@@ -22,14 +23,15 @@ exports.createTask = async (task) => {
  */
 exports.findAllUserTasks = async (user) => {
     try {
-        const query = { userEmail: user.email }
+        const query = { userUuid: user.uuid }
         let userTasks = await tasks.find(query, { _id: 0 }).toArray()
         var returnedTasks = []
         for (let index = 0; index < userTasks.length; index++) {
             const t = userTasks[index];
             let task = new Task({
+                uuid: t.uuid,
+                userUuid: t.userUuid,
                 description: t.description,
-                userEmail: t.userEmail,
                 createdDate: t.createdDate,
                 project: t.project,
                 contexts: t.contexts,
@@ -39,7 +41,7 @@ exports.findAllUserTasks = async (user) => {
         }
         return returnedTasks
     } catch (error) {
-        throw error
+        throw new createError(401, error)
     }
 }
 

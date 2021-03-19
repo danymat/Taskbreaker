@@ -49,7 +49,7 @@ exports.createTask = async (req, res) => {
         //TODO verify contexts, project priority, description
         let task = new Task({
             description: req.body.description,
-            userEmail: res.locals.user.email,
+            userUuid: res.locals.user.uuid,
             createdDate: new Date(),
             project: req.body.project,
             contexts: req.body.contexts,

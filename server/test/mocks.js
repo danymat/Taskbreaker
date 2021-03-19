@@ -8,7 +8,6 @@ exports.mockSingleUser = {
 
 exports.mockSingleTask = {
     description: "Manger des oeufs",
-    userEmail: "testUsername@test.com",
     priority: null,
     project: "Healthy lifestyle",
     contexts: [
