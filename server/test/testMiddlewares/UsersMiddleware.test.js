@@ -60,7 +60,7 @@ describe('Users Middleware', () => {
             }
             await UsersMiddleware.createUser(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
-            expect(mockResponse.status).toBeCalledWith(403)
+            expect(mockResponse.status).toBeCalledWith(401)
             expect(nextFunction).toBeCalledTimes(0);
         })
 
@@ -98,7 +98,7 @@ describe('Users Middleware', () => {
             }
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
-            expect(mockResponse.status).toBeCalledWith(403)
+            expect(mockResponse.status).toBeCalledWith(401)
             expect(nextFunction).toBeCalledTimes(0);
         })
 
@@ -110,7 +110,7 @@ describe('Users Middleware', () => {
 
             await UsersMiddleware.verifyLogin(mockRequest, mockResponse, nextFunction)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
-            expect(mockResponse.status).toBeCalledWith(403)
+            expect(mockResponse.status).toBeCalledWith(401)
             expect(nextFunction).toBeCalledTimes(0);
         })
 

@@ -113,7 +113,7 @@ exports.isUserAlreadyTaken = async (user) => {
         let userQuery = await users.findOne(query)
         let isTaken = userQuery != null
         if (isTaken) {
-            throw new createError(403, 'User already taken')
+            throw new createError(401, 'User already taken')
         }
     } catch (error) {
         throw new createError(error.status, error.message)

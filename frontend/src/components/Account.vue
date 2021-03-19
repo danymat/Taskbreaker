@@ -22,6 +22,8 @@
 <script setup>
     import { getUserData, postChangePassword } from '../api/users';
     import { ref } from "vue";
+    import store from './../store'
+    import router from './../router'
 
     const account = ref({})
     const hideme = ref(true)
@@ -31,8 +33,13 @@
     const messageChange = ref('')
 
     async function getUserInfo() {
-        let resp = await getUserData()
-        account.value = resp.account
+        try {
+            let resp = await getUserData()
+            account.value = resp.account
+        } catch (error) {
+            store.dispatch('logout')
+            router.push('/')
+        }
     }
     getUserInfo()
 
@@ -42,7 +49,12 @@
             return
         }
         let data = { oldpassword: oldpassword.value, password: password.value }
-        let resp = await postChangePassword(data)
+        var resp = {message: ""}
+        try {
+            resp = await postChangePassword(data)
+        } catch (error) {
+            resp.message = error.message
+        }
         messageChange.value = resp.message
         hideme.value = true
     }

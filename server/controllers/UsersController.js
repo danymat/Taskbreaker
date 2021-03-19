@@ -49,17 +49,17 @@ exports.changePassword = async (req, res) => {
         try {
             user = await getInfo(res.locals.user.uuid)
         } catch (error) {
-            throw new createError(403, "User not found")
+            throw new createError(401, "User not found")
         }
 
         var verified = false
         try {
             verified = await verifyPassword(req.body.oldpassword, user.password)
             if (!verified) {
-                throw new createError(403, "Wrong password")
+                throw new createError(401, "Wrong password")
             }
         } catch (error) {
-            throw new createError(403, "Wrong password")
+            throw new createError(401, "Wrong password")
         }
         
         var encrypted_password = await encryptPassword(req.body.password)

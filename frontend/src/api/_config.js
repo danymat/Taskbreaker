@@ -63,7 +63,7 @@ client.interceptors.response.use(
                     router.push('PageNotFound');
                     break;
             }
-            return Promise.reject(error.response);
+            return Promise.reject(error);
         }
     }
 ); 
