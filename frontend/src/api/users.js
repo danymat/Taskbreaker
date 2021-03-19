@@ -50,3 +50,13 @@ export async function createUserTask(data) {
         return error
     }
 }
+
+export async function deleteUserTask(task) {
+    try {
+        const test = await execute('POST', 'users/deletetask', { data: task })
+        return test
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}

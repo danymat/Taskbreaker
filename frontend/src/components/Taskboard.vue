@@ -12,6 +12,7 @@
                 <option value="">Any project</option>
                 <option v-for="name in listprojects" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
+            <CleanButton buttonName="Delete All Tasks" @click="() => deleteAllTasks()" />
         </div>
         <Taskmenu :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
         <div class="flex flex-row w-11/12 h-5/6">
@@ -61,7 +62,7 @@
     import Listmenu from "./listmenu.vue";
     import ClickedButton from "./ClickedButton.vue";
     import { VueDraggableNext } from 'vue-draggable-next';
-    import { getUserTasks, createUserTask } from '../api/users';
+    import { getUserTasks, createUserTask, deleteUserTask } from '../api/users';
     import store from './../store';
     import Project from './Project.vue';
 
@@ -169,6 +170,15 @@
                     boardlists.value.push(sidedlists.value[elt])
                     sidedlists.value.splice(elt, 1)
                 }
+            }
+        }
+    }
+
+    //delete all tasks 
+    const deleteAllTasks = () => {
+        for (var list in all_lists.value) {
+            for (var task of all_lists.value[list]) {
+                deleteUserTask(task)
             }
         }
     }
