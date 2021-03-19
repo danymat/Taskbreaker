@@ -64,7 +64,44 @@ exports.findUser = async (email) => {
     }
 }
 
+/**
+ * @param {uuid} user_uuid
+ * @returns {import('../model/User').User|null}
+ */
+exports.getInfo = async (user_uuid) => {
+    try {
+        let query = { uuid: user_uuid }
+        let user = await users.findOne(query)
+        if (user == null) { return null }
+        return {
+            uuid: user.uuid,
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            authorities: user.authorities
+        }
+    } catch (error) {
+        throw new createError(401, error)
+    }
+}
 
+/**
+ * @param {uuid} user_uuid
+ * @param {String} new_password encrypted password
+ * @returns {import('../model/User').User|null}
+ */
+exports.changePasswordDb = async (user_uuid, new_password) => {
+    try {
+        let query = { uuid: user_uuid }
+        let test = await users.findOne(query)
+        console.log(test)
+        await users.updateOne(query, { $set: { password: new_password } })
+        test = await users.findOne(query)
+        console.log(test)
+    } catch (error) {
+        throw new createError(401, error)
+    }
+}
 
 /**
  *
@@ -76,7 +113,7 @@ exports.isUserAlreadyTaken = async (user) => {
         let userQuery = await users.findOne(query)
         let isTaken = userQuery != null
         if (isTaken) {
-            throw new createError(403, 'User already taken')
+            throw new createError(401, 'User already taken')
         }
     } catch (error) {
         throw new createError(error.status, error.message)

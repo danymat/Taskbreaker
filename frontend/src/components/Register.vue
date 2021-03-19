@@ -18,7 +18,7 @@
                     type="submit">
                 Sign-up with your email
             </button>
-            <p id="messagewrong" class="text-red-500" :class="{hidden: !error}">{{errorMessage}}</p>
+            <p id="messagewrong" class="text-red-500" :class="{hidden: !errorbool}">{{errorMessage}}</p>
         </form>
     </div>
 </template>
@@ -31,16 +31,16 @@
     const password = ref('')
     const passwordconf = ref('')
     const email = ref('')
-    const error = ref(false)
+    const errorbool = ref(false)
     const errorMessage = ref('')
 
     async function signUp() {
-        const data = await registerUser({ username: username.value, email: email.value, password: password.value, passwordconf: passwordconf.value })
-        if (typeof (data.token) == "undefined") {
-            error.value = true
-            errorMessage.value = data.message
-        } else {
+        try {
+            await registerUser({ username: username.value, email: email.value, password: password.value, passwordconf: passwordconf.value })
             router.push('taskboard');
+        } catch (error) {
+            errorbool.value = true
+            errorMessage.value = error.message
         }
     }
 </script>

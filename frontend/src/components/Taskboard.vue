@@ -86,55 +86,61 @@
 
     //get all tasks from the server for this user
     async function getAllTasks() {
-        const data = await getUserTasks({ email: store.getters.email })
-        if (data.tasks.length != 0) {
-            for (var taski in data.tasks) {
-                all_lists.value['Inbox'].push(data.tasks[taski]) //adding task to inbox list
+        try {
+            const data = await getUserTasks({ email: store.getters.email })
+            if (data.tasks.length != 0) {
+                for (var taski in data.tasks) {
+                    all_lists.value['Inbox'].push(data.tasks[taski]) //adding task to inbox list
 
-                // filling listcontexts
-                for (var context in data.tasks[taski].contexts) {
-                    if (!listcontexts.value.includes(data.tasks[taski].contexts[context]) && (data.tasks[taski].contexts[context]!='')) {
-                        listcontexts.value.push(data.tasks[taski].contexts[context])
+                    // filling listcontexts
+                    for (var context in data.tasks[taski].contexts) {
+                        if (!listcontexts.value.includes(data.tasks[taski].contexts[context]) && (data.tasks[taski].contexts[context] != '')) {
+                            listcontexts.value.push(data.tasks[taski].contexts[context])
+                        }
                     }
-                }
 
-                // filling listproject
-                if (!listprojects.value.includes(data.tasks[taski].project) && (data.tasks[taski].project != '') && (data.tasks[taski].project != null)) {
-                    listprojects.value.push(data.tasks[taski].project)
-                    listtasksofprojects.value[data.tasks[taski].project] = []
+                    // filling listproject
+                    if (!listprojects.value.includes(data.tasks[taski].project) && (data.tasks[taski].project != '') && (data.tasks[taski].project != null)) {
+                        listprojects.value.push(data.tasks[taski].project)
+                        listtasksofprojects.value[data.tasks[taski].project] = []
+                    }
+                    if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
+                        listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
                 }
-                if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
-                    listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
-            } 
-        } else {
-            alert('no tasks :'+data.message)
+            } else {
+                alert('no tasks :' + data.message)
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
     async function createTask(task, listname) {
         if (Object.keys(all_lists.value).includes(listname.value)) {
-            const data = await createUserTask(task.value)
-            if (typeof(data) == 'undefined') {
+            try {
+                const data = await createUserTask(task.value)
+                
+                all_lists.value[listname.value].push(data.task)
+
+                // filling listcontext
+                for (var context in data.task.contexts) {
+                    if (!listcontexts.value.includes(data.task.contexts[context])) {
+                        listcontexts.value.push(data.task.contexts[context])
+                    }
+                }
+
+                // filling listprojects
+                if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
+                    listprojects.value.push(data.task.project)
+                    listtasksofprojects.value[data.task.project] = []
+                }
+                if ((data.task.project != '') && (data.task.project != null))
+                    listtasksofprojects.value[data.task.project].push(data.task)
+            } catch (error) {
                 return;
             }
-            all_lists.value[listname.value].push(data.task)
-
-            // filling listcontext
-            for (var context in data.task.contexts) {
-                if (!listcontexts.value.includes(data.task.contexts[context])) {
-                    listcontexts.value.push(data.task.contexts[context])
-                }
-            }
-
-            // filling listprojects
-            if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
-                listprojects.value.push(data.task.project)
-                listtasksofprojects.value[data.task.project] = []
-            }
-            if ((data.task.project != '') && (data.task.project != null))
-                listtasksofprojects.value[data.task.project].push(data.task)
         }
-    };
+    }
 
     //create new list
     const createList = (listname) => {

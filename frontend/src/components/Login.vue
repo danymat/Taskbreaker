@@ -17,7 +17,7 @@
             >
                 Sign In
             </button>
-            <p id="messagewrong" class="text-red-500" :class="{hidden: !error}">{{errorMessage}}</p>
+            <p id="messagewrong" class="text-red-500" :class="{hidden: !errorbool}">{{errorMessage}}</p>
         </form>
     </div>
 </template>
@@ -29,16 +29,16 @@
 
 const password = ref('')
 const email = ref('')
-const error = ref(false)
+const errorbool = ref(false)
 const errorMessage = ref('')
 
     async function logIn() {
-        const data = await logUser({ email: email.value, password: password.value })
-        if (typeof (data.token) == "undefined") {
-            error.value = true
-            errorMessage.value = data.message
-       } else {
+        try {
+            await logUser({ email: email.value, password: password.value })
             router.push('taskboard');
-       }
-}
+        } catch (error) {
+            errorbool.value = true
+            errorMessage.value = error.message
+        }
+    }
 </script>
