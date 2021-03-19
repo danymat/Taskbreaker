@@ -5,14 +5,19 @@
                 <NewButton buttonName="Create Task" class="" @click="createTask" />
                 <img :src="'/sprites/wizzard/run_'+img_number+'.png'" width="40" height="37" />
             </div>
-                <input type="number" placeholder="priority" v-model="priori" min="0" max="2" />
-                <select name="listname" v-model="listname">
-                    <option value="">--List Name--</option>
-                    <option :value="name" v-for="name in listsnames" v-bind:key="name">{{ name }}</option>
-                </select>
-                <input type="text" placeholder="Taskname *Required*" v-model="task.description" />
-                <input type="text" placeholder="Context" v-model="context" />
-                <input type="text" placeholder="Project" v-model="task.project" />
+            <input type="number" placeholder="priority" v-model="priori" min="0" max="2" />
+            <select name="listname" v-model="listname">
+                <option :value="name" v-for="name in listsnames" v-bind:key="name">{{ name }}</option>
+            </select>
+            <input type="text" placeholder="Taskname *Required*" v-model="task.description" />
+            <input type="text" placeholder="Context" v-model="context" list="contextslist" />
+            <datalist id="contextslist">
+                <option v-for="cont in contexts">{{cont}}</option>
+            </datalist>
+            <input type="text" placeholder="Project" v-model="task.project" list="projectslist" />
+            <datalist id="projectslist">
+                <option v-for="proj in projects">{{proj}}</option>
+            </datalist>
 
         </form>
     </div>
@@ -26,6 +31,8 @@
 
     defineProps({
         listsnames: Array,
+        contexts: Array,
+        projects: Array
     });
 
     const img_number = ref(1);
@@ -35,7 +42,7 @@
     }
 
     var bdcolor = ref("")
-    var listname = ref("")
+    var listname = ref("Inbox")
     var task = ref({
         priority: null,
         description: "",
@@ -49,7 +56,8 @@
         if (task.value.description.length != 0) {
             task.value.priority = parseInt(priori.value, 10)
             task.value.contexts.push(context.value)
-            emit("task", [task,listname]);
+            emit("task", [task, listname]);
+            task.value.contexts = [];
         } else {
             bdcolor.value = "border-red-600";
         }

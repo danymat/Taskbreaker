@@ -13,7 +13,7 @@
                 <option v-for="name in listprojects" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
         </div>
-        <Taskmenu :listsnames="listnames" @task="(value) => createTask(value[0],value[1])" />
+        <Taskmenu :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
         <div class="flex flex-row w-11/12 h-5/6">
             <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
                 <p class="text-lg font-bold font-cursive mt-2">Projects</p>
