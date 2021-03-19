@@ -63,15 +63,15 @@ exports.verifyLogin = async (req, res, next) => {
                 throw new createError(403, "Wrong email or password")
             }
         } catch (error) {
-            throw new createError(403, "User not found")
+            throw new createError(403, "Wrong email or password")
         }
         try {
             let verified = await verifyPassword(req.body.password, user.password)
             if (!verified) {
-                throw new createError(403, "Wrong password")
+                throw new createError(403, "Wrong email or password")
             }
         } catch (error) {
-            throw new createError(403, "Wrong password")
+            throw new createError(403, "Wrong email or password")
         }
         next()
     } catch (error) {
