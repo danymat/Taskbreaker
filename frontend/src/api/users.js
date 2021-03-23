@@ -88,3 +88,23 @@ export async function completeUserTask(uuid) {
         throw error.data
     }
 }
+
+export async function addContext(context) {
+    try {
+        const test = await execute('POST', 'users/context', { data: { context: context } })
+        return test
+    } catch (error) {
+        console.log(error)
+        throw error.data
+    }
+}
+
+export async function addProject(project) {
+    try {
+        const test = await execute('POST', 'users/project', { data: { project: project } })
+        return test
+    } catch (error) {
+        console.log(error)
+        throw error.data
+    }
+}

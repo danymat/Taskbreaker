@@ -63,7 +63,7 @@
     import Listmenu from "./listmenu.vue";
     import ClickedButton from "./ClickedButton.vue";
     import { VueDraggableNext } from 'vue-draggable-next';
-    import { getUserTasks, createUserTask, deleteUserTask, completeUserTask } from '../api/users';
+    import { getUserTasks, createUserTask, deleteUserTask, completeUserTask, addContext, addProject } from '../api/users';
     import store from './../store';
     import Project from './Project.vue';
 
@@ -87,23 +87,23 @@
     //get all tasks from the server for this user
     async function getAllTasks() {
         try {
-            const data = await getUserTasks({ email: store.getters.email })
+            const resp = await getUserTasks({ email: store.getters.email })
+            const data = resp.data
+            if (data.contexts.length != 0) {
+                listcontexts.value = data.contexts.map(x => x.title)
+            }
+
+            if (data.projects.length != 0) {
+                listprojects.value = data.projects.map(x => x.title)
+                for (var project of listprojects.value) {
+                    listtasksofprojects.value[project] = []
+                }
+            }
+
             if (data.tasks.length != 0) {
                 for (var taski in data.tasks) {
                     all_lists.value['Inbox'].push(data.tasks[taski]) //adding task to inbox list
 
-                    // filling listcontexts
-                    for (var context in data.tasks[taski].contexts) {
-                        if (!listcontexts.value.includes(data.tasks[taski].contexts[context]) && (data.tasks[taski].contexts[context] != '')) {
-                            listcontexts.value.push(data.tasks[taski].contexts[context])
-                        }
-                    }
-
-                    // filling listproject
-                    if (!listprojects.value.includes(data.tasks[taski].project) && (data.tasks[taski].project != '') && (data.tasks[taski].project != null)) {
-                        listprojects.value.push(data.tasks[taski].project)
-                        listtasksofprojects.value[data.tasks[taski].project] = []
-                    }
                     if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
                         listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
                 }
@@ -123,9 +123,10 @@
                 all_lists.value[listname.value].push(data.task)
 
                 // filling listcontext
-                for (var context in data.task.contexts) {
-                    if (!listcontexts.value.includes(data.task.contexts[context])) {
-                        listcontexts.value.push(data.task.contexts[context])
+                for (var context of data.task.contexts) {
+                    if (!listcontexts.value.includes(context)) {
+                        listcontexts.value.push(context)
+                        addContext(context)
                     }
                 }
 
@@ -133,6 +134,7 @@
                 if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
                     listprojects.value.push(data.task.project)
                     listtasksofprojects.value[data.task.project] = []
+                    addProject(data.task.project)
                 }
                 if ((data.task.project != '') && (data.task.project != null))
                     listtasksofprojects.value[data.task.project].push(data.task)
