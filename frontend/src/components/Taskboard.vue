@@ -15,7 +15,10 @@
             <CleanButton buttonName="Delete All Tasks" @click="() => deleteAllTasks()" />
             <CleanButton buttonName="Complete All Tasks" @click="() => completeAllTasks()" />
         </div>
-        <Taskmenu :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
+
+        <Taskmenu class="w-5/6" :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
+
+
         <div class="flex flex-row w-11/12 h-5/6">
             <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
                 <p class="text-lg font-bold font-cursive mt-2">Projects</p>
@@ -107,8 +110,6 @@
                     if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
                         listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
                 }
-            } else {
-                alert('no tasks :' + data.message)
             }
         } catch (error) {
             console.log(error)
@@ -119,7 +120,7 @@
         if (Object.keys(all_lists.value).includes(listname.value)) {
             try {
                 const data = await createUserTask(task.value)
-                
+
                 all_lists.value[listname.value].push(data.task)
 
                 // filling listcontext
@@ -150,7 +151,7 @@
             alert("This list already exist");
             return;
         }
-            
+
         all_lists.value[listname] = []
         boardlists.value.push({ title: listname, tasks: all_lists.value[listname] })
         listnames.value.push(listname)
@@ -183,7 +184,7 @@
         }
     }
 
-    //delete all tasks 
+    //delete all tasks
     const deleteAllTasks = () => {
         for (var list in all_lists.value) {
             for (var task of all_lists.value[list]) {
