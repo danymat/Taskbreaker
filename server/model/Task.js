@@ -1,7 +1,6 @@
 const { createError } = require("../constants/Error")
 const { v4: uuidv4 } = require('uuid');
-
-const CONTEXT = ['home', 'work']
+const { Context } = require("./Context");
 
 exports.Task = class {
         /**
@@ -10,7 +9,7 @@ exports.Task = class {
          * @param {String} data.userUuid
          * @param {String} data.description
          * @param {String} [data.project]
-         * @param {CONTEXT[]} [data.contexts]
+         * @param {String} [data.contexts]
          * @param {Number} [data.priority]
          * @param {Number} [data.createdDate]
          * @param {Number} [data.uuid]

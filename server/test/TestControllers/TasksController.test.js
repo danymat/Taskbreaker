@@ -1,7 +1,7 @@
 const mongoConnection = require('../../connection/MongoConnection');
 const { Task } = require('../../model/Task');
 const { User } = require('../../model/User');
-const { mockSingleUser, mockSingleTask, mockSingleContext } = require('../mocks')
+const { mockSingleUser, mockSingleTask, mockSingleContext, mockSingleProject } = require('../mocks')
 let TasksController;
 
 describe('Tasks Controller', () => {
@@ -29,11 +29,14 @@ describe('Tasks Controller', () => {
         users = db.collection('users');
         tasks = db.collection('tasks');
         contexts = db.collection('contexts');
+        projects = db.collection('projects');
         mockSingleTask.userUuid = 'testUuid'
         mockSingleContext.userUuid = 'testUuid'
+        mockSingleProject.userUuid = 'testUuid'
         await users.insertOne(mockSingleUser);
         await tasks.insertOne(mockSingleTask);
         await contexts.insertOne(mockSingleContext);
+        await projects.insertOne(mockSingleProject);
     });
 
     beforeEach(async () => {
@@ -65,11 +68,19 @@ describe('Tasks Controller', () => {
     describe('Get all user tasks', () => {
         test('Retrieving tasks', async () => {
             delete mockSingleTask._id
+            delete mockSingleContext._id
+            delete mockSingleProject._id
             mockSingleTask.uuid = expect.anything()
+            mockSingleContext.uuid = expect.anything()
+            mockSingleProject.uuid = expect.anything()
 
             const expectedResponse = {
                 message: "All user tasks",
-                tasks: [mockSingleTask]
+                data: {
+                    tasks: [mockSingleTask],
+                    contexts: [mockSingleContext],
+                    projects: [mockSingleProject]
+                }
             }
             await TasksController.getAllUserTasks(mockRequest, mockResponse)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
@@ -141,19 +152,6 @@ describe('Tasks Controller', () => {
             await TasksController.createContext(mockRequest, mockResponse)
             expect(mockResponse.json).toBeCalledWith(expectedResponse)
             expect(mockResponse.status).toBeCalledWith(401)
-        })
-
-        test('Contexts retrieved', async () => {
-            delete mockSingleContext._id
-            const expectedResponse = {
-                message: "User contexts",
-                contexts: [mockSingleContext]
-            }
-
-            await TasksController.getContexts(mockRequest, mockResponse, nextFunction)
-            expect(mockResponse.json).toBeCalledWith(expectedResponse)
-            expect(mockResponse.status).toBeCalledWith(200)
-            expect(nextFunction).toBeCalledTimes(0);
         })
 
         test('Context created', async () => {

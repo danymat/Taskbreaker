@@ -23,3 +23,8 @@ exports.mockSingleContext = {
     title: "Home",
     uuid: 'uuid'
 }
+
+exports.mockSingleProject = {
+    title: "Laver la voiture",
+    uuid: 'uuid'
+}
