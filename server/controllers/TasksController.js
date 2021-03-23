@@ -2,7 +2,9 @@ const { createError } = require('../constants/Error')
 const { Task } = require('../model/Task')
 const tasksService = require('../service/tasksService')
 const contextsService = require('../service/contextsService')
+const projectsService = require('../service/projectsService')
 const { Context } = require('../model/Context')
+const { Project } = require('../model/Project')
 
 
 /**
@@ -19,9 +21,15 @@ const { Context } = require('../model/Context')
  exports.getAllUserTasks = async (req, res) => {
     try {
         let tasks = await tasksService.findAllUserTasks(res.locals.user)
+        let projects = await projectsService.findAllUserProjects(res.locals.user)
+        let contexts = await contextsService.findAllUserContexts(res.locals.user)
         res.status(200).json({
             message: "All user tasks",
-            tasks: tasks
+            data: {
+                tasks: tasks,
+                projects: projects,
+                contexts: contexts
+            }
         })
     } catch (error) {
         res.status(error.status).json({
@@ -101,31 +109,6 @@ exports.deleteTask = async (req, res) => {
 }
 
 /**
- * @summary Get all user contexts
- *
- * Must be called after getUserFromDecoded
- * @typedef {Object} userLocals
- * @property {import('../model/User').User} user
-
- *
- * @param {import('express').Request} req
- * @param {import('express').Response<{}, userLocals>} res
- */
-exports.getContexts = async (req, res) => {
-    try {
-        let contexts = await contextsService.findAllUserContexts(res.locals.user)
-        res.status(200).json({
-            message: "User contexts",
-            contexts: contexts
-        })
-    } catch (error) {
-        res.status(error.status).json({
-            message: error.message
-        })
-    }
-}
-
-/**
  * @summary Create a new context
  *
  * Must be called after getUserFromDecoded
@@ -149,7 +132,7 @@ exports.getContexts = async (req, res) => {
         await contextsService.createContext(context)
         res.status(200).json({
             message: "Context created",
-            context: context 
+            context: context
         })
     } catch (error) {
         res.status(error.status).json({
@@ -172,13 +155,71 @@ exports.getContexts = async (req, res) => {
 exports.completeTask = async (req, res) => {
     try {
         const neededKeys = ['uuid'];
-      
+
         if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
             throw new createError(401, "Missing arguments")
         }
         await tasksService.completeTask(req.body.uuid, res.locals.user.uuid)
         res.status(200).json({
             message: "Task completed"
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary Get all user projects
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+ exports.getProjects = async (req, res) => {
+    try {
+        let projects = await projectsService.findAllUserProjects(res.locals.user)
+        res.status(200).json({
+            message: "User contexts",
+            projects: projects
+        })
+    } catch (error) {
+        res.status(error.status).json({
+            message: error.message
+        })
+    }
+}
+
+/**
+ * @summary Create a new project
+ *
+ * Must be called after getUserFromDecoded
+ * @typedef {Object} userLocals
+ * @property {import('../model/User').User} user
+
+ *
+ * @param {import('express').Request} req
+ * @param {import('express').Response<{}, userLocals>} res
+ */
+ exports.createProject = async (req, res) => {
+    try {
+        const neededKeys = ['project'];
+        if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
+            throw new createError(401, "Missing arguments")
+        }
+        let project = new Project({
+            userUuid: res.locals.user.uuid,
+            title: req.body.project
+        })
+        await projectsService.createProject(project)
+        res.status(200).json({
+            message: "Project created",
+            project: project
         })
     } catch (error) {
         res.status(error.status).json({
