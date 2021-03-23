@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "postinstall": "cd .. && husky install server/.husky",
     "start": "nodemon ./bin/www",
     "test": "jest"
   },
