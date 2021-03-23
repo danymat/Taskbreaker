@@ -1,24 +1,27 @@
 <template>
-    <div class="bg-green-200 border-2" :class="bdcolor">
-        <form class="flex flex-row" onsubmit="event.preventDefault()">
-            <div class="flex flex-row space-x-2">
-                <NewButton buttonName="Create Task" class="" @click="createTask" />
-                <img :src="'/sprites/wizzard/run_'+img_number+'.png'" width="40" height="37" />
-            </div>
-            <input type="number" placeholder="priority" v-model="priori" min="0" max="2" />
-            <select name="listname" v-model="listname">
-                <option :value="name" v-for="name in listsnames" v-bind:key="name">{{ name }}</option>
-            </select>
-            <input type="text" placeholder="Taskname *Required*" v-model="task.description" />
-            <input type="text" placeholder="Context" v-model="context" list="contextslist" />
-            <datalist id="contextslist">
-                <option v-for="cont in contexts">{{cont}}</option>
-            </datalist>
-            <input type="text" placeholder="Project" v-model="task.project" list="projectslist" />
-            <datalist id="projectslist">
-                <option v-for="proj in projects">{{proj}}</option>
-            </datalist>
+    <div class="bg-gray-100 border shadow-sm rounded text-gray-900" :class="bdcolor">
+        <form class="flex flex-row space-x-2" onsubmit="event.preventDefault()">
 
+            <NewButton buttonName="Create Task" class="flex flex-row space-x-2 w-1/4" @click="createTask" />
+
+            <input type="text" placeholder="New task..." v-model="task.description" class="border-transparent w-full bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent"/>
+
+            <select name="priorityList" class="border-transparent w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent">
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+                <option value="3">Low</option>
+                <option value="None" selected="selected">No priority</option>
+            </select>
+
+            <select name="contextsList" class="border-transparent w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent">
+                <option v-for="cont in contexts" :value="cont">{{cont}}</option>
+                <option selected="selected">No context</option>
+            </select>
+
+            <select id="projectslist" class="border-transparent w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent">
+                <option v-for="proj in projects">{{proj}}</option>
+                <option selected="selected">No project</option>
+            </select>
         </form>
     </div>
 </template>
@@ -34,12 +37,6 @@
         contexts: Array,
         projects: Array
     });
-
-    const img_number = ref(1);
-    setInterval(change_img, 100);
-    function change_img() {
-        img_number.value = (img_number.value) % 4 + 1
-    }
 
     var bdcolor = ref("")
     var listname = ref("Inbox")

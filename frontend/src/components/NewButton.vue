@@ -1,5 +1,5 @@
 <template>
-  <button class="group flex items-center transition duration-500 transform hover:scale-110 hover:text-gray-900">
+  <button class="flex items-center">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -15,6 +15,7 @@
       />
     </svg>
     <span class="ml-2 text-white-600 text-base">{{ buttonName }}</span>
+    <img :src="'/sprites/wizzard/run_1.png'" width="40" height="37" />
   </button>
 </template>
 <script setup>
