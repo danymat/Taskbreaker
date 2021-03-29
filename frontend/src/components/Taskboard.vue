@@ -35,7 +35,8 @@
                               :tasks="list.tasks"
                               :hideme="false"
                               :selector="selectors"
-                              @sort="(value) => update_sort(value.sort_value, value.tasks)" />
+                              @sort="(value) => update_sort(value.sort_value, value.tasks)" 
+                              @complete="(value) => completeTask(value)"/>
                 </VueDraggableNext>
             </div>
         </div>
@@ -199,6 +200,21 @@
             for (var task of all_lists.value[list]) {
                 completeUserTask(task.uuid)
             }
+        }
+    }
+
+    async function completeTask(uuid) {
+        try {
+            await completeUserTask(uuid)
+            for (var list in all_lists.value) {
+                for (var task of all_lists.value[list]) {
+                    if (task.uuid == uuid) {
+                        task.completionDate = Date.now()
+                    }
+                }
+            }
+        } catch (error) {
+            return;
         }
     }
 

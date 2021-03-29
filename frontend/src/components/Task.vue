@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div v-if="show" class="group flex relative flex-row p-2 gap-2 bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-2xl text-gray-50 shadow-lg">
         <div>
             <h2 class="text-l ml-2 font-bolds text-sm">{{ description }}</h2>
@@ -8,6 +8,7 @@
                 <h2 class="font-light ml-1 text-xs">@{{ context }}</h2>
             </div>
         </div>
+        <button v-if="!completionDate" v-on:click="completeTask">✔</button>
         <div class="invisible group-hover:visible
              absolute 
              left-1/4 bottom-full z-10 
@@ -37,6 +38,7 @@
     import { defineProps, defineEmit } from "vue"
 
     var props = defineProps({
+        uuid: "",
         priority: Number,
         createdDate: Number,
         completionDate: Number,
@@ -45,6 +47,12 @@
         project: "",
         show: Boolean
     });
+
+    const emit = defineEmit(["complete"]);
+
+    const completeTask = () => {
+        emit("complete", props.uuid)
+    }
 
     const getDateDay = () => {
         var date = new Date(props.createdDate)

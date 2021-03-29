@@ -9,6 +9,7 @@
         <div class="space-y-2" :class="{hidden: hideme}">
             <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
                 <Task v-for="task in tasks" v-bind:key="task"
+                      :uuid="task.uuid"
                       :priority="task.priority"
                       :createdDate="task.createdDate"
                       :description="task.description"
@@ -16,6 +17,7 @@
                       :project="task.project"
                       :completionDate="task.completionDate"
                       :show="showme(task)"
+                      @complete="(value) => completeTask(value)"
                       />
             </VueDraggableNext>
         </div>
@@ -80,7 +82,11 @@
         return false
     }
 
-    const emit = defineEmit(["sort"]);
+    const emit = defineEmit(["sort", "complete"]);
+
+    const completeTask = (uuid) => {
+        emit("complete", uuid)
+    }
 
     const send_sort = () => {
         emit("sort", { "sort_value": sortval.value, "tasks": props.tasks });
