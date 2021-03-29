@@ -78,6 +78,7 @@ exports.getInfo = async (user_uuid) => {
             username: user.username,
             email: user.email,
             password: user.password,
+            created: user.created,
             authorities: user.authorities
         }
     } catch (error) {

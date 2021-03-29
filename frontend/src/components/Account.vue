@@ -4,7 +4,10 @@
             <p>Email : </p><p>{{ account.email }}</p>
         </div>
         <div class="">
-            <p>username : </p><p>{{ account.username }}</p>
+            <p>Username : </p><p>{{ account.username }}</p>
+        </div>
+        <div class="">
+            <p>Created : </p><p>{{ createdDate }}</p>
         </div>
         <button @click="hideme=!hideme" :class="{hidden: !hideme}">Change Password</button>
         <div class="flex flex-col" :class="{hidden: hideme}">
@@ -26,6 +29,7 @@
     import router from './../router'
 
     const account = ref({})
+    const createdDate = ref(String)
     const hideme = ref(true)
     const oldpassword = ref('')
     const password = ref('')
@@ -36,6 +40,7 @@
         try {
             let resp = await getUserData()
             account.value = resp.account
+            createdDate.value = (new Date(account.value.created)).toLocaleDateString()
         } catch (error) {
             store.dispatch('logout')
             router.push('/')
