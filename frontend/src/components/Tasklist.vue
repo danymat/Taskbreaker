@@ -17,6 +17,7 @@
                       :project="task.project"
                       :completionDate="task.completionDate"
                       :show="showme(task)"
+                      :nobutton="false"
                       @complete="(value) => completeTask(value)"
                       />
             </VueDraggableNext>

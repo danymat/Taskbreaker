@@ -1,14 +1,14 @@
 ﻿<template>
     <div v-if="show" class="group flex relative flex-row p-2 gap-2 bg-gradient-to-r items-center justify-evenly content-center from-gray-600 to-gray-700 rounded-2xl text-gray-50 shadow-lg">
         <div>
-            <h2 class="text-l ml-2 font-bolds text-sm">{{ description }}</h2>
+            <h2 class="text-l ml-2 font-bolds text-sm" :class="{'line-through': completionDate!=null}">{{ description }}</h2>
         </div>
         <div v-if="contexts" class="flex flex-col">
             <div v-for="context in contexts" v-bind:key="context">
                 <h2 class="font-light ml-1 text-xs">@{{ context }}</h2>
             </div>
         </div>
-        <button v-if="!completionDate" v-on:click="completeTask">✔</button>
+        <button v-if="!completionDate && nobutton==false" v-on:click="completeTask">✔</button>
         <div class="invisible group-hover:visible
              absolute 
              left-1/4 bottom-full z-10 
@@ -29,9 +29,6 @@
                 <h2 class="ml-2 mt-2 text-xs">{{ project }}</h2>
             </div>
         </div>
-        <div v-if="completionDate">
-            COMPLETED
-        </div>
     </div>
 </template>
 <script setup>
@@ -45,7 +42,8 @@
         description: "",
         contexts: Array,
         project: "",
-        show: Boolean
+        show: Boolean,
+        nobutton: Boolean
     });
 
     const emit = defineEmit(["complete"]);

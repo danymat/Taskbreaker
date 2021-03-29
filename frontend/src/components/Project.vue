@@ -7,7 +7,7 @@
                   :createdDate="task.createdDate"
                   :description="task.description"
                   :contexts="task.contexts"
-                  :project="null"
+                  :nobutton="true"
                   :show="true" />
         </div>
     </div>
