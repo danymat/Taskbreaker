@@ -10,6 +10,7 @@
         <div class="space-y-2 p-1" :class="{hidden: hideme}">
             <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
                 <Task v-for="task in tasks" v-bind:key="task"
+                      :uuid="task.uuid"
                       :priority="task.priority"
                       :createdDate="task.createdDate"
                       :description="task.description"
@@ -17,6 +18,8 @@
                       :project="task.project"
                       :completionDate="task.completionDate"
                       :show="showme(task)"
+                      :nobutton="false"
+                      @complete="(value) => completeTask(value)"
                       />
             </VueDraggableNext>
         </div>
@@ -39,7 +42,7 @@
     });
 
     const showme = (task) => {
-        return (passContextSelect(task) && passDateSelect(task) && passProjectSelect(task))
+        return (passContextSelect(task) && passDateSelect(task) && passProjectSelect(task) && passCompleted(task))
     }
 
     // return true if the task is in the context selected or any
@@ -81,7 +84,22 @@
         return false
     }
 
-    const emit = defineEmit(["sort"]);
+    // return true if the task is not completed or the selectors does not include not completed only
+    function passCompleted(task) {
+        if (props.selector.completedonly == true) {
+            if(task.completionDate)
+                return false
+        } else {
+            return true
+        }
+        return true
+    }
+
+    const emit = defineEmit(["sort", "complete"]);
+
+    const completeTask = (uuid) => {
+        emit("complete", uuid)
+    }
 
     const send_sort = () => {
         emit("sort", { "sort_value": sortval.value, "tasks": props.tasks });
