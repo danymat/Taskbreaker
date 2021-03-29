@@ -1,12 +1,13 @@
 <template>
-    <div class="text-center flex flex-col space-y-5 rounded-md m-4 h-3/6 bg-yellow-200">
-        <h1 class="text-lg font-bold font-cursive">{{ title }}</h1>
-        <select name="sort" v-model="sortval" @change="send_sort" :class="{hidden: hideme}">
+    <div class="flex flex-col space-y-5 rounded-md m-4 h-3/6 bg-gray-400">
+        <h1 class="text-lg font-bold pt-2">{{ title }}</h1>
+        <select name="sort" v-model="sortval" @change="send_sort" :class="{hidden: hideme}"
+        class="border shadow-sm rounded-md w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent">
             <option value="manual">Manual sort</option>
             <option value="priority">Priority sort</option>
             <option value="creation_date">Creation Date sort</option>
         </select>
-        <div class="space-y-2" :class="{hidden: hideme}">
+        <div class="space-y-2 p-1" :class="{hidden: hideme}">
             <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
                 <Task v-for="task in tasks" v-bind:key="task"
                       :priority="task.priority"
