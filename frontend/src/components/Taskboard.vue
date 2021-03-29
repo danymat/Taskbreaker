@@ -23,18 +23,18 @@
         <Taskmenu class="w-5/6" :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
 
 
-        <div class="flex flex-row w-11/12 h-5/6">
-            <div v-if="listprojects" class="w-3/12 bg-green-200 space-y-4 overflow-y-auto" :class="{hidden: hideprojects}">
-                <p class="text-lg font-bold font-cursive mt-2">Projects</p>
-                <div class="">
+        <div class="flex flex-row w-10/12 h-5/6 space-x-1">
+            <div v-if="listprojects" class="w-3/12 bg-gray-200 shadow-sm rounded-xl space-y-4 overflow-y-auto border border-gray-300" :class="{hidden: hideprojects}">
+                <button class="bg-gray-500 px-3 text-white shadow-sm rounded-full font-semibold text-3xl mt-2">Projects</button>
+                <div>
                     <Project v-for="proj in listprojects" v-bind:key="proj"
                              :title="proj"
                              :tasks="listtasksofprojects[proj]" />
                 </div>
             </div>
-            <div class="w-full bg-blue-200 overflow-y-auto">
-                <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap space-x-10 min-h-full">
-                    <Tasklist v-for="list in boardlists" v-bind:key="list"
+            <div class="w-full bg-gray-200 shadow-sm rounded-xl space-y-4 overflow-y-auto border border-gray-300">
+                <VueDraggableNext v-model="boardlists" group="listgroup" class="flex flex-row flex-wrap min-h-full">
+                    <Tasklist v-for="list in boardlists" v-bind:key="list" class="cursor-move"
                               :title="list.title"
                               :tasks="list.tasks"
                               :hideme="false"
@@ -44,10 +44,10 @@
             </div>
         </div>
     </div>
-    <div class="absolute right-0 flex flex-col w-1/12 h-full z-30 hover:w-2/12">
-        <div class="w-full h-full bg-gray-200 overflow-y-auto">
+    <div class="absolute -right-96 flex flex-col w-4/12 h-full z-10 translate-x-64 transition transform duration-300 hover:-translate-x-64">
+        <div class="w-full h-full bg-gray-200 shadow-sm rounded-xl space-y-4 overflow-y-auto m-3 border border-gray-300">
             <VueDraggableNext v-model="sidedlists" group="listgroup" class="flex flex-col flex-wrap min-h-full">
-                <Tasklist v-for="list in sidedlists" v-bind:key="list"
+                <Tasklist v-for="list in sidedlists" v-bind:key="list" class="cursor-move"
                           :title="list.title"
                           :tasks="list.tasks"
                           :selector="selectors"
