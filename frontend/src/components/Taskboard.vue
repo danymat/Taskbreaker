@@ -1,14 +1,18 @@
 <template>
     <div class="absolute left-0 top-5 text-center flex flex-col space-y-2 w-full h-full">
-        <div class="flex flex-row space-x-5">
+        <div class="flex flex-row space-x-3">
             <CleanButton buttonName="Clean Board" @click="() => cleanBoard()" />
             <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
             <ClickedButton buttonName="Today Tasks" @isclicked="(isclicked) => selectDate(isclicked)" :defaultClicked="false" />
-            <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)">
+            <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)"
+                class="border shadow-sm rounded-md w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent"
+            >
                 <option value="">Any Context</option>
                 <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
-            <select name="project_select" v-model="project_select" @change="selectProjectTasks(project_select)">
+            <select name="project_select" v-model="project_select" @change="selectProjectTasks(project_select)"
+            class="border shadow-sm rounded-md w-25 bg-gray-100 focus:ring-1 focus:ring-gray-400 focus:border-transparent"
+            >
                 <option value="">Any project</option>
                 <option v-for="name in listprojects" v-bind:key="name" :value="name">{{ name }}</option>
             </select>
