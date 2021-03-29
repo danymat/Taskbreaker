@@ -4,6 +4,7 @@
             <CleanButton buttonName="Clean Board" @click="() => cleanBoard()" />
             <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
             <ClickedButton buttonName="Today Tasks" @isclicked="(isclicked) => selectDate(isclicked)" :defaultClicked="false" />
+            <ClickedButton buttonName="Only Not Completed" @isclicked="(isclicked) => showNotCompletedTasks(isclicked)" :defaultClicked="false" />
             <select name="context_select" v-model="context_select" @change="selectContextTasks(context_select)">
                 <option value="">Any Context</option>
                 <option v-for="name in listcontexts" v-bind:key="name" :value="name">{{ name }}</option>
@@ -35,7 +36,8 @@
                               :tasks="list.tasks"
                               :hideme="false"
                               :selector="selectors"
-                              @sort="(value) => update_sort(value.sort_value, value.tasks)" />
+                              @sort="(value) => update_sort(value.sort_value, value.tasks)" 
+                              @complete="(value) => completeTask(value)"/>
                 </VueDraggableNext>
             </div>
         </div>
@@ -83,7 +85,8 @@
     selectors.value = {
         contexts: [],
         dates: [],
-        projects: []
+        projects: [],
+        completedonly: false
     }
     var hideprojects = ref(false)
 
@@ -202,6 +205,21 @@
         }
     }
 
+    async function completeTask(uuid) {
+        try {
+            await completeUserTask(uuid)
+            for (var list in all_lists.value) {
+                for (var task of all_lists.value[list]) {
+                    if (task.uuid == uuid) {
+                        task.completionDate = Date.now()
+                    }
+                }
+            }
+        } catch (error) {
+            return;
+        }
+    }
+
     // change selector value for the date, only works with today atm
     const selectDate = (isclicked) => {
         //only today for now but date should be selected from calendar and be a Date()
@@ -228,9 +246,14 @@
         }
     }
 
+    // change selector value to display only not compeletd task
+    const showNotCompletedTasks = (iscompletedonly) => {
+        selectors.value.completedonly = iscompletedonly
+    }
+
     // return true if selector empty and all value should be set to true
     const isSelectorEmpty = () => {
-        if ((selectors.value.dates.length == 0) && (selectors.value.contexts.length == 0) && (selectors.value.projects.length == 0))
+        if ((selectors.value.dates.length == 0) && (selectors.value.contexts.length == 0) && (selectors.value.projects.length == 0) && (selectors.value.completedonly == false))
             return true
         else return false
     }
