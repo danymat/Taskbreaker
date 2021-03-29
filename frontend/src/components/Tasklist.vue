@@ -41,7 +41,7 @@
     });
 
     const showme = (task) => {
-        return (passContextSelect(task) && passDateSelect(task) && passProjectSelect(task))
+        return (passContextSelect(task) && passDateSelect(task) && passProjectSelect(task) && passCompleted(task))
     }
 
     // return true if the task is in the context selected or any
@@ -81,6 +81,17 @@
             return true
         }
         return false
+    }
+
+    // return true if the task is not completed or the selectors does not include not completed only
+    function passCompleted(task) {
+        if (props.selector.completedonly == true) {
+            if(task.completionDate)
+                return false
+        } else {
+            return true
+        }
+        return true
     }
 
     const emit = defineEmit(["sort", "complete"]);
