@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col space-y-20 text-gray-700 justify-center bg-white h-screen">
-    <div class="h-screen">
+    <div class="h-full">
       <Navbar />
       <div class="relative ml-9 h-5/6">
           <Menu v-if="!store.getters.isMenuHidden" />
-          <div class="absolute inset-0 grid justify-center gap-2 pt-6">
+          <div class="absolute inset-0 grid justify-center h-full pt-6 overflow-x-hidden">
               <router-view />
           </div>
       </div>
