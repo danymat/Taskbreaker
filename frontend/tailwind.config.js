@@ -26,7 +26,12 @@ module.exports = {
             '6xl': '4rem',
             '7xl': '5rem',
         },
-    extend: {},
+        extend: {
+            height: theme => ({
+                "15/100": "15%",
+                "90/100": "90%",
+            }),
+        },
   },
     variants: {
         width: ["responsive", "hover", "focus"],

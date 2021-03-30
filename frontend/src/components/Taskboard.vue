@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute left-0 top-5 text-center flex flex-col space-y-2 w-full h-full">
+    <div class="absolute left-0 top-5 text-center flex flex-col space-y-2 w-full h-90/100">
         <div class="flex flex-row space-x-3">
             <CleanButton buttonName="Clean Board" @click="() => cleanBoard()" />
             <ClickedButton buttonName="Show Projects" @isclicked="(isclicked) => showProject(isclicked)" :defaultClicked="true" />
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="absolute -right-96 flex flex-col w-4/12 h-full z-10 translate-x-64 transition transform duration-300 hover:-translate-x-64">
+    <div class="absolute -right-96 flex flex-col w-4/12 h-full z-10 transition transform duration-300 hover:-translate-x-64">
         <div class="w-full h-full bg-gray-200 shadow-sm rounded-xl space-y-4 overflow-y-auto m-3 border border-gray-300">
             <VueDraggableNext v-model="sidedlists" group="listgroup" class="flex flex-col flex-wrap min-h-full">
                 <Tasklist v-for="list in sidedlists" v-bind:key="list" class="cursor-move"
