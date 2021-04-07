@@ -21,7 +21,7 @@
             <CleanButton buttonName="Complete All Tasks" @click="() => completeAllTasks()" />
         </div>
 
-        <Taskmenu class="w-5/6" :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value[0],value[1])" />
+        <Taskmenu class="w-5/6" :listsnames="listnames" :contexts="listcontexts" :projects="listprojects" @task="(value) => createTask(value)" />
 
 
         <div class="flex flex-row w-10/12 h-5/6 space-x-1">
@@ -102,6 +102,10 @@
             if (data.contexts.length != 0) {
                 listcontexts.value = data.contexts.map(x => x.title)
             }
+            for (var cont of listcontexts.value) {
+                createList(cont)
+            }
+
 
             if (data.projects.length != 0) {
                 listprojects.value = data.projects.map(x => x.title)
@@ -111,11 +115,12 @@
             }
 
             if (data.tasks.length != 0) {
-                for (var taski in data.tasks) {
-                    all_lists.value['Inbox'].push(data.tasks[taski]) //adding task to inbox list
+                for (var task of data.tasks) {
+                    for(var cont of task.contexts)
+                        all_lists.value[cont].push(task) //adding task to context list
 
-                    if ((data.tasks[taski].project != '') && (data.tasks[taski].project != null))
-                        listtasksofprojects.value[data.tasks[taski].project].push(data.tasks[taski])
+                    if ((task.project != '') && (task.project != null))
+                        listtasksofprojects.value[task.project].push(task)
                 }
             }
         } catch (error) {
@@ -123,32 +128,34 @@
         }
     }
 
-    async function createTask(task, listname) {
-        if (Object.keys(all_lists.value).includes(listname.value)) {
-            try {
-                const data = await createUserTask(task.value)
+    async function createTask(task) {
+        try {
+            const data = await createUserTask(task.value)
 
-                all_lists.value[listname.value].push(data.task)
-
-                // filling listcontext
-                for (var context of data.task.contexts) {
-                    if (!listcontexts.value.includes(context)) {
-                        listcontexts.value.push(context)
-                        addContext(context)
+            if (data.task.contexts.length == 0) {
+                all_lists.value['Maybe'].push(data.task)
+            } else {
+                for (var cont of data.task.contexts) {
+                    if (!Object.keys(all_lists.value).includes(cont)) {
+                        await addContext(cont)
+                        listcontexts.value.push(cont)
+                        createList(cont)
                     }
+                    all_lists.value[cont].push(data.task)
                 }
-
-                // filling listprojects
-                if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
-                    listprojects.value.push(data.task.project)
-                    listtasksofprojects.value[data.task.project] = []
-                    addProject(data.task.project)
-                }
-                if ((data.task.project != '') && (data.task.project != null))
-                    listtasksofprojects.value[data.task.project].push(data.task)
-            } catch (error) {
-                return;
             }
+
+            // filling listprojects
+            if (!listprojects.value.includes(data.task.project) && (data.task.project != '') && (data.task.project != null)) {
+                listprojects.value.push(data.task.project)
+                listtasksofprojects.value[data.task.project] = []
+                addProject(data.task.project)
+            }
+
+            if ((data.task.project != '') && (data.task.project != null))
+                listtasksofprojects.value[data.task.project].push(data.task)
+        } catch (error) {
+           return;
         }
     }
 
@@ -306,9 +313,6 @@
         return 0;
     };
 
-
-    createList("Inbox");
-    createList("Next Actions");
     createList("Waiting For");
     createList("Maybe");
     getAllTasks();

@@ -8,7 +8,7 @@
             <option value="creation_date">Creation Date sort</option>
         </select>
         <div class="space-y-2 p-1" :class="{hidden: hideme}">
-            <VueDraggableNext group="taskgroup" :list="tasks" @change="send_sort">
+            <VueDraggableNext :group="title" :list="tasks" @change="send_sort">
                 <Task v-for="task in tasks" v-bind:key="task"
                       :uuid="task.uuid"
                       :priority="task.priority"

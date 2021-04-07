@@ -125,6 +125,9 @@ exports.deleteTask = async (req, res) => {
         if (!neededKeys.every(key => Object.keys(req.body).includes(key))) {
             throw new createError(401, "Missing arguments")
         }
+        if (req.body.context == "" || req.body.context == 'Maybe' || req.body.context == 'Waiting For') {
+            throw new createError(401, "Incorrect Name")
+        }
         let context = new Context({
             userUuid: res.locals.user.uuid,
             title: req.body.context

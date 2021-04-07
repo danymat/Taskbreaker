@@ -37,7 +37,6 @@
     });
 
     var bdcolor = ref("")
-    var listname = ref("Inbox")
     var task = ref({
         priority: null,
         description: "",
@@ -50,8 +49,9 @@
     const createTask = () => {
         if (task.value.description.length != 0) {
             task.value.priority = parseInt(priori.value, 10)
-            task.value.contexts.push(context.value)
-            emit("task", [task, listname]);
+            if (context.value != "")
+                task.value.contexts.push(context.value)
+            emit("task", task);
             task.value.contexts = [];
         } else {
             bdcolor.value = "border-red-600";
