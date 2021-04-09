@@ -116,8 +116,11 @@
 
             if (data.tasks.length != 0) {
                 for (var task of data.tasks) {
-                    for(var cont of task.contexts)
-                        all_lists.value[cont].push(task) //adding task to context list
+                    if(task.contexts.length !=0)
+                        for(var cont of task.contexts)
+                            all_lists.value[cont].push(task) //adding task to context list
+                    else
+                        all_lists.value["Maybe"].push(task)
 
                     if ((task.project != '') && (task.project != null))
                         listtasksofprojects.value[task.project].push(task)
